@@ -1,0 +1,56 @@
+<template>
+    <div v-for="item in users" :key="item._id">
+      <v-card>
+        <v-card-actions>
+          <v-btn icon @click="increment(item)">
+            <v-icon>mdi-plus</v-icon>
+          </v-btn>
+          <div>{{ item.numbershow }}</div> 
+        </v-card-actions>
+        <v-card-text>{{ item.nameservice }}</v-card-text>
+      </v-card>
+    </div>
+  </template>
+  
+  
+  <script>
+    import { defineComponent, onMounted, ref } from "vue";
+    import axios from "axios";
+  
+    export default defineComponent({
+      setup() {
+        const users = ref([]);
+        const labelshow = ref({});
+        onMounted(async () => {
+          const res = await axios.get("http://localhost:50100/onboardlands");
+          users.value = res.data;
+          console.log(res);
+        });
+  
+
+
+        function increment(item) {
+       axios.put("http://localhost:50100/onboardlandnums", {
+        idshow: item.idshow
+    }).then(() => {
+        axios.get("http://localhost:50100/onboardlands")
+        .then(res => {
+            users.value = res.data;
+        });
+    }).catch(error => {
+        console.error(error);
+    });
+}
+
+  
+
+  
+        return {
+          users,
+          labelshow,
+          increment
+        }
+      }
+    });
+  </script>
+  
