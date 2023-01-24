@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 mongoose.set('strictQuery', true);
 
 // connect to the database
-mongoose.connect('mongodb://127.0.0.1:27017/scoreboard', {useNewUrlParser: true});
+mongoose.connect('mongodb+srv://teeramail:qvdrYkGpm6MLJx8H@cluster0.gk51ki6.mongodb.net/scoreboard', {useNewUrlParser: true});
 
 // define routes and middleware
 app.get('/', function (req, res) {
