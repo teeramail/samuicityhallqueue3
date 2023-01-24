@@ -1,6 +1,6 @@
 // const mongoose = require("mongoose");
 // mongoose.set('strictQuery', true);
-// mongoose.connect('mongodb://127.0.0.1:27017/scoreboard', {useNewUrlParser: true});
+// mongoose.connect('mongodb+srv://teeramail:qvdrYkGpm6MLJx8H@cluster0.gk51ki6.mongodb.net/scoreboard', {useNewUrlParser: true});
 // const stream = mongoose.connection.watch([
 //   { $match: { "operationType": "update", "fullDocument.model": "Onboardlands","updateDescription.updatedFields.numbershow": { $exists: true } } }
 // ]);
