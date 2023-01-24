@@ -22,7 +22,7 @@
         const users = ref([]);
         const labelshow = ref({});
         onMounted(async () => {
-          const res = await axios.get("http://localhost:50100/onboardlands");
+          const res = await axios.get("https://koh-samui.com:50100/onboardlands");
           users.value = res.data;
           console.log(res);
         });
@@ -30,10 +30,10 @@
 
 
         function increment(item) {
-       axios.put("http://localhost:50100/onboardlandnums", {
+       axios.put("https://koh-samui.com:50100/onboardlandnums", {
         idshow: item.idshow
     }).then(() => {
-        axios.get("http://localhost:50100/onboardlands")
+        axios.get("https://koh-samui.com:50100/onboardlands")
         .then(res => {
             users.value = res.data;
         });
