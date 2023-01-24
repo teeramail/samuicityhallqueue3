@@ -9,7 +9,7 @@ const app = express();
 mongoose.set('strictQuery', true);
 
 // connect to the database
-mongoose.connect('mongodb://127.0.0.1:27017/scoreboard', {useNewUrlParser: true});
+mongoose.connect('mongodb://127..1:27017/scoreboard', {useNewUrlParser: true});
 
 // define routes and middleware
 app.get('/', function (req, res) {
