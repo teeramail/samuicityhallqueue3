@@ -25,7 +25,7 @@
       const users = ref([]);
       const labelshow = ref({});
       onMounted(async () => {
-        const res = await axios.get("https://koh-samui.com:50100/onboardshows:50100/onboardshows");
+        const res = await axios.get("https://koh-samui.com:50100/onboardshows");
         users.value = res.data;
         console.log(res);
       });
@@ -33,10 +33,10 @@
       function increment(item) {
   console.log(`labelshow id: ${item.idshow}`);
 
-  axios.put("https://koh-samui.com:50100/onboardshows:50100/onboardshows", {
+  axios.put("https://koh-samui.com:50100/onboardshows", {
     idshow: item.idshow
   }).then(() => {
-    axios.get("https://koh-samui.com:50100/onboardshows:50100/onboardshows")
+    axios.get("https://koh-samui.com:50100/onboardshows")
     .then(res => {
         users.value = res.data;
     });
@@ -50,7 +50,7 @@
         console.log(`labelshow id: ${item.idshow}`);
 
         try {
-          axios.put("https://koh-samui.com:50100/onboardshows:50100/onboardshowsminus", {
+          axios.put("https://koh-samui.com:50100/onboardshows", {
             idshow: item.idshow
           });
         } catch (error) {
