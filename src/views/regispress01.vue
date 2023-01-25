@@ -43,25 +43,12 @@
 }
 
 
-      function decrement(item) {
-        console.log(`labelshow id: ${item.idshow}`);
 
-        try {
-          axios.put("https://koh-samui.com:50100/regisshow", {
-            idshow: item.idshow
-          });
-        } catch (error) {
-          console.error(error);
-        }
-
-        item.numbershow--;
-      }
 
       return {
         users,
         labelshow,
-        increment,
-        decrement
+        increment
       }
     }
   });
