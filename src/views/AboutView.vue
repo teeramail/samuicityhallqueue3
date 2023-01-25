@@ -13,10 +13,13 @@
 
 <script>
 export default {
-  data() {
+  setup() {
+    const imageSrc = ref('https://unsplash.com/photos/r9RW20TrQ0Y')
+    const transition = ref('rotate-transition')
+
     return {
-      imageSrc: 'https://unsplash.com/photos/r9RW20TrQ0Y',
-      transition: 'rotate-transition'
+      imageSrc,
+      transition
     }
   }
 }
