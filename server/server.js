@@ -35,6 +35,18 @@ app.get('/regisshow', function(req, res) {
   });
 });
 
+app.get('/regisshowone', function(req, res) {
+  // find all documents in the regisshow collection
+  Regisshow.find({idshow : request.query['idshow']}, function(err, regisshows) {
+    if (err) return res.status(500).send(err);
+    if (regisshows.length === 0) return res.status(404).send('No documents found in the collection');
+    console.log(regisshows);
+    return res.send(regisshows);
+  });
+});
+
+// database.collection("po_order").find({customername : request.query['customername']})
+
 app.get('/onboardshows', function(req, res) {
   // find all documents in the onboarshows collection
   Onboardshows.find({}, function(err, onboardshows) {
