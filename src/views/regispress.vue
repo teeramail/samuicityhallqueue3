@@ -1,81 +1,71 @@
 <template>
-
-  <v-table name="mytab" id="mytab1">
-    <tr class="one-third column" v-for="labelshow in labelshows " :key="labelshow._id">
-        <div>   
-        <br>
-        <v-btn @click="incrementShowNumber(labelshow)" height="50" size="x-large" color="purple">
-            {{ labelshow.nameservice }}
-        </v-btn>  
-    </div>
-    </tr>
-  </v-table>
-
+  <div v-for="item in users" :key="item._id">
+    <v-card>
+      <v-card-actions>
+        <v-btn icon @click="increment(item)">
+          <v-icon>mdi-plus</v-icon>
+        </v-btn>
+        <div>{{ item.numbershow }}</div> 
+        <v-btn icon @click="decrement(item)">
+          <v-icon>mdi-minus</v-icon>
+        </v-btn>
+      </v-card-actions>
+      <v-card-text>{{ item.nameservice }}</v-card-text>
+    </v-card>
+  </div>
 </template>
 
-<script setup>
-import { useRoute } from 'vue-router'
-import axios from 'axios'
-import {defineComponent, ref, onMounted} from "vue" 
 
-const route = useRoute();
-console.log(route.query);
-const idshow = ref(1);
+<script>
+  import { defineComponent, onMounted, ref } from "vue";
+  import axios from "axios";
 
-const labelshows = ref([]);
-const allcatagory = async () => {
-  try {
-    const response = await axios.get(`http://localhost:50100/regisshow/`);
-    console.log(response.data);
-    labelshows.value = response.data;
-  } catch (error) {
-    console.error(error);
-  }
-};
+  export default defineComponent({
+    setup() {
+      const users = ref([]);
+      const labelshow = ref({});
+      onMounted(async () => {
+        const res = await axios.get("https://koh-samui.com:50100/onboardshows");
+        users.value = res.data;
+        console.log(res);
+      });
 
-onMounted(() => {
-  allcatagory();
-});
+      function increment(item) {
+  console.log(`labelshow id: ${item.idshow}`);
 
-
-
-
-// const incrementShowNumber = (labelshow) => {
-//   console.log('labelshow.idshow.value');
-//   console.log(labelshow.idshow);
-// }
-
-// const incrementShowNumber = 
-  
-// (labelshow) => {
-//   console.log('labelshow.idshow.value');
-//   console.log(labelshow.idshow);
-//  }
-//   async () => {
-//   try {
-//     const response = await axios.put("http://localhost:50100/regisshow", {
-//       idshow: labelshow.idshow
-//     });
-//     console.log(response.data);
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-
-
-const incrementShowNumber = async (labelshow) => {
-  console.log('labelshow.idshow.value');
-  console.log(labelshow.idshow);
-
-  try {
-    const response = await axios.put("http://localhost:50100/regisshow", {
-      idshow: labelshow.idshow
+  axios.put("https://koh-samui.com:50100/onboardshows", {
+    idshow: item.idshow
+  }).then(() => {
+    axios.get("https://koh-samui.com:50100/onboardshows")
+    .then(res => {
+        users.value = res.data;
     });
-    console.log(response.data);
-  } catch (error) {
+  }).catch(error => {
     console.error(error);
-  }
+  });
 }
 
 
+      function decrement(item) {
+        console.log(`labelshow id: ${item.idshow}`);
+
+        try {
+          axios.put("https://koh-samui.com:50100/onboardshows", {
+            idshow: item.idshow
+          });
+        } catch (error) {
+          console.error(error);
+        }
+
+        item.numbershow--;
+      }
+
+      return {
+        users,
+        labelshow,
+        increment,
+        decrement
+      }
+    }
+  });
 </script>
