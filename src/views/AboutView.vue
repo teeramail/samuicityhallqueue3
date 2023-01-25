@@ -15,7 +15,7 @@
 export default {
   data() {
     return {
-      imageSrc: 'https://images.unsplash.com/photo-1575776487016-f9f9f9f8d9e9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60',
+      imageSrc: 'https://unsplash.com/photos/r9RW20TrQ0Y',
       transition: 'rotate-transition'
     }
   }
