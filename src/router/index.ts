@@ -22,6 +22,10 @@ const routes = [
     path: '/regispress',
     name: 'regispress',    component: () => import(/* webpackChunkName: "about" */ '../views/regispress.vue')
   },
+  {
+    path: '/regispress01',
+    name: 'regispress01',    component: () => import(/* webpackChunkName: "about" */ '../views/regispress01.vue')
+  },
 
   {
     path: '/onboardshow',
