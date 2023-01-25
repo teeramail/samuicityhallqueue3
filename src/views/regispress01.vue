@@ -33,7 +33,7 @@
   axios.put("https://koh-samui.com:50100/regisshow", {
     idshow: item.idshow
   }).then(() => {
-    axios.get("https://koh-samui.com:50100/regisshow",
+    axios.get("https://koh-samui.com:50100/regisshowone",
     {
     params: {
         idshow : 10 ,
@@ -50,11 +50,11 @@
 }
 
 
-const res = await axios.get("http://127.0.0.1:4914/server/po_order", {
-  params: {
-    customername : 'ALEX',
-  }
-})
+// const res = await axios.get("http://127.0.0.1:4914/server/po_order", {
+//   params: {
+//     customername : 'ALEX',
+//   }
+// })
 
 
 
