@@ -33,7 +33,7 @@
   axios.put("https://koh-samui.com:50100/regisshow", {
     idshow: item.idshow
   }).then(() => {
-    axios.get("https://koh-samui.com:50100/regisshowone",
+    axios.get("https://koh-samui.com:50100/regisshow",
     {
     params: {
         idshow : 10 ,
