@@ -6,9 +6,6 @@
           <v-icon>mdi-plus</v-icon>
         </v-btn>
         <div>{{ item.numbershow }}</div> 
-        <v-btn icon @click="decrement(item)">
-          <v-icon>mdi-minus</v-icon>
-        </v-btn>
       </v-card-actions>
       <v-card-text>{{ item.nameservice }}</v-card-text>
     </v-card>
