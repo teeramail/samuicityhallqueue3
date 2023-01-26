@@ -7,6 +7,7 @@
         </v-row>
         <v-row>
           <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn">Button 1</v-btn>
+
         </v-row>
         <v-row>
           <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn">Button 2</v-btn>
@@ -52,16 +53,10 @@ export default {
         i = i === images.length - 1 ? 0 : i + 1
     }, 3000)
 
-
-    function navigateToRegisPress() {
-     // router.push({ name: 'onboardshow', params: { botomid: this.botomid } })
-     // router.push({ path: '/regispress01'})
-     // router.push({ name: 'regispress01', params: { username } })
-    //  router.push({ name: 'regispress01' }) //, params: { username }
-      router.push({ name: 'regispress01', params: { idshow } })
-    }
     
-   
+    function navigateToRegisPress(idshow) {
+    router.push({ name: 'regispress01', params: { idshow } })
+    }
 
     return {
         currentImage,
