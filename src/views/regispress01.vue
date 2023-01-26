@@ -23,7 +23,7 @@
       const users = ref([]);
       const labelshow = ref({});
       const filteredUsers = computed(() => {
-        return users.value.filter(item => item.idshow === route.params.idshow);
+        return users.value.filter(item => item.idshow === route.params.idshow.value);
       });
       onMounted(async () => {
         const res = await axios.get("https://koh-samui.com:50100/regisshow");
