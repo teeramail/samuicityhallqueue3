@@ -28,6 +28,8 @@
 
 <script>
 import { ref } from 'vue'
+import VueRouter from 'vue-router'
+
 
 const images = [
   'https://www.kohsamuicity.go.th/image/ratioalpha/?file=files/com_gallery/2022-09_78ccc1d5051fdb5.jpg&width=1020&height=433&defaultImage=images/nopic.jpg',
