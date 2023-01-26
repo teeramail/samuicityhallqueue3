@@ -55,12 +55,17 @@ export default {
 </script>
 
 <style>
+
 .big-button {
   font-size: 30px;
   padding: 50px 80px;
-  line-height: 80px; 
+  line-height: 80px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 }
 .spaced-btn {
-  margin-top: 50 px; /* or padding-top */
+  margin-top: 50px;
 }
+
 </style>
