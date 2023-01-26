@@ -60,6 +60,6 @@ export default {
   padding: 50px 90px;
 }
 .spaced-btn {
-  margin-top: 30px; /* or padding-top */
+  margin-top: 23px; /* or padding-top */
 }
 </style>
