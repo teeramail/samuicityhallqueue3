@@ -65,7 +65,7 @@ export default {
   margin-bottom: 20px;
 }
 .spaced-btn {
-  margin-top: 50px;
+  margin-top: 20px;
 }
 
 </style>
