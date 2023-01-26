@@ -35,37 +35,21 @@
 
 <script>
 import { ref } from 'vue'
-// import { useRouter } from 'vue-router'
-//import router from './router'
 import router from "@/router"
 
 
-// const router = useRouter();
 
-// const images = [
-//   'https://www.kohsamuicity.go.th/image/ratioalpha/?file=files/com_gallery/2022-09_78ccc1d5051fdb5.jpg&width=1020&height=433&defaultImage=images/nopic.jpg',
-//   'https://www.kohsamuicity.go.th/tmp/ca3b23a0e53828b8d0068ff17c30e1ee.jpg',
-//   'https://www.kohsamuicity.go.th/files/com_gallery/2022-09_e200d3b3e6c3fac.jpg'
-// ]
 
-// const idshow = ref(20)
-// const currentImage = ref(images[0])
-// let i = 1
+const idshow = ref(20)
 
-// export default {
-//   setup() {
-//     setInterval(() => {
-//         currentImage.value = images[i]
-//         i = i === images.length - 1 ? 0 : i + 1
-//     }, 3000)
-
+export default {
+  setup() {
     
     function navigateToRegisPress(idshow) {      
     router.push({ name: 'regispress01', params: { idshow } })
     }
 
     return {
-        currentImage,
         navigateToRegisPress
     }
   }
