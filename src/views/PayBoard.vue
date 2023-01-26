@@ -13,7 +13,7 @@
           <v-btn x-large v-on:click="navigateToRegisPress(3)" class="spaced-btn">แม่น้ำ</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(4)" class="spaced-btn x-large">อ่างทอง</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(4)" class="spaced-btn" v-bind:size="'72px'">อ่างทอง</v-btn>
         </v-row>
       </v-col>
       <v-col cols="4">
