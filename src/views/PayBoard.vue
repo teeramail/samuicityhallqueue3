@@ -1,6 +1,7 @@
 <template>
   <v-container>
     <v-row>
+      <v-col cols="2"></v-col>
       <v-col cols="6">
         <v-row>
           <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button">บ่อผุด หมู่ 1,3,5</v-btn>
@@ -15,7 +16,7 @@
           <v-btn v-on:click="navigateToRegisPress(4)" class="spaced-btn">อ่างทอง</v-btn>
         </v-row>
       </v-col>
-      <v-col cols="6">
+      <v-col cols="4">
         <v-row>
           <v-btn v-on:click="navigateToRegisPress(5)" class="spaced-btn">ลิปะน้อย</v-btn>
         </v-row>
