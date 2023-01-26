@@ -3,13 +3,13 @@
     <v-row>
       <v-col cols="3">
         <v-row>
-          TEST 25
+          25
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress" class="spaced-btn">Button 1</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn">Button 1</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress" class="spaced-btn">Button 2</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn">Button 2</v-btn>
         </v-row>
         <v-row>
           <v-btn class="spaced-btn">Button 3</v-btn>
@@ -56,7 +56,8 @@ export default {
      // router.push({ name: 'onboardshow', params: { botomid: this.botomid } })
      // router.push({ path: '/regispress01'})
      // router.push({ name: 'regispress01', params: { username } })
-      router.push({ name: 'regispress01' }) //, params: { username }
+    //  router.push({ name: 'regispress01' }) //, params: { username }
+      router.push({ name: 'regispress01', params: { idshow } })
     }
     
    
