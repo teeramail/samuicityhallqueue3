@@ -6,7 +6,7 @@
           25
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn">Button 1</v-btn>
+          <v-btn v-on:click="navigateToPayBoard(1)" class="spaced-btn">Button 1</v-btn>
         </v-row>
         <v-row>
           <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn">ภาษีที่ดินและสิ่งปลูกสร้าง</v-btn>
@@ -55,6 +55,9 @@ export default {
     
     function navigateToRegisPress(idshow) {      
     router.push({ name: 'regispress01', params: { idshow } })
+    }
+    function navigateToPayBoard(idshow) {      
+    router.push({ name: 'payboard' })
     }
 
     return {
