@@ -24,14 +24,6 @@
       const users = ref([]);
       const labelshow = ref({});
     
-            // const filteredUsers = computed(() => {
-      //   return users.value.filter(item => item.idshow === 1 );
-      // });
-
-      // const filteredUsers = computed(() => {
-      //   return users.value.filter(item => item.idshow === parseInt(route.params.idshow));
-      // });
-      
       const filteredUsers = computed(() => {
         return users.value.filter(item => item.idshow === parseInt(route.params.idshow));
       });
