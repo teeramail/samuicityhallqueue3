@@ -63,7 +63,8 @@ export default {
 
     return {
         currentImage,
-        navigateToRegisPress
+        navigateToRegisPress,
+        navigateToPayBoard
     }
   }
 }
