@@ -56,8 +56,8 @@ export default {
 
 <style>
 .big-button {
-  font-size: 24px;
-  padding: 10px 20px;
+  font-size: 30px;
+  padding: 50px 500px;
 }
 .spaced-btn {
   margin-top: 30px; /* or padding-top */
