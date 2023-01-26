@@ -16,7 +16,7 @@
   import { defineComponent, onMounted, ref, computed } from "vue";
   import axios from "axios";
   import { useRoute } from 'vue-router'
-  import router from "@/router"
+  // import router from "@/router"
 
   export default defineComponent({
     setup() {
