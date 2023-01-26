@@ -50,7 +50,7 @@ export default {
 
 
     function navigateToRegisPress() {
-      this.router.push({ name: 'regispress01', params: { botomid: this.botomid } })
+      router.push({ name: 'onboardshow', params: { botomid: this.botomid } })
     }
 
 
