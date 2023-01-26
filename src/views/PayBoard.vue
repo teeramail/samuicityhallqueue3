@@ -10,7 +10,7 @@
           <v-btn v-on:click="navigateToRegisPress(2)" x-large class="spaced-btn">บ่อผุด หมู่ 2,4,6</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(3)" class="spaced-btn">แม่น้ำ</v-btn>
+          <v-btn x-large v-on:click="navigateToRegisPress(3)" class="spaced-btn">แม่น้ำ</v-btn>
         </v-row>
         <v-row>
           <v-btn v-on:click="navigateToRegisPress(4)" class="spaced-btn">อ่างทอง</v-btn>
