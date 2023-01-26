@@ -37,12 +37,16 @@ const routes = [
     name: 'onboardland',    component: () => import(/* webpackChunkName: "about" */ '../views/onboardland.vue')
   },
 
-
-
   {
     path: '/about',
     name: 'about',
     component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+  },
+
+  {
+    path: '/payboard',
+    name: 'payboard',
+    component: () => import(/* webpackChunkName: "payboard" */ '../views/PayBoard.vue')
   },
 
 
