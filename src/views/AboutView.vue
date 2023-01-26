@@ -30,7 +30,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
-const router = useRouter()
+const router = useRouter();
 
 const images = [
   'https://www.kohsamuicity.go.th/image/ratioalpha/?file=files/com_gallery/2022-09_78ccc1d5051fdb5.jpg&width=1020&height=433&defaultImage=images/nopic.jpg',
@@ -50,8 +50,9 @@ export default {
 
 
     function navigateToRegisPress() {
-      router.push({ name: 'regispress01', params: { botomid: this.botomid } })
+      this.router.push({ name: 'regispress01', params: { botomid: this.botomid } })
     }
+
 
     return {
         currentImage,
