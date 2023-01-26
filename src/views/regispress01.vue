@@ -29,6 +29,7 @@
         const res = await axios.get("https://koh-samui.com:50100/regisshow");
         users.value = res.data;
         console.log(res);
+        console.log( route.params.idshow.value);
       });
 
       function increment(item) {
