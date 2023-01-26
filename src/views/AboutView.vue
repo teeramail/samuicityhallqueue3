@@ -6,10 +6,10 @@
           TEST 25
         </v-row>
         <v-row>
-          <v-btn class="spaced-btn">Button 1</v-btn>
+          <v-btn v-on:click="navigateToRegisPress" class="spaced-btn">Button 1</v-btn>
         </v-row>
         <v-row>
-          <v-btn class="spaced-btn">Button 2</v-btn>
+          <v-btn v-on:click="navigateToRegisPress" class="spaced-btn">Button 2</v-btn>
         </v-row>
         <v-row>
           <v-btn class="spaced-btn">Button 3</v-btn>
@@ -45,8 +45,13 @@ export default {
         i = i === images.length - 1 ? 0 : i + 1
     }, 3000)
 
+    function navigateToRegisPress() {
+      this.$router.push({ name: 'regispress01', params: { botomid: this.botomid } })
+    }
+
     return {
-        currentImage
+        currentImage,
+        navigateToRegisPress
     }
   }
 }
