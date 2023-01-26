@@ -23,13 +23,13 @@
       const users = ref([]);
       const labelshow = ref({});
       const filteredUsers = computed(() => {
-        return users.value.filter(item => item.idshow === route.params.idshow.value);
+        return users.value.filter(item => item.idshow === route.params.idshow);
       });
       onMounted(async () => {
         const res = await axios.get("https://koh-samui.com:50100/regisshow");
         users.value = res.data;
         console.log(res);
-        console.log( route.params.idshow.value);
+        console.log( route.params.idshow);
       });
 
       function increment(item) {
