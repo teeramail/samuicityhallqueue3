@@ -6,27 +6,27 @@
           <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn">Button 1</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn">Button 2</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(2)" class="spaced-btn">Button 2</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(10)" class="spaced-btn">Button 2</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(3)" class="spaced-btn">Button 2</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn">Button 2</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(4)" class="spaced-btn">Button 2</v-btn>
         </v-row>
       </v-col>
       <v-col cols="6">
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn">Button 1</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(5)" class="spaced-btn">Button 1</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn">Button 2</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(6)" class="spaced-btn">Button 2</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(10)" class="spaced-btn">Button 2</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(7)" class="spaced-btn">Button 2</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn">Button 2</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(8)" class="spaced-btn">Button 2</v-btn>
         </v-row>
       </v-col>
     </v-row>
@@ -36,9 +36,6 @@
 <script>
 import { ref } from 'vue'
 import router from "@/router"
-
-
-
 
 const idshow = ref(20)
 
