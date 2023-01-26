@@ -55,6 +55,8 @@ export default {
 
     
     function navigateToRegisPress(idshow) {
+      console.log('tt ');
+     console.log(idshow); // <-- add this line
     router.push({ name: 'regispress01', params: { idshow } })
     }
 
