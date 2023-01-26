@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="6">
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn">บ่อผุด หมู่ 1,3,5</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button">บ่อผุด หมู่ 1,3,5</v-btn>
         </v-row>
         <v-row>
           <v-btn v-on:click="navigateToRegisPress(2)" class="spaced-btn">บ่อผุด หมู่ 2,4,6</v-btn>
@@ -54,6 +54,10 @@ export default {
 </script>
 
 <style>
+.big-button {
+  font-size: 24px;
+  padding: 10px 20px;
+}
 .spaced-btn {
   margin-top: 30px; /* or padding-top */
 }
