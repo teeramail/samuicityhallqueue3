@@ -41,6 +41,7 @@ const images = [
   'https://www.kohsamuicity.go.th/files/com_gallery/2022-09_e200d3b3e6c3fac.jpg'
 ]
 
+const idshow = ref(20)
 const currentImage = ref(images[0])
 let i = 1
 
