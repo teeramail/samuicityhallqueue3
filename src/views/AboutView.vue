@@ -30,6 +30,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+
 const router = useRouter();
 
 const images = [
@@ -50,9 +51,11 @@ export default {
 
 
     function navigateToRegisPress() {
-      router.push({ name: 'onboardshow', params: { botomid: this.botomid } })
+     // router.push({ name: 'onboardshow', params: { botomid: this.botomid } })
+      router.push({ path: '/regispress01'})
     }
-
+    
+   
 
     return {
         currentImage,
