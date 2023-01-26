@@ -28,7 +28,7 @@
 
 <script>
 import { ref } from 'vue'
-import VueRouter from 'vue-router'
+import { useRouter } from 'vue-router'
 
 
 const images = [
