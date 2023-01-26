@@ -58,7 +58,7 @@ export default {
 .big-button {
   font-size: 30px;
   padding: 50px 80px;
-  line-height: 80px;
+  display: inline-block;
 }
 
 </style>
