@@ -48,8 +48,9 @@ export default {
         i = i === images.length - 1 ? 0 : i + 1
     }, 3000)
 
+
     function navigateToRegisPress() {
-      this.$router.push({ name: 'regispress01', params: { botomid: this.botomid } })
+      router.push({ name: 'regispress01', params: { botomid: this.botomid } })
     }
 
     return {
