@@ -29,6 +29,7 @@
 <script>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import router from './router'
 
 
 const router = useRouter();
