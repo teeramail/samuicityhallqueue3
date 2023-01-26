@@ -13,10 +13,10 @@
           <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn">Button 2</v-btn>
         </v-row>
         <v-row>
-          <v-btn class="spaced-btn">Button 3</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(10)" class="spaced-btn">Button 2</v-btn>
         </v-row>
         <v-row>
-          <v-btn class="spaced-btn">Button 4</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn">Button 2</v-btn>
         </v-row>
       </v-col>
       <v-col cols="9">
