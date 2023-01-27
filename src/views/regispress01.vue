@@ -7,7 +7,7 @@
       <v-card-text>{{ item.nameservice }}</v-card-text>
     </v-card>
   </div>
-</template>
+ 
 
 <script>
   import { defineComponent, onMounted, ref, computed } from "vue";
