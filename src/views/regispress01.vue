@@ -69,9 +69,7 @@ export default defineComponent({
 
 
 <style>
-  #printpagebutton {
-    display: none;
-  }
+
   
   template {
     border-bottom: none;
@@ -88,6 +86,9 @@ export default defineComponent({
       font-size: 12px;
       font-family: Arial;
     }
+    #printpagebutton {
+    display: none;
+  }
   }
 </style>
 
