@@ -8,7 +8,9 @@
           </v-row>
           <v-card-text>{{ item.nameservice }}</v-card-text>
       </div>
+      <!-- delete this button -->
       <button @click="printContent" id="printpagebutton" class="btn btn-primary">Print</button> 
+
     </div>
   </template>
   
@@ -65,29 +67,30 @@ export default defineComponent({
 
 </script>
 
+
 <style>
+  #printpagebutton {
+    display: none;
+  }
+  
+  template {
+    border-bottom: none;
+  }
 
-template {
-   border-bottom: none;
-}
-
-.number-show-container {
-  position: relative;
-  top: 25%;
-}
-
-@media print {
-            /* Style the content to be printed */
-            .print-section {
-                font-size: 12px;
-                font-family: Arial;
-            }
-
-            #printPageButton {
-            display: none;
-            }
-}
+  .number-show-container {
+    position: relative;
+    top: 25%;
+  }
+  
+  @media print {
+    /* Style the content to be printed */
+    .print-section {
+      font-size: 12px;
+      font-family: Arial;
+    }
+  }
 </style>
+
 
 
 
