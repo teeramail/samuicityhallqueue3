@@ -8,9 +8,10 @@
         </v-row>
         <v-card-text>{{ item.nameservice }}</v-card-text>
     </div>
-    <button @click="printContent" class="btn btn-primary">PrintA</button>
+    <button @click="printContent" class="btn btn-primary">Print</button> 
   </div>
 </template>
+
 
 
 <script>
