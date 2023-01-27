@@ -12,8 +12,6 @@
   </div>
 </template>
 
-
-
 <script>
 import { defineComponent, onMounted, ref, computed } from "vue";
 import axios from "axios";
@@ -85,4 +83,5 @@ template {
             }
         }
 </style>
+
 
