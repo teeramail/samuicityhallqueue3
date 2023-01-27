@@ -1,8 +1,8 @@
 <template>
   <div v-for="item in filteredUsers" :key="item._id">
     <v-card>
-      <v-card-actions>
-        <div class="number-show-container">{{ item.numbershow }}</div> 
+      <v-card-actions class="d-flex justify-center my-25">
+        <div class="display-1 text-center">{{ item.numbershow }}</div> 
       </v-card-actions>
       <v-card-text>{{ item.nameservice }}</v-card-text>
     </v-card>
