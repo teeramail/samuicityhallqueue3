@@ -1,14 +1,13 @@
 <template>
   <div v-for="item in filteredUsers" :key="item._id">
-    <v-row>
-      <v-col class="d-flex align-center justify-center offset-md-25">
-        <div class="display-1 text-center">{{ item.numbershow }}</div> 
+    <v-row class="text-center">
+      <v-col cols="12" class="my-5">
+        <div class="display-1 ">{{ item.numbershow }}</div> 
       </v-col>
     </v-row>
     <v-card-text>{{ item.nameservice }}</v-card-text>
   </div>
 </template>
-
 
 <script>
   import { defineComponent, onMounted, ref, computed } from "vue";
