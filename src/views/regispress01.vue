@@ -1,5 +1,5 @@
 <template>
-  <div v-for="item in filteredUsers" :key="item._id">
+  <div v-for="item in filteredUsers" :key="item._id" style="margin-top: 25%;">
     <v-row class="text-center">
       <v-col cols="12" class="my-5">
         <div class="display-1 ">{{ item.numbershow }}</div> 
