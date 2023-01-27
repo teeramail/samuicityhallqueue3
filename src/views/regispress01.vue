@@ -2,7 +2,7 @@
   <div v-for="item in filteredUsers" :key="item._id">
     <v-row>
       <v-col class="d-flex align-center justify-center offset-md-25">
-        <div class="display-3 text-center">{{ item.numbershow }}</div> 
+        <div class="display-1 text-center">{{ item.numbershow }}</div> 
       </v-col>
     </v-row>
     <v-card-text>{{ item.nameservice }}</v-card-text>
