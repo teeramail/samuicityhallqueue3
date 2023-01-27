@@ -7,7 +7,7 @@
       <v-card-text>{{ item.nameservice }}</v-card-text>
     </v-card>
   </div>
-// </template>
+</template>
 
 <script>
   import { defineComponent, onMounted, ref, computed } from "vue";
@@ -20,11 +20,18 @@
        const route = useRoute()
       const users = ref([]);
       const labelshow = ref({});
-    
+      
+      const storedId = sessionStorage.getItem('storedId');
+      if (storedId === route.params.idshow) {
+        return;
+      } else {
+        sessionStorage.setItem('storedId', route.params.idshow);
+      }
+      
       const filteredUsers = computed(() => {
         return users.value.filter(item => item.idshow === parseInt(route.params.idshow));
       });
-
+      
       onMounted(async () => {
         const res = await axios.get("https://koh-samui.com:50100/regisshow");
         users.value = res.data;
@@ -32,10 +39,10 @@
         console.log( route.params.idshow);
         increment();
       });
-
+      
       function increment() {
       console.log(`labelshow id: ${route.params.idshow}`);
-
+      
       axios.put("https://koh-samui.com:50100/regisshow", {
           idshow: route.params.idshow
       }).then(() => {
