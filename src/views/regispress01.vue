@@ -1,16 +1,17 @@
 <template>
-  <div>
-    <div v-for="item in filteredUsers" :key="item._id" style="margin-top: 25%;">
-        <v-row class="text-center">
-          <v-col cols="12" class="my-5">
-            <div class="display-1 ">{{ item.numbershow }}</div> 
-          </v-col>
-        </v-row>
-        <v-card-text>{{ item.nameservice }}</v-card-text>
+    <div>
+      <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 25%;">
+          <v-row class="text-center">
+            <v-col cols="12" class="my-5">
+              <div class="display-1 ">{{ item.numbershow }}</div> 
+            </v-col>
+          </v-row>
+          <v-card-text>{{ item.nameservice }}</v-card-text>
+      </div>
+      <button @click="printContent" class="btn btn-primary">Print</button> 
     </div>
-    <button @click="printContent" class="btn btn-primary">Print</button> 
-  </div>
-</template>
+  </template>
+  
 
 <script>
 import { defineComponent, onMounted, ref, computed } from "vue";
