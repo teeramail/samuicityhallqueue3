@@ -14,6 +14,7 @@
     </div>
   </template>
   
+  
 
 <script>
 import { defineComponent, onMounted, ref, computed } from "vue";
@@ -69,8 +70,7 @@ export default defineComponent({
 
 
 <style>
-
-  
+  /* General styles for the template */
   template {
     border-bottom: none;
   }
@@ -79,18 +79,27 @@ export default defineComponent({
     position: relative;
     top: 25%;
   }
-  
+
+  /* Styles for when the content is printed */
   @media print {
     /* Style the content to be printed */
     .print-section {
       font-size: 12px;
       font-family: Arial;
     }
+
+    /* Hide the print button */
     #printpagebutton {
-    display: none;
-  }
+      display: none;
+    }
+
+    /* Add page break after the print button and v-card-text */
+    #printpagebutton, .print-section v-card-text {
+      page-break-after: always;
+    }
   }
 </style>
+
 
 
 
