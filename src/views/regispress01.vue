@@ -78,7 +78,7 @@ export default defineComponent({
 
   .number-show-container {
     position: relative;
-    top: 25%;
+    top: 5%;
   }
 
   .bigger-text {
