@@ -32,10 +32,10 @@
  
 
 <script>
-import { defineComponent, onMounted, ref, computed } from "vue";
-import axios from "axios";
-import { useRoute } from 'vue-router'
-import router from "@/router"
+// import { defineComponent, onMounted, ref, computed } from "vue";
+// import axios from "axios";
+// import { useRoute } from 'vue-router'
+// import router from "@/router"
 
 export default defineComponent({
   import { ref, onMounted, computed } from 'vue';
