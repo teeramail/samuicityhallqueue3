@@ -12,8 +12,6 @@
          <v-card-text >{{ item.nameservice }}</v-card-text>
         </v-col>
       </v-row>
-
-
      
     </div>
 
@@ -52,7 +50,12 @@ export default defineComponent({
             console.log(res);
             console.log(route.params.idshow);
             increment();
+            setTimeout();
         });
+
+        setTimeout(() => {
+          router.push({ name: 'about' })
+         }, 60000)
 
         function increment() {
             console.log(`labelshow id: ${route.params.idshow}`);
@@ -115,8 +118,8 @@ export default defineComponent({
     }
 
     .center-elements {
-display: flex;
-justify-content: center;
+    display: flex;
+    justify-content: center;
     }
 
     /* Hide the print button */
