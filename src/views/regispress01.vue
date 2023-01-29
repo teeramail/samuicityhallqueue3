@@ -1,6 +1,6 @@
 <template>
     <div>
-      <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 25%;">
+      <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 5%;">
           <v-row class="text-center">
             <v-col cols="12" class="my-5">
               <div id="printnumber" class="display-1 bigger-text">{{ item.numbershow }}</div> 
