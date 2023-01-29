@@ -3,10 +3,10 @@
     <v-row>
       <v-col cols="3">
         <v-row>
-          25
+          เลือกรายการ
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToPayBoard()" class="spaced-btn">Button 1</v-btn>
+          <v-btn v-on:click="navigateToPayBoard()" class="spaced-btn">ภาษีป้าย</v-btn>
         </v-row>
         <v-row>
           <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn">ภาษีที่ดินและสิ่งปลูกสร้าง</v-btn>
