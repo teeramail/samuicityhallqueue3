@@ -3,7 +3,7 @@
       <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 25%;">
           <v-row class="text-center">
             <v-col cols="12" class="my-5">
-              <div class="display-1 ">{{ item.numbershow }}</div> 
+              <div class="display-1 bigger-text">{{ item.numbershow }}</div> 
             </v-col>
           </v-row>
           <v-card-text>{{ item.nameservice }}</v-card-text>
@@ -13,6 +13,7 @@
 
     </div>
   </template>
+
   
   
 
@@ -78,6 +79,10 @@ export default defineComponent({
   .number-show-container {
     position: relative;
     top: 25%;
+  }
+
+  .bigger-text {
+  font-size: 5em;
   }
 
   /* Styles for when the content is printed */
