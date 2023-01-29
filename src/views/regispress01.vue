@@ -95,11 +95,12 @@ export default defineComponent({
 
     /* Hide the print button */
     #printpagebutton {
-        font-size: 18px;
-    }
-
-    #printnumber {
       display: none;
+    }
+    
+    #printnumber {
+      font-size: 20px;
+      font-family: Arial;
     }
 
     
