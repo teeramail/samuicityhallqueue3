@@ -82,6 +82,7 @@ export default defineComponent({
             filteredUsers,
             labelshow,
             increment,
+            navigateToAbout,
             printContent
         }
     }
