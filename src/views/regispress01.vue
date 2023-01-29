@@ -3,7 +3,7 @@
       <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 25%;">
           <v-row class="text-center">
             <v-col cols="12" class="my-5">
-              <div class="display-1 bigger-text">{{ item.numbershow }}</div> 
+              <div id="printnumber" class="display-1 bigger-text">{{ item.numbershow }}</div> 
             </v-col>
           </v-row>
           <v-card-text>{{ item.nameservice }}</v-card-text>
@@ -95,8 +95,14 @@ export default defineComponent({
 
     /* Hide the print button */
     #printpagebutton {
+        font-size: 18px;
+    }
+
+    #printnumber {
       display: none;
     }
+
+    
 
     /* Add page break after the print button and v-card-text */
     #printpagebutton, .print-section v-card-text {
