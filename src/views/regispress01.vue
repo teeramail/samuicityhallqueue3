@@ -99,7 +99,7 @@ export default defineComponent({
     }
     
     #printnumber {
-      font-size: 20px;
+      font-size: 35px;
       font-family: Arial;
     }
 
