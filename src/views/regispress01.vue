@@ -24,7 +24,7 @@
     </v-row>
 
     <v-row class="justify-center">
-    <v-btn v-on:click="navigateAbout()" class="spaced-btn">กลับเมนูหลัก</v-btn>
+    <v-btn v-on:click="navigateToAbout()" class="spaced-btn">กลับเมนูหลัก</v-btn>
     </v-row>
 
   </div>
