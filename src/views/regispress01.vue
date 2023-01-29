@@ -12,8 +12,6 @@
          <v-card-text >{{ item.nameservice }}</v-card-text>
         </v-col>
       </v-row>
-
-
      
     </div>
 
@@ -47,7 +45,6 @@ export default {
         return users.value.filter(item => item.idshow === parseInt(route.params.idshow));
     });
 
-    let timerId = null;
 
     onMounted(async () => {
         const res = await axios.get("https://koh-samui.com:50100/regisshow");
