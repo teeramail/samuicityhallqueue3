@@ -6,13 +6,23 @@
           <div id="printnumber" class="display-1 bigger-text">{{ item.numbershow }}</div> 
         </v-col>
       </v-row>
-      <v-card-text >{{ item.nameservice }}</v-card-text>
+
+      <v-row class="text-center">
+        <v-col cols="12" class="my-5">
+          <v-card-text >{{ item.nameservice }}</v-card-text>
+        </v-col>
+      </v-row>
+
+
+     
     </div>
+
     <v-row class="text-center">
       <v-col cols="12">
         <button @click="printContent" id="printpagebutton" class="btn btn-primary">Print</button> 
       </v-col>
     </v-row>
+
   </div>
 </template>
  
