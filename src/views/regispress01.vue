@@ -99,6 +99,7 @@ export default defineComponent({
     .center-elements {
 display: flex;
 justify-content: center;
+    }
 
     /* Hide the print button */
     #printpagebutton {
