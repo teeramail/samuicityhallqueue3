@@ -6,7 +6,7 @@
               <div id="printnumber" class="display-1 bigger-text">{{ item.numbershow }}</div> 
             </v-col>
           </v-row>
-          <v-card-text>{{ item.nameservice }}</v-card-text>
+          <v-card-text class="justify-center">{{ item.nameservice }}</v-card-text>
       </div>
       <!-- delete this button -->
       <button @click="printContent" id="printpagebutton" class="btn btn-primary">Print</button> 
