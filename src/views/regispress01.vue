@@ -93,6 +93,7 @@ export default {
         filteredUsers,
         increment,
         navigateToAbout,
+        startTimer,
         printContent
     }
   }
