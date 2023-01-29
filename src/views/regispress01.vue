@@ -9,7 +9,7 @@
 
       <v-row class="text-center">
         <v-col cols="12" class="my-5">
-          <v-card-text >{{ item.nameservice }}</v-card-text>
+         <v-card-text >{{ item.nameservice }}</v-card-text>
         </v-col>
       </v-row>
 
@@ -23,6 +23,10 @@
       </v-col>
     </v-row>
 
+    <v-row class="justify-center">
+    <v-btn v-on:click="navigateAbout()" class="spaced-btn">ค่าธรรมเนียมอื่น</v-btn>
+    </v-row>
+
   </div>
 </template>
  
@@ -31,6 +35,7 @@
 import { defineComponent, onMounted, ref, computed } from "vue";
 import axios from "axios";
 import { useRoute } from 'vue-router'
+import router from "@/router"
 
 export default defineComponent({
     setup() {
@@ -67,6 +72,11 @@ export default defineComponent({
         function printContent() {
             window.print();
         }
+
+        function navigateToAbout() {      
+        router.push({ name: 'about' })
+        }
+
         return {
             users,
             filteredUsers,
