@@ -1,7 +1,7 @@
 <template>
   <v-container>
     <v-row>
-      <v-col cols="3">
+      <v-col cols="5">
         <v-row>
           เลือกรายการ
         </v-row>
@@ -18,8 +18,8 @@
           <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn">ค่าธรรมเนียมอื่น</v-btn>
         </v-row>
       </v-col>
-      <v-col cols="9">
-        <h1>เมืองน่าอยู่ น่าเที่ยว เป็นศูนย์กลางการท่องเที่ยวทางทะเลอ่าวไทย</h1>
+      <v-col cols="7">
+        <h2>เมืองน่าอยู่ น่าเที่ยว เป็นศูนย์กลางการท่องเที่ยวทางทะเลอ่าวไทย</h2>
         <v-img :src="currentImage" aspect-ratio="aspectRatio" :width="width" cover></v-img>
       </v-col>
     </v-row>
