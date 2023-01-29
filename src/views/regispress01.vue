@@ -55,7 +55,7 @@ export default {
         console.log(res);
         console.log(route.params.idshow);
         increment();
-        startTimer();
+        setTimeout();
     });
 
     function increment() {
@@ -83,11 +83,11 @@ export default {
 
    
 
-    function startTimer() {
-      timerId = setTimeout(() => {
-      router.push({ name: 'about' })
-        }, 10000);
-    }
+    // function startTimer() {
+    //   timerId = setTimeout(() => {
+    //   router.push({ name: 'about' })
+    //     }, 10000);
+    // }
 
     setTimeout(() => {
     router.push({ name: 'about' })
