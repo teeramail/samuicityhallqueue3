@@ -24,7 +24,7 @@
     </v-row>
 
     <v-row class="justify-center">
-    <v-btn v-on:click="navigateToAbout()" id="prinbackabout" class="spaced-btn">กลับเมนูหลัก</v-btn>
+    <v-btnbutton v-on:click="navigateToAbout()" id="prinbackabout" class="spaced-btn">กลับเมนูหลัก</v-btnbutton>
     </v-row>
 
   </div>
@@ -141,7 +141,7 @@ export default {
     #printpagebutton {
       display: none;
     }
-    
+
     #prinbackabout {
       display: none;
     }
