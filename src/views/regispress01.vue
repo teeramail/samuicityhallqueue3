@@ -141,6 +141,7 @@ export default {
     #printpagebutton {
       display: none;
     }
+    
     #prinbackabout {
       display: none;
     }
