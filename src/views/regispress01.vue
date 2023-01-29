@@ -82,7 +82,7 @@ export default {
         // setTimeout to return to the About page after 1 minute of inactivity
         setTimeout(() => {
             router.push({ name: 'about' })
-        }, 60000)
+        }, 10000)
     }
 
     return {
