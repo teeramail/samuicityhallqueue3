@@ -46,7 +46,8 @@ export default {
     const filteredUsers = computed(() => {
         return users.value.filter(item => item.idshow === parseInt(route.params.idshow));
     });
-
+    let timerId = null;
+    
     onMounted(async () => {
         const res = await axios.get("https://koh-samui.com:50100/regisshow");
         users.value = res.data;
@@ -79,7 +80,7 @@ export default {
     router.push({ name: 'about' })
     }
 
-    let timerId = null;
+   
 
     function startTimer() {
       timerId = setTimeout(() => {
