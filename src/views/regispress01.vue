@@ -24,7 +24,7 @@
     </v-row>
 
     <v-row class="justify-center">
-    <v-btn v-on:click="navigateToAbout()" class="spaced-btn">กลับเมนูหลัก</v-btn>
+    <v-btn v-on:click="navigateToAbout()" id="prinbackabout" class="spaced-btn">กลับเมนูหลัก</v-btn>
     </v-row>
 
   </div>
@@ -128,22 +128,25 @@ export default {
   @media print {
     /* Style the content to be printed */
     .print-section {
-      font-size: 12px;
+      font-size: 30px;
       font-family: Arial;
     }
 
     .center-elements {
-display: flex;
-justify-content: center;
+   display: flex;
+   justify-content: center;
     }
 
     /* Hide the print button */
     #printpagebutton {
       display: none;
     }
+    #prinbackabout {
+      display: none;
+    }
     
     #printnumber {
-      font-size: 35px;
+      font-size: 60px;
       font-family: Arial;
     }
 
