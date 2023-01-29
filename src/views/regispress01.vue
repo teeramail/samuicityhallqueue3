@@ -82,7 +82,7 @@ export default defineComponent({
   }
 
   .bigger-text {
-  font-size: 5em;
+  font-size: 10em;
   }
 
   /* Styles for when the content is printed */
