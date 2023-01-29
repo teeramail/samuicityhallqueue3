@@ -151,7 +151,7 @@ export default {
     
 
     /* Add page break after the print button and v-card-text */
-    #printpagebutton, .print-section v-card-text {
+    #prinbackabout,#printpagebutton, .print-section v-card-text {
       page-break-after: always;
     }
   }
