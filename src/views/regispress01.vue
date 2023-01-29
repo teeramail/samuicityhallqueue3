@@ -53,6 +53,7 @@ export default {
         console.log(res);
         console.log(route.params.idshow);
         increment();
+        startTimer();
     });
 
     function increment() {
@@ -86,7 +87,7 @@ export default {
         }, 10000);
     }
 
-    startTimer();
+    
 
     return {
         users,
