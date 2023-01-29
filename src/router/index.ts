@@ -44,6 +44,12 @@ const routes = [
   },
 
   {
+    path: '/ontv',
+    name: 'ontv',
+    component: () => import(/* webpackChunkName: "about" */ '../views/OnTv.vue')
+  },
+
+  {
     path: '/test',
     name: 'test',
     component: () => import(/* webpackChunkName: "test" */ '../views/test.vue')
