@@ -1,24 +1,21 @@
 <template>
-    <div class="center-elements">
-  <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 5%;">
+  <div class="center-elements">
+    <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 5%;">
+      <v-row class="text-center">
+        <v-col cols="12" class="my-5">
+          <div id="printnumber" class="display-1 bigger-text">{{ item.numbershow }}</div> 
+        </v-col>
+      </v-row>
+      <v-card-text >{{ item.nameservice }}</v-card-text>
+    </div>
     <v-row class="text-center">
-      <v-col cols="12" class="my-5">
-        <div id="printnumber" class="display-1 bigger-text">{{ item.numbershow }}</div> 
+      <v-col cols="12">
+        <button @click="printContent" id="printpagebutton" class="btn btn-primary">Print</button> 
       </v-col>
     </v-row>
-    <v-card-text >{{ item.nameservice }}</v-card-text>
   </div>
-  <button @click="printContent" id="printpagebutton" class="btn btn-primary">Print</button> 
-</div>
-
-
-
-
-
-  </template>
-
-  
-  
+</template>
+ 
 
 <script>
 import { defineComponent, onMounted, ref, computed } from "vue";
