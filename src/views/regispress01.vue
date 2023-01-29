@@ -22,7 +22,7 @@
     </v-row>
 
     <v-row class="justify-center">
-    <v-btnbutton v-on:click="navigateToAbout()" id="prinbackabout" class="spaced-btn">กลับเมนูหลัก</v-btnbutton>
+    <v-btnbutton v-on:click="navigateToAbout()" id="prinbackabout" class="spaced-btn">กลับเมนูหลักa</v-btnbutton>
     </v-row>
 
   </div>
@@ -52,7 +52,9 @@ export default {
         console.log(res);
         console.log(route.params.idshow);
         increment();
-        setTimeout();
+        setTimeout(() => {
+        router.push('/about');
+      }, 5000);
     });
 
     function increment() {
@@ -78,17 +80,7 @@ export default {
     router.push({ name: 'about' })
     }
 
-   
 
-    // function startTimer() {
-    //   timerId = setTimeout(() => {
-    //   router.push({ name: 'about' })
-    //     }, 10000);
-    // }
-
-    setTimeout(() => {
-    router.push({ name: 'about' })
-  }, 5000)
 
     return {
         users,
