@@ -1,17 +1,20 @@
 <template>
-    <div>
-      <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 5%;">
-          <v-row class="text-center">
-            <v-col cols="12" class="my-5">
-              <div id="printnumber" class="display-1 bigger-text">{{ item.numbershow }}</div> 
-            </v-col>
-          </v-row>
-          <v-card-text class="justify-center">{{ item.nameservice }}</v-card-text>
-      </div>
-      <!-- delete this button -->
-      <button @click="printContent" id="printpagebutton" class="btn btn-primary">Print</button> 
+    <div class="center-elements">
+  <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 5%;">
+    <v-row class="text-center">
+      <v-col cols="12" class="my-5">
+        <div id="printnumber" class="display-1 bigger-text">{{ item.numbershow }}</div> 
+      </v-col>
+    </v-row>
+    <v-card-text >{{ item.nameservice }}</v-card-text>
+  </div>
+  <button @click="printContent" id="printpagebutton" class="btn btn-primary">Print</button> 
+</div>
 
-    </div>
+
+
+
+
   </template>
 
   
@@ -92,6 +95,10 @@ export default defineComponent({
       font-size: 12px;
       font-family: Arial;
     }
+
+    .center-elements {
+display: flex;
+justify-content: center;
 
     /* Hide the print button */
     #printpagebutton {
