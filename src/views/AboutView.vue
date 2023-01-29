@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="5">
         <v-row>
-          เลือกรายการ
+          <h3>เลือกรายการ</h3> 
         </v-row>
         <v-row>
           <v-btn v-on:click="navigateToPayBoard()" class="spaced-btn">ภาษีป้าย</v-btn>
@@ -19,7 +19,7 @@
         </v-row>
       </v-col>
       <v-col cols="7">
-        <h2>เมืองน่าอยู่ น่าเที่ยว เป็นศูนย์กลางการท่องเที่ยวทางทะเลอ่าวไทย</h2>
+        <h3>เมืองน่าอยู่ น่าเที่ยว เป็นศูนย์กลางการท่องเที่ยวทางทะเลอ่าวไทย</h3>
         <v-img :src="currentImage" aspect-ratio="aspectRatio" :width="width" cover></v-img>
       </v-col>
     </v-row>
