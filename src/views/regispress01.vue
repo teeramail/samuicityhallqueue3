@@ -32,10 +32,6 @@
  
 
 <script>
-// import { defineComponent, onMounted, ref, computed } from "vue";
-// import axios from "axios";
-// import { useRoute } from 'vue-router'
-// import router from "@/router"
 
 export default defineComponent({
   import { ref, onMounted, computed } from 'vue';
@@ -79,11 +75,18 @@ export default {
     }
 
     function navigateToAbout() {
-        // setTimeout to return to the About page after 1 minute of inactivity
-        setTimeout(() => {
-            router.push({ name: 'about' })
-        }, 10000)
+    router.push({ name: 'about' })
     }
+
+    let timerId = null;
+
+    function startTimer() {
+      timerId = setTimeout(() => {
+      router.push({ name: 'about' })
+        }, 10000);
+    }
+
+    startTimer();
 
     return {
         users,
@@ -146,8 +149,3 @@ justify-content: center;
     }
   }
 </style>
-
-
-
-
-
