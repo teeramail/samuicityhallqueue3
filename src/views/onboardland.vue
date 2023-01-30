@@ -15,7 +15,7 @@
   
   
   <script>
-    import { defineComponent, onMounted, ref } from "vue";
+    import { defineComponent, onMounted, ref, computed } from "vue";
     import axios from "axios";
   
     export default defineComponent({
