@@ -23,7 +23,7 @@
 
     <v-row class="text-center">
       <v-col cols="12">
-        <button @click="printContent" id="printpagebutton" class="btn btn-primary">หรือกดปุ่มนี้เพื่อพิมพ์</button> 
+        <button @click="printContent" id="printpagebutton" class="btn btn-primary">หรือกดที่นี่เพื่อพิมพ์</button> 
       </v-col>
     </v-row>
 
