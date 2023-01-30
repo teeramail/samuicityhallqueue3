@@ -1,44 +1,41 @@
 <template>
-    <div>
-      <p v-if="loading">Loading...</p>
-      <p v-else-if="error">Error: {{ error }}</p>
-      <ul v-else>
-        <li v-for="item in data" :key="item.id">{{ item.name }}</li>
-      </ul>
-    </div>
-  </template>
-  
-  <script>
-  import { ref, onMounted, onBeforeUnmount } from 'vue';
-  import axios from 'axios';
-  
-  export default {
-    setup() {
-      const data = ref([]);
-      const error = ref(null);
-      const loading = ref(false);
-  
-      const fetchData = async () => {
-        try {
-          loading.value = true;
-          const res = await axios.get('https://koh-samui.com:50100/onboardshows');
-          data.value = res.data;
-        } catch (err) {
-          error.value = err.message;
-        } finally {
-          loading.value = false;
-        }
-      };
-  
-      onMounted(() => {
-        fetchData();
-        const intervalId = setInterval(fetchData, 10000);
-        onBeforeUnmount(() => clearInterval(intervalId));
-      });
-  
-  
-      return { data, error, loading };
-    },
-  };
-  </script>
-  
+  <div>
+    <ul>
+      <li v-for="item in collection1Data" :key="item._id" :style="{ color: (Date.now() - item.updatedAt) < 5000 ? 'green' : '' }">{{ item.idshow }} {{ item.nameservice }}   {{ item.numbershow }}</li>
+    </ul>
+    <ul>
+      <li v-for="item in collection2Data" :key="item._id" :style="{ color: (Date.now() - item.updatedAt) < 5000 ? 'green' : '' }">{{ item.idshow }} {{ item.numbershow }}</li>
+    </ul>
+  </div>
+</template>
+
+<script>
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+export default {
+  setup() {
+    const collection1Data = ref([]);
+    const collection2Data = ref([]);
+
+    const fetchData = async () => {
+      const [collection1Response, collection2Response] = await Promise.all([
+        axios.get('https://koh-samui.com:50100/onboardshows'),
+        axios.get('https://koh-samui.com:50100/onboardlands'),
+      ]);
+      collection1Data.value = collection1Response.data;
+      collection2Data.value = collection2Response.data;
+    };
+
+    onMounted(() => {
+      fetchData();
+      setInterval(fetchData, 1000);
+    });
+
+    return {
+      collection1Data,
+      collection2Data,
+    };
+  },
+};
+</script>
