@@ -33,7 +33,7 @@ export default {
 
     const isRecentlyUpdated = (updatedAt) => {
       const updatedTime = new Date(updatedAt);
-      return (Date.now() - updatedTime.getTime()) < 5000;
+      return (Date.now() - updatedTime.getTime()) < 15000;
     };
 
     return {
