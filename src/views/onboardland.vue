@@ -1,6 +1,6 @@
 <template>
-    
-    <div v-for="item in users" :key="item._id">
+    <input type="text" v-model="idFilter" placeholder="Filter by id (separate by comma)">
+    <div v-for="item in filteredUsers" :key="item._id">
       <v-card>
         <v-card-actions>
           <v-btn icon @click="increment(item)">
@@ -43,12 +43,19 @@
     });
 }
 
-  
+// computed property
+    const filteredUsers = computed(() => {
+      if (!idFilter.value) return users.value;
+      
+      const idArr = idFilter.value.split(',').map(id => Number(id));
+      return users.value.filter(user => idArr.includes(user.idshow));
+    });  
 
   
         return {
           users,
           labelshow,
+          filteredUsers,
           increment
         }
       }
