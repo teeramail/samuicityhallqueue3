@@ -44,19 +44,6 @@ export default defineComponent({
       });
     }
 
-    function decrement(item) {
-      console.log(`labelshow id: ${item.idshow}`);
-
-      try {
-        axios.put("https://koh-samui.com:50100/onboardshows", {
-          idshow: item.idshow
-        });
-      } catch (error) {
-        console.error(error);
-      }
-
-      item.numbershow--;
-    }
 
     // computed property
     const filteredUsers = computed(() => {
@@ -71,7 +58,6 @@ export default defineComponent({
     users,
     idFilter, // added new property
     increment,
-    decrement,
     filteredUsers // added new computed property
   }
 }
