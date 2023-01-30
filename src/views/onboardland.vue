@@ -44,7 +44,7 @@
 }
 
     // computed property
-    
+
     const filteredUsers = computed(() => {
       if (!idFilter.value) return users.value;
       
@@ -56,7 +56,8 @@
         return {
           users,
           labelshow,
-          increment
+          increment,
+          filteredUsers
         }
       }
     });
