@@ -4,7 +4,7 @@
     <v-card>
       <v-card-actions>
         <v-btn icon @click="increment(item)">
-          <v-icon>mdi-plus</v-icon>
+          <v-icon>mdi-arrow-up</v-icon>
         </v-btn>
         <div>{{ item.numbershow }}</div> 
       </v-card-actions>
