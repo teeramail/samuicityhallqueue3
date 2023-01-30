@@ -1,7 +1,7 @@
 <template>
   <div><h3>ภาษีที่ดิน</h3></div>
   <input type="text" v-model="idFilter" placeholder="Filter by id (separate by comma)">
-  <div v-for="item in filteredUsers" :key="item._id">
+  <div v-for="item in filteredUsers.sort((a, b) => a.idshow - b.idshow)" :key="item._id">
     <v-card>
       <v-card-actions>
         <v-btn icon @click="increment(item)">
