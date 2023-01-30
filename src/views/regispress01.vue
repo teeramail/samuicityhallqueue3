@@ -2,6 +2,12 @@
   <div class="center-elements">
     <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 5%;">
       <v-row class="text-center">
+        <v-col cols="12" >
+          <div id="printmobile" ><h2>ใช้มือถือถ่ายคิว</h2></div> 
+        </v-col>
+      </v-row>
+
+      <v-row class="text-center">
         <v-col cols="12" class="my-5">
           <div id="printnumber" class="display-1 bigger-text">{{ item.numbershow }}</div> 
         </v-col>
@@ -22,7 +28,7 @@
     </v-row>
 
     <v-row class="justify-center">
-    <v-btn v-on:click="navigateToAbout()" id="aboutback" class="spaced-btn">กลับเมนูหลักA</v-btn>
+    <v-btn v-on:click="navigateToAbout()" id="aboutback" class="spaced-btn">กลับเมนูหลัก</v-btn>
     </v-row>
 
   </div>
@@ -126,6 +132,12 @@ export default defineComponent({
     #printpagebutton {
       display: none;
     }
+
+    #printmobile {
+      display: none;
+    }
+
+
 
     #aboutback {
       display: none;
