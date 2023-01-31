@@ -44,6 +44,12 @@ const routes = [
   },
 
   {
+    path: '/mixlandshow',
+    name: 'mixlandshow',
+    component: () => import(/* webpackChunkName: "mixlandshow" */ '../views/mixlandshow.vue')
+  },
+
+  {
     path: '/ontv',
     name: 'ontv',
     component: () => import(/* webpackChunkName: "about" */ '../views/OnTv.vue')
