@@ -38,11 +38,16 @@
       </td>
     </tr>
   </table>
-  
+
 
 <div style="display: flex;">
   <div style="width: 33.33%;">
     <table style="width: 100%;">
+      <tr>
+            <th>ช่อง 9</th>
+            <th>ช่อง 9</th>
+            <th>ช่อง 9</th>
+          </tr>
       <tr>
         <td colspan="2">
           <table style="width: 100%;">
