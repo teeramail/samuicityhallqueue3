@@ -114,7 +114,10 @@ export default {
 
     const isRecentlyUpdated = (updatedAt) => {
       const updatedTime = new Date(updatedAt);
-      return (Date.now() - updatedTime.getTime()) < 15000;
+      return (
+    collection1Data.value.some((item) => (Date.now() - new Date(item.updatedAt).getTime()) < 15000) ||
+    collection2Data.value.some((item) => (Date.now() - new Date(item.updatedAt).getTime()) < 15000)
+      );
     };
 
     return {
