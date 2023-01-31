@@ -18,7 +18,6 @@
     <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn">ค่าธรรมเนียมอื่น</v-btn>
   </v-row>
 </v-col>
-
       <v-col cols="7">
         <h3>เมืองน่าอยู่ น่าเที่ยว เป็นศูนย์กลางการท่องเที่ยวทางทะเลอ่าวไทย</h3>
         <v-img :src="currentImage" aspect-ratio="aspectRatio" :width="width" cover></v-img>
