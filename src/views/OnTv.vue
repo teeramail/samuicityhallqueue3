@@ -14,11 +14,19 @@
             <th>หมู่</th>
             <th>หมายเลขคิว</th>
           </tr>
-          <tr v-for="item in collection1Data.filter(item => item.idshow < 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id">
+          <!-- <tr v-for="item in collection1Data.filter(item => item.idshow < 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id">
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
-          </tr>
+          </tr> -->
+
+          <tr v-for="item in collection1Data.filter(item => item.idshow < 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id">
+  <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.idshow }}</td>
+  <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.nameservice }}</td>
+  <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.numbershow }}</td>
+</tr>
+
+
         </table>
       </td>
       <td style="width: 50%;">
@@ -114,10 +122,7 @@ export default {
 
     const isRecentlyUpdated = (updatedAt) => {
       const updatedTime = new Date(updatedAt);
-      return (
-    collection1Data.value.some((item) => (Date.now() - new Date(item.updatedAt).getTime()) < 15000) ||
-    collection2Data.value.some((item) => (Date.now() - new Date(item.updatedAt).getTime()) < 15000)
-      );
+      return (Date.now() - updatedTime.getTime()) < 15000;
     };
 
     return {
