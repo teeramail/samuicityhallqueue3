@@ -1,16 +1,41 @@
 <template>
-  <div style="display: flex; width: 100%;">
-    <ul style="width: 50%;">
-      <li v-for="item in collection1Data.filter(item => item.idshow < 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id" :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.idshow }} {{ item.nameservice }}   {{ item.numbershow }}</li>
-    </ul>
-    <ul style="width: 50%;">
-      <li v-for="item in collection2Data.sort((a, b) => a.idshow - b.idshow)" :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.idshow }} {{ item.numbershow }}</li>
-    </ul>
-    <ul style="width: 100%;">
-      <li v-for="item in collection1Data.filter(item => item.idshow === 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id" :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.idshow }} {{ item.nameservice }}   {{ item.numbershow }}</li>
-    </ul>
-  </div>
+  <table style="width: 100%;">
+    <tr>
+      <td style="width: 50%;">
+        <table>
+          <tr v-for="item in collection1Data.filter(item => item.idshow < 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id">
+            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
+            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
+            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
+          </tr>
+        </table>
+      </td>
+      <td style="width: 50%;">
+        <table>
+          <tr v-for="item in collection2Data.sort((a, b) => a.idshow - b.idshow)" :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">
+            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
+            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table style="width: 100%;">
+          <tr v-for="item in collection1Data.filter(item => item.idshow === 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id">
+            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
+            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
+            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
 </template>
+
+
+
+
 
 
 <script>
