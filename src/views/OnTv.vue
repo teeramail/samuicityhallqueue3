@@ -53,8 +53,9 @@
         </table>
       </td>
     </tr>
+  </table>
 
-
+    <table style="width: 30%;">
     <tr>
       <td colspan="2">
         <table style="width: 50%;">
