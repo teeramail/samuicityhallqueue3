@@ -10,6 +10,7 @@
       <li v-for="item in collection1Data.filter(item => item.idshow === 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id" :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.idshow }} {{ item.nameservice }}   {{ item.numbershow }}</li>
     </ul>
   </div>
+  
 </template>
 
 <script>
