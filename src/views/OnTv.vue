@@ -44,7 +44,10 @@
   <div style="width: 33.33%;">
     <table style="width: 100%;">
       <tr>
-        <th>ช่อง 9</th>
+        <th><h3>ภาษีที่ดินและสิ่งปลูกสร้าง</h3></th>
+      </tr>
+      <tr>
+        <h3>ช่อง 9</h3>
       </tr>
       <tr>
         <td>
