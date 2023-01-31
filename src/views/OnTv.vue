@@ -83,6 +83,50 @@
     </table>
   </div>
   </div>
+<div style="display: flex;">
+  <div style="flex: 1;">
+    <table style="width: 100%;">
+      <tr>
+        <th><h3>แก้ไขข้อมูล</h3></th>
+      </tr>
+      <tr>
+        <th><h3>ช่อง 10 คิวที่</h3></th>
+      </tr>
+      <tr>
+        <td>
+          <table style="width: 100%;">
+            <tr v-for="item in collection1Data.filter(item => item.idshow === 10)" :key="item._id">
+              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
+              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
+              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+  <div style="flex: 1;">
+    <table style="width: 100%;">
+      <tr>
+        <th><h3>แก้ไขข้อมูล</h3></th>
+      </tr>
+      <tr>
+        <th><h3>ช่อง 11 คิวที่</h3></th>
+      </tr>
+      <tr>
+        <td>
+          <table style="width: 100%;">
+            <tr v-for="item in collection1Data.filter(item => item.idshow === 11)" :key="item._id">
+              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
+              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
+              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
 
 
 
