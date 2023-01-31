@@ -40,16 +40,16 @@
   </table>
 
 
-<div style="display: flex;">
+  <div style="display: flex;">
   <div style="width: 33.33%;">
     <table style="width: 100%;">
       <tr>
-            <th>ช่อง 9</th>
-            <th>ช่อง 9</th>
-            <th>ช่อง 9</th>
-          </tr>
+        <th>ช่อง 9</th>
+        <th>ช่อง 10</th>
+        <th>ช่อง 11</th>
+      </tr>
       <tr>
-        <td colspan="2">
+        <td colspan="3">
           <table style="width: 100%;">
             <tr v-for="item in collection1Data.filter(item => item.idshow === 9)" :key="item._id">
               <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
@@ -64,7 +64,7 @@
   <div style="width: 33.33%;">
     <table style="width: 100%;">
       <tr>
-        <td colspan="2">
+        <td colspan="3">
           <table style="width: 100%;">
             <tr v-for="item in collection1Data.filter(item => item.idshow === 10)" :key="item._id">
               <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
@@ -79,7 +79,7 @@
   <div style="width: 33.33%;">
     <table style="width: 100%;">
       <tr>
-        <td colspan="2">
+        <td colspan="3">
           <table style="width: 100%;">
             <tr v-for="item in collection1Data.filter(item => item.idshow === 11)" :key="item._id">
               <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
@@ -92,6 +92,7 @@
     </table>
   </div>
 </div>
+
 
 </template>
 
