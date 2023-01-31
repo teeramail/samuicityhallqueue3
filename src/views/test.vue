@@ -18,7 +18,7 @@
 import { ref, onMounted } from 'vue'
 
 
-  setup() {
+ 
     const playSounds = (sounds) => {
       if (sounds && sounds.length) {
         sounds.forEach(sound => {
@@ -31,6 +31,6 @@ import { ref, onMounted } from 'vue'
     return {
       playSounds
     }
-  }
+  
 
 </script>
