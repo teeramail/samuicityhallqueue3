@@ -44,10 +44,10 @@
   <div style="width: 50%;">
     <table style="width: 100%;">
       <tr>
-        <th><h3>Edit Data</h3></th>
+        <th><h3>แก้ไขข้อมูล</h3></th>
       </tr>
       <tr>
-        <th><h3>Channel 10 Queue</h3></th>
+        <th><h3>ช่อง 10 คิวที่</h3></th>
       </tr>
       <tr>
         <td>
@@ -65,10 +65,10 @@
   <div style="width: 50%;">
     <table style="width: 100%;">
       <tr>
-        <th><h3>Edit Data</h3></th>
+        <th><h3>ค่าธรรมเนียม/อื่นๆ</h3></th>
       </tr>
       <tr>
-        <th><h3>Channel 11 Queue</h3></th>
+        <th><h3>ช่อง 11 คิวที่</h3></th>
       </tr>
       <tr>
         <td>
