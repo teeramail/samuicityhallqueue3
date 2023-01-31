@@ -15,7 +15,7 @@
     <v-btn v-on:click="navigateToRegisPress(10)" class="spaced-btn">แก้ไขข้อมูล</v-btn>
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn">ค่าธรรมเนียมอื่น</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn">ค่าธรรมเนียม/อื่นๆ</v-btn>
   </v-row>
 </v-col>
       <v-col cols="7">
