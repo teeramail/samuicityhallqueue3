@@ -35,28 +35,7 @@
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
           </tr>
         </table>
-      </td>
-    </tr>
-    <tr>
-      <th colspan="2">Part 2</th>
-    </tr>
-    <tr>
-      <td colspan="2">
-        <table style="width: 50%;">
-          <tr>
-            <th>ID Show</th>
-            <th>Name Service</th>
-            <th>Number Show</th>
-          </tr>
-          <tr v-for="item in collection1Data.filter(item => item.idshow === 9)" :key="item._id">
-            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
-            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
-            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
-          </tr>
-        </table>
-      </td>
-    </tr>
-  </table>
+    </table>  
 
     <table style="width: 30%;">
     <tr>
@@ -68,8 +47,8 @@
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
           </tr>
         </table>
-      </td>
-    </tr>
+
+    <table style="width: 30%;">
     <tr>
       <td colspan="2">
         <table style="width: 50%;">
@@ -78,9 +57,9 @@
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
           </tr>
-        </table>
-      </td>
-    </tr>
+    </table>
+
+  <table style="width: 30%;">
     <tr>
       <td colspan="2">
         <table style="width: 50%;">
