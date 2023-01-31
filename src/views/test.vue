@@ -14,10 +14,10 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { ref, onMounted } from 'vue'
 
-export default {
+
   setup() {
     const playSounds = (sounds) => {
       if (sounds && sounds.length) {
@@ -32,5 +32,5 @@ export default {
       playSounds
     }
   }
-}
+
 </script>
