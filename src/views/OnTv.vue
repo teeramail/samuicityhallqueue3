@@ -1,15 +1,18 @@
 <template>
  <table style="width: 100%;">
     <tr>
-      <th colspan="2">Part 1</th>
+      <th colspan="2">ภาษีป้ายและที่ดินใช้ช่องบริการเดียวกัน</th>
     </tr>
     <tr>
       <td style="width: 50%;">
         <table>
           <tr>
-            <th>ID Show</th>
-            <th>Name Service</th>
-            <th>Number Show</th>
+            <h2>ภาษีป้าย</h2>
+          </tr>
+          <tr>
+            <th>ช่องบริการ</th>
+            <th>หมู่</th>
+            <th>หมายเลขคิว</th>
           </tr>
           <tr v-for="item in collection1Data.filter(item => item.idshow < 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id">
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
@@ -21,8 +24,8 @@
       <td style="width: 50%;">
         <table>
           <tr>
-            <th>ID Show</th>
-            <th>Number Show</th>
+            <th>ช่องบริการ</th>
+            <th>หมายเลขคิว</th>
           </tr>
           <tr v-for="item in collection2Data.sort((a, b) => a.idshow - b.idshow)" :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
@@ -51,7 +54,7 @@
       </td>
     </tr>
 
-    
+
     <tr>
       <td colspan="2">
         <table style="width: 50%;">
