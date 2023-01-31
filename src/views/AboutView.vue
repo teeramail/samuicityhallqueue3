@@ -48,11 +48,20 @@ let i = 1
 
 export default {
   setup() {
-    setInterval(() => {
-        currentImage.value = images[i]
-        i = i === images.length - 1 ? 0 : i + 1
-    }, 3000)
+    let intervalId = null;
 
+    function startInterval() {
+      intervalId = setInterval(() => {
+        currentImage.value = images[i];
+        i = i === images.length - 1 ? 0 : i + 1;
+      }, 3000);
+    }
+
+    function stopInterval() {
+      clearInterval(intervalId);
+    }
+
+    startInterval();
     
     function navigateToRegisPress(idshow) {      
     router.push({ name: 'regispress01', params: { idshow } })
@@ -65,11 +74,14 @@ export default {
     return {
         currentImage,
         navigateToRegisPress,
-        navigateToPayBoard
+        navigateToPayBoard,
+        onBeforeUnmount: stopInterval,
+        onMounted: startInterval
     }
   }
 }
 </script>
+
 
 <style>
 .spaced-btn {
