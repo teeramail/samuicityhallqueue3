@@ -41,31 +41,13 @@
 
 
   <div style="display: flex;">
-  <div style="width: 33.33%;">
+  <div style="width: 50%;">
     <table style="width: 100%;">
       <tr>
-        <th><h3>ภาษีที่ดินและสิ่งปลูกสร้าง</h3></th>
+        <th><h3>แก้ไขข้อมูล</h3></th>
       </tr>
       <tr>
-        <h3>ช่อง 9</h3>
-      </tr>
-      <tr>
-        <td>
-          <table style="width: 100%;">
-            <tr v-for="item in collection1Data.filter(item => item.idshow === 9)" :key="item._id">
-              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
-              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
-              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div style="width: 33.33%;">
-    <table style="width: 100%;">
-      <tr>
-        <th>ช่อง 10</th>
+        <h3>ช่อง 10 คิวที่</h3>
       </tr>
       <tr>
         <td>
@@ -80,10 +62,12 @@
       </tr>
     </table>
   </div>
-  <div style="width: 33.33%;">
+  <div style="width: 50%;">
     <table style="width: 100%;">
+      <th><h3>แก้ไขข้อมูล</h3></th>
+      </tr>
       <tr>
-        <th>ช่อง 11</th>
+        <h3>ช่อง 11 คิวที่</h3>
       </tr>
       <tr>
         <td>
@@ -98,7 +82,7 @@
       </tr>
     </table>
   </div>
-</div>
+  </div>
 
 
 
