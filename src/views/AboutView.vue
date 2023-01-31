@@ -82,7 +82,6 @@ export default {
 }
 </script>
 
-
 <style>
 .spaced-btn {
   margin-top: 30px; /* or padding-top */
