@@ -1,8 +1,16 @@
 <template>
-  <table style="width: 100%;">
+ <table style="width: 100%;">
+    <tr>
+      <th colspan="2">Part 1</th>
+    </tr>
     <tr>
       <td style="width: 50%;">
         <table>
+          <tr>
+            <th>ID Show</th>
+            <th>Name Service</th>
+            <th>Number Show</th>
+          </tr>
           <tr v-for="item in collection1Data.filter(item => item.idshow < 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id">
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
@@ -12,6 +20,10 @@
       </td>
       <td style="width: 50%;">
         <table>
+          <tr>
+            <th>ID Show</th>
+            <th>Number Show</th>
+          </tr>
           <tr v-for="item in collection2Data.sort((a, b) => a.idshow - b.idshow)" :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
@@ -19,6 +31,27 @@
         </table>
       </td>
     </tr>
+    <tr>
+      <th colspan="2">Part 2</th>
+    </tr>
+    <tr>
+      <td colspan="2">
+        <table style="width: 50%;">
+          <tr>
+            <th>ID Show</th>
+            <th>Name Service</th>
+            <th>Number Show</th>
+          </tr>
+          <tr v-for="item in collection1Data.filter(item => item.idshow === 9)" :key="item._id">
+            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
+            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
+            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    
     <tr>
       <td colspan="2">
         <table style="width: 50%;">
