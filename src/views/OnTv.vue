@@ -1,43 +1,44 @@
 <template>
- <table style="width: 100%;">
+  <table class="tax-tables">
     <tr>
-      <th colspan="2">ภาษีป้ายและที่ดินใช้ช่องบริการเดียวกัน</th>
+      <th>ภาษีป้าย</th>
+      <th>ภาษีที่ดิน</th>
     </tr>
     <tr>
-      <td style="width: 50%;">
+      <td>
         <table>
-          <tr>
-            <h2>ภาษีป้าย</h2>
-          </tr>
-          <tr>
-            <th>ช่องบริการ</th>
-            <th>หมู่</th>
-            <th>หมายเลขคิว</th>
-          </tr>
-          <tr v-for="item in collection1Data.filter(item => item.idshow < 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id">
-            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
-            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
-            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>ช่องบริการ</th>
+              <th>หมู่</th>
+              <th>หมายเลขคิว</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in collection1Data.filter(item => item.idshow < 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id">
+              <td :class="{ 'updated': isRecentlyUpdated(item.updatedAt) }">{{ item.idshow }}</td>
+              <td :class="{ 'updated': isRecentlyUpdated(item.updatedAt) }">{{ item.nameservice }}</td>
+              <td :class="{ 'updated': isRecentlyUpdated(item.updatedAt) }">{{ item.numbershow }}</td>
+            </tr>
+          </tbody>
         </table>
       </td>
-      <td style="width: 50%;">
+      <td>
         <table>
-          <tr>
-            <h2>ภาษีที่ดิน</h2>
-          </tr>
-          <tr>
-            <th>ช่องบริการ</th>
-            <th>หมายเลขคิว</th>
-          </tr>
-          <tr v-for="item in collection2Data.sort((a, b) => a.idshow - b.idshow)" :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">
-            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
-            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
-          </tr>
+          <thead>
+            <tr>
+              <th>ช่องบริการ</th>
+              <th>หมายเลขคิว</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in collection2Data.sort((a, b) => a.idshow - b.idshow)" :class="{ 'updated': isRecentlyUpdated(item.updatedAt) }">
+              <td>{{ item.idshow }}</td>
+              <td>{{ item.numbershow }}</td>
+            </tr>
+          </tbody>
         </table>
-    </table>  
-
-   
+      </td>
     </tr>
   </table>
 </template>
