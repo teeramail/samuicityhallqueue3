@@ -28,9 +28,6 @@ import { ref, onMounted } from 'vue'
       }
     }
 
-    return {
-      playSounds
-    }
-  
+
 
 </script>
