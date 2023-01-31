@@ -15,9 +15,10 @@
     <v-btn v-on:click="navigateToRegisPress(10)" class="spaced-btn">แก้ไขข้อมูล</v-btn>
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn">ค่าธรรมเนียม/อื่นๆ</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn">ค่าธรรมเนียมอื่น</v-btn>
   </v-row>
 </v-col>
+
       <v-col cols="7">
         <h3>เมืองน่าอยู่ น่าเที่ยว เป็นศูนย์กลางการท่องเที่ยวทางทะเลอ่าวไทย</h3>
         <v-img :src="currentImage" aspect-ratio="aspectRatio" :width="width" cover></v-img>
@@ -28,12 +29,8 @@
 
 <script>
 import { ref } from 'vue'
-// import { useRouter } from 'vue-router'
-//import router from './router'
 import router from "@/router"
 
-
-// const router = useRouter();
 
 const images = [
   'https://www.kohsamuicity.go.th/image/ratioalpha/?file=files/com_gallery/2022-09_78ccc1d5051fdb5.jpg&width=1020&height=433&defaultImage=images/nopic.jpg',
@@ -44,23 +41,15 @@ const images = [
 const idshow = ref(20)
 const currentImage = ref(images[0])
 let i = 1
+let intervalId
 
 export default {
   setup() {
-    let intervalId = null;
+    intervalId = setInterval(() => {
+        currentImage.value = images[i]
+        i = i === images.length - 1 ? 0 : i + 1
+    }, 6000)
 
-    function startInterval() {
-      intervalId = setInterval(() => {
-        currentImage.value = images[i];
-        i = i === images.length - 1 ? 0 : i + 1;
-      }, 3000);
-    }
-
-    function stopInterval() {
-      clearInterval(intervalId);
-    }
-
-    startInterval();
     
     function navigateToRegisPress(idshow) {      
     router.push({ name: 'regispress01', params: { idshow } })
@@ -73,10 +62,12 @@ export default {
     return {
         currentImage,
         navigateToRegisPress,
-        navigateToPayBoard,
-        onBeforeUnmount: stopInterval,
-        onMounted: startInterval
+        navigateToPayBoard
     }
+  },
+  beforeRouteLeave(to, from, next) {
+    clearInterval(intervalId)
+    next()
   }
 }
 </script>
