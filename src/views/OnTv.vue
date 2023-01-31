@@ -44,18 +44,18 @@
   <div style="width: 50%;">
     <table style="width: 100%;">
       <tr>
-        <th><h3>แก้ไขข้อมูล</h3></th>
+        <th><h3>Edit Data</h3></th>
       </tr>
       <tr>
-        <h3>ช่อง 10 คิวที่</h3>
+        <th><h3>Channel 10 Queue</h3></th>
       </tr>
       <tr>
         <td>
           <table style="width: 100%;">
             <tr v-for="item in collection1Data.filter(item => item.idshow === 10)" :key="item._id">
-              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
-              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
-              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
+              <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.idshow }}</td>
+              <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.nameservice }}</td>
+              <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.numbershow }}</td>
             </tr>
           </table>
         </td>
@@ -64,25 +64,27 @@
   </div>
   <div style="width: 50%;">
     <table style="width: 100%;">
-      <th><h3>แก้ไขข้อมูล</h3></th>
+      <tr>
+        <th><h3>Edit Data</h3></th>
       </tr>
       <tr>
-        <h3>ช่อง 11 คิวที่</h3>
+        <th><h3>Channel 11 Queue</h3></th>
       </tr>
       <tr>
         <td>
           <table style="width: 100%;">
             <tr v-for="item in collection1Data.filter(item => item.idshow === 11)" :key="item._id">
-              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td>
-              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.nameservice }}</td>
-              <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.numbershow }}</td>
+              <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.idshow }}</td>
+              <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.nameservice }}</td>
+              <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.numbershow }}</td>
             </tr>
           </table>
         </td>
       </tr>
     </table>
   </div>
-  </div>
+</div>
+
 
 
 </template>
