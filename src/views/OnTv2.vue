@@ -73,10 +73,15 @@
       <tr>
         <th><h3>ช่อง 11 คิวที่</h3></th>
       </tr>
-            <tr v-for="item in collection1Data.filter(item => item.idshow === 11)" :key="item._id">
+            <!-- <tr v-for="item in collection1Data.filter(item => item.idshow === 11)" :key="item._id">
               <div :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.numbershow }}</div>
-            </tr>
-     
+            </tr> -->
+            <tr v-for="item in collection1Data.filter(item => item.idshow === 11)" :key="item._id">
+            <td style="text-align: center">
+            <div :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.numbershow }}</div>
+            </td>
+</tr>
+
     </table>
   </div>
 </div>
