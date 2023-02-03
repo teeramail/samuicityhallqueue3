@@ -12,7 +12,7 @@
           <tr>
             <th>ช่อง</th>
             <th>หมู่</th>
-            <th>คิว</th>
+            <th style="text-align: right">คิว</th>
           </tr>
 
           <tr v-for="item in collection1Data.filter(item => item.idshow < 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id">
@@ -32,7 +32,7 @@
           </tr>
           <tr>
             <th>ช่อง</th>
-            <th>คิว</th>
+            <th style="text-align: right">คิว</th>
           </tr>
           <tr v-for="item in collection2Data.sort((a, b) => a.idshow - b.idshow)" :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">
             <!-- <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''">{{ item.idshow }}</td> -->
