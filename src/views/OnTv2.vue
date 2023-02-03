@@ -57,8 +57,11 @@
       <tr>
         <td>
           <table style="width: 100%;">
-            <tr v-for="item in collection1Data.filter(item => item.idshow === 10)" :key="item._id">
+            <!-- <tr v-for="item in collection1Data.filter(item => item.idshow === 10)" :key="item._id">
               <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.numbershow }}</td>
+            </tr> -->
+            <tr v-for="item in collection1Data.filter(item => item.idshow === 10)" :key="item._id">
+            <td style="text-align: center" :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.numbershow }}</td>
             </tr>
           </table>
         </td>
