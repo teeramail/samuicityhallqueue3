@@ -16,7 +16,8 @@
           </tr>
 
           <tr v-for="item in collection1Data.filter(item => item.idshow < 9).sort((a, b) => a.idshow - b.idshow)" :key="item._id">
-            <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.idshow }}</td>
+            // <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.idshow }}</td>
+            <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''; text-align: center">{{ item.idshow }}</td>
             <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.nameservice }}</td>
             <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.numbershow }}</td>
           </tr>
