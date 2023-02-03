@@ -12,7 +12,7 @@
           <tr>
             <th>ช่อง</th>
             <th>หมู่</th>
-            <td>&nbsp;&nbsp;</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <th>คิว</th>
           </tr>
 
@@ -20,11 +20,9 @@
              <!-- <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.idshow }}</td> -->
             <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''; text-align: center">{{ item.idshow }}</td>
             <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.nameservice }}</td>
-            <td>&nbsp;&nbsp;</td>
+            <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
             <td :style="{ color: isRecentlyUpdated(item.updatedAt) ? 'green' : '' }">{{ item.numbershow }}</td>
           </tr>
-
-
         </table>
       </td>
       <td style="width: 50%;">
