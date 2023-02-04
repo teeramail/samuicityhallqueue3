@@ -44,6 +44,13 @@ const routes = [
   },
 
   {
+    path: '/mysamui',
+    name: 'mysamui',
+    component: () => import(/* webpackChunkName: "mysamui" */ '../views/mysamui.vue')
+  },
+
+
+  {
     path: '/mixlandshow',
     name: 'mixlandshow',
     component: () => import(/* webpackChunkName: "mixlandshow" */ '../views/mixlandshow.vue')
