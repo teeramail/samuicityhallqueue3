@@ -14,46 +14,52 @@
   </div>
 </template>
 
-<script>
-  import { defineComponent, onMounted, ref, computed } from "vue";
-  import axios from "axios";
+<script setup>
+import { defineProps, onMounted, ref, computed } from "vue";
+import axios from "axios";
 
-  export default defineComponent({
-    setup() {
-      const users = ref([]);
-      const idFilter = ref('');
+const users = ref([]);
+const idFilter = ref('');
 
-      onMounted(async () => {
-        const res = await axios.get("https://koh-samui.com:50100/onboardlands");
-        users.value = res.data;
-        console.log(res);
-      });
+const props = defineProps({
+  idFilter: {
+    type: String,
+    default : ''
+  }
+});
 
-      async function increment(item) {
-        await axios.put("https://koh-samui.com:50100/onboardlandnums", {
-          idshow: item.idshow
-        });
-        const res = await axios.get("https://koh-samui.com:50100/onboardlands");
-        users.value = res.data;
-      }
+idFilter.value = props.idFilter;
 
-      const filteredUsers = computed(() => {
-        if (!idFilter.value) return users.value;
-        
-        const idArr = idFilter.value.split(',')
-          .map(id => {
-            const numId = Number(id);
-            return isNaN(numId) ? id : numId;
-          });
-        return users.value.filter(user => idArr.includes(user.idshow));
-      });  
+onMounted(async () => {
+  const res = await axios.get("https://koh-samui.com:50100/onboardlands");
+  users.value = res.data;
+});
 
-      return {
-        users,
-        idFilter,
-        filteredUsers,
-        increment
-      }
-    }
+async function increment(item) {
+  await axios.put("https://koh-samui.com:50100/onboardlandnums", {
+    idshow: item.idshow
   });
+  const res = await axios.get("https://koh-samui.com:50100/onboardlands");
+  users.value = res.data;
+}
+
+const filteredUsers = computed(() => {
+  if (!idFilter.value) return users.value;
+  
+  const idArr = idFilter.value.split(',')
+    .map(id => {
+      const numId = Number(id);
+      return isNaN(numId) ? id : numId;
+    });
+  return users.value.filter(user => idArr.includes(user.idshow));
+});  
+ 
+
 </script>
+
+<script>
+const idFilter = 8 // <= sizes can be accessed in setup scope
+
+export default {}
+</script>
+

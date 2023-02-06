@@ -44,21 +44,16 @@ const routes = [
   },
 
   {
-    path: '/buttonavigate',
-    name: 'buttonavigate',
-    component: () => import(/* webpackChunkName: "buttonavigate" */ '../views/buttonavigate.vue')
+    path: '/mysamui',
+    name: 'mysamui',
+    component: () => import(/* webpackChunkName: "mysamui" */ '../views/mysamui.vue')
   },
 
+
   {
-    path: '/mixlandshow/:idshow',
+    path: '/mixlandshow',
     name: 'mixlandshow',
     component: () => import(/* webpackChunkName: "mixlandshow" */ '../views/mixlandshow.vue')
-  },
-
-  {
-    path: '/ontvsound',
-    name: 'ontvsound',
-    component: () => import(/* webpackChunkName: "ontvsound" */ '../views/ontvsound.vue')
   },
 
   {
@@ -68,25 +63,15 @@ const routes = [
   },
 
   {
-    path: '/mysamui',
-    name: 'mysamui',
-    component: () => import(/* webpackChunkName: "mysamui" */ '../views/mysamui.vue')
+    path: '/ontv2',
+    name: 'ontv2',
+    component: () => import(/* webpackChunkName: "about" */ '../views/OnTv2.vue')
   },
 
   {
     path: '/test',
     name: 'test',
     component: () => import(/* webpackChunkName: "test" */ '../views/test.vue')
-  },
-  {
-    path: '/test2',
-    name: 'test2',
-    component: () => import(/* webpackChunkName: "test2" */ '../views/test2.vue')
-  },
-  {
-    path: '/test3',
-    name: 'test3',
-    component: () => import(/* webpackChunkName: "test3" */ '../views/test3.vue')
   },
 
   {

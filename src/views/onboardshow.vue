@@ -16,18 +16,26 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import { defineComponent, onMounted, ref, computed } from "vue";
 import axios from "axios";
 
-export default defineComponent({
-  setup() {
-    const users = ref([]);
-    const idFilter = ref(''); // added new property
+const users = ref([]);
+const idFilter = ref('');
+
+const props = defineProps({
+  idFilter: {
+    type: String,
+    default : ''
+  }
+});
+
+idFilter.value = props.idFilter;
+
+    
     onMounted(async () => {
       const res = await axios.get("https://koh-samui.com:50100/onboardshows");
       users.value = res.data;
-      console.log(res);
     });
 
     function increment(item) {
@@ -55,12 +63,4 @@ export default defineComponent({
     });
 
     
-  return {
-    users,
-    idFilter, // added new property
-    increment,
-    filteredUsers // added new computed property
-  }
-}
-});
 </script>
