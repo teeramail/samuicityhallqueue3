@@ -1,35 +1,51 @@
 <template>
-  <div>
-    <component :is="currentTemplate" />
-    <button @click="switchTemplate">Switch Template</button>
+  <div class="heading">
+    <h1>Play Sound</h1>
+    <h4>Playing audio files with Vue 3</h4>
+  </div>
+  <div class="container">
+    <div class="form-group">
+      <label>
+        <button class="btn btn-primary btn-sm" @click.prevent="playSounds(['https://koh-samui.com/sound/invite.mp3',
+        'https://koh-samui.com/sound/A.mp3',
+        'https://koh-samui.com/sound/1.mp3', 'https://koh-samui.com/sound/2.mp3',
+        'https://koh-samui.com/sound/chanel.mp3',
+        'https://koh-samui.com/sound/7.mp3',
+        'https://koh-samui.com/sound/ka.mp3'
+
+        ])"><span class="fa fa-play-circle-o"></span></button>
+        Play Air Plane & Elevator Ding
+      </label>
+    </div>
   </div>
 </template>
-
 <script>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue'
 
 export default {
   setup() {
-    const currentTemplate = ref("templateA");
+    const audioRef = ref(null)
 
-    function switchTemplate() {
-      currentTemplate.value = currentTemplate.value === "templateA" ? "templateB" : "templateA";
+    const playSounds = (sounds) => {
+      if (sounds && sounds.length) {
+        let currentSound = 0
+
+        audioRef.value = new Audio(sounds[currentSound])
+        audioRef.value.addEventListener("ended", () => {
+          currentSound++
+          if (currentSound < sounds.length) {
+            audioRef.value.src = sounds[currentSound]
+            audioRef.value.play()
+          }
+        })
+
+        audioRef.value.play()
+      }
     }
 
     return {
-      currentTemplate,
-      switchTemplate
-    };
-  },
-  components: {
-    templateA: {
-      name: 'TemplateA',
-      template: `<div>This is template A</div>`
-    },
-    templateB: {
-      name: 'TemplateB',
-      template: `<div>This is template B</div>`
+      playSounds
     }
   }
-};
+}
 </script>

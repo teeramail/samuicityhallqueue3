@@ -50,6 +50,12 @@ const routes = [
   },
 
   {
+    path: '/playsound',
+    name: 'playsound',
+    component: () => import(/* webpackChunkName: "playsound" */ '../views/playsound.vue')
+  },
+
+  {
     path: '/mixlandshow/:idshow',
     name: 'mixlandshow',
     component: () => import(/* webpackChunkName: "mixlandshow" */ '../views/mixlandshow.vue')
