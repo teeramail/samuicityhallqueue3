@@ -25,11 +25,16 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 
 const collection1Data = ref([]);
 const collection2Data = ref([]);
+const finalData = ref([]);
+const latestfinalData = ref([]);
+const sounds = ref([]);
+const audioRef = ref(null)
+const isPlaying = ref(false)
 
 const fetchData = async () => {
   const [collection1Response, collection2Response] = await Promise.all([
@@ -40,15 +45,11 @@ const fetchData = async () => {
   collection2Data.value = collection2Response.data;
 };
 
-const finalData = ref([]);
-const latestfinalData = ref([]);
-
 onMounted(async () => {
   await fetchData();
   setInterval(() => {
     fetchData().then(() => {
       finalData.value = [];
-      // ... existing code ...
 
       collection1Data.value.forEach(doc1 => {
         const matchingDoc = collection2Data.value.find(doc2 => doc1.idshow === doc2.idshow);
@@ -80,13 +81,48 @@ onMounted(async () => {
         }
       });
 
-      // console.log(finalData.value);
+      console.log(finalData.value);
 
 
- 
+
+  latestfinalData.value = finalData.value.filter(doc => (Date.now() - new Date(doc.updatedAt).getTime()) < 15000);
+   console.log(latestfinalData.value);
+   });
+
+   const filenames = computed(() => {
+      return latestfinalData.value.map(item => {
+        const digits = item.numbershow.toString().split('');
+        return digits.map(digit => `https://koh-samui.com/sound/${digit}.mp3`);
+      });
     });
-  }, 1000);
+
+    console.log(filenames.value);
+    sounds.value = filenames.value ;
+    playSound(filenames.value);
+
+  }, 5000);
+
 });
+
+
+const playSound = () => {
+  let currentSound = 0;
+  audioRef.value = new Audio(sounds.value[currentSound]);
+
+  audioRef.value.addEventListener("ended", () => {
+    isPlaying.value = false;
+    currentSound++;
+    if (currentSound < sounds.value.length) {
+      audioRef.value.src = sounds.value[currentSound];
+      audioRef.value.play();
+    }
+  });
+
+  if (!isPlaying.value) {
+    isPlaying.value = true;
+    audioRef.value.play();
+  }
+};
 
 </script>
 
