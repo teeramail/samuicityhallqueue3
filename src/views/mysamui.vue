@@ -18,7 +18,7 @@
               <td style="color: isRecentlyUpdated(item.updatedAt) ? 'green' : ''; text-align: center">{{ item.idshow }}</td>
               <td >{{ item.nameservice }}</td>
               <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
-              <td >{{ item.numbershow }}</td>
+              <td >{{ item.ab}}{{ item.numbershow }}</td>
             </tr>
           </table>
         </td>
@@ -26,27 +26,38 @@
       </tr>
     </table>
 
-    <table>
+    <!-- <table>
             <tr>
               <h2>ภาษีที่ดินและสิ่งปลูกสร้าง</h2>
             </tr>
-            <tr>
-              <th>ช่อง</th>
-              <th style="text-align: right">คิว</th>
+            <tr v-for="item2 in collection2Data" :key="item2._id">
+            <td>{{ item2.ab }} {{ item2.numland }}</td>
             </tr>
-            <tr v-for="item in collection2Data.sort((a, b) => a.idshow - b.idshow)" >
-              <td>{{ item.idshow }}</td>
-              <td>{{ item.numbershow }}</td>
-            </tr>
-          </table>
+            </table> -->
+          <table>
+        <tr>
+          <th><h3>ค่าธรรมเนียม/อื่นๆ</h3></th>
+        </tr>
+        <tr>
+          <th><h3>ช่อง 9 คิวที่</h3></th>
+        </tr>
+              <!-- <tr v-for="item in collection1Data.filter(item => item.idshow === 11)" :key="item._id">
+                <div >{{ item.numbershow }}</div>
+              </tr> -->
+              <tr v-for="item in collection1Data.filter(item => item.idshow === 9)" :key="item._id">
+              <td style="text-align: center">
+              <div >{{ item.ab}}{{ item.numbershow }}</div>
+              </td>
+  </tr>
   
+      </table>
   
       <table>
         <tr>
           <th><h3>แก้ไขข้อมูล</h3></th>
         </tr>
         <tr>
-          <th><h3>ช่อง 9 คิวที่</h3></th>
+          <th><h3>ช่อง 10 คิวที่</h3></th>
         </tr>
         <tr>
           <td>
@@ -55,30 +66,14 @@
                 <td >{{ item.numbershow }}</td>
               </tr> -->
               <tr v-for="item in collection1Data.filter(item => item.idshow === 10)" :key="item._id">
-              <td style="text-align: center" >{{ item.numbershow }}</td>
+              <td style="text-align: center" >{{ item.ab}}{{ item.numbershow }}</td>
               </tr>
             </table>
           </td>
         </tr>
       </table>
 
-      <table>
-        <tr>
-          <th><h3>ค่าธรรมเนียม/อื่นๆ</h3></th>
-        </tr>
-        <tr>
-          <th><h3>ช่อง 10 คิวที่</h3></th>
-        </tr>
-              <!-- <tr v-for="item in collection1Data.filter(item => item.idshow === 11)" :key="item._id">
-                <div >{{ item.numbershow }}</div>
-              </tr> -->
-              <tr v-for="item in collection1Data.filter(item => item.idshow === 11)" :key="item._id">
-              <td style="text-align: center">
-              <div >{{ item.numbershow }}</div>
-              </td>
-  </tr>
-  
-      </table>
+
 
   
  
@@ -91,13 +86,11 @@
   
     const collection1Data = ref([]);
     const collection2Data = ref([]);
-    const mcollection1Data = ref([]);
-    const mcollection2Data = ref([]);
   
     const fetchData = async () => {
       const [collection1Response, collection2Response] = await Promise.all([
         axios.get('https://koh-samui.com:50100/onboardshows'),
-        axios.get('https://koh-samui.com:50100/onboardlands'),
+        axios.get('https://koh-samui.com:50100/onboardlandnums'),
       ]);
       collection1Data.value = collection1Response.data;
       collection2Data.value = collection2Response.data;
@@ -112,12 +105,7 @@
   
   
     });
-    
-
-          
-  
-
-    
+       
   
   </script>
   
