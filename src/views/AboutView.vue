@@ -9,13 +9,13 @@
     <v-btn v-on:click="navigateToPayBoard()" class="spaced-btn">ภาษีป้าย</v-btn>
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn">ภาษีที่ดินและสิ่งปลูกสร้าง</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn">ภาษีที่ดินและสิ่งปลูกสร้าง</v-btn>
   </v-row>
   <v-row class="justify-center">
     <v-btn v-on:click="navigateToRegisPress(10)" class="spaced-btn">แก้ไขข้อมูล</v-btn>
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn">ค่าธรรมเนียมอื่น</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn">ค่าธรรมเนียมอื่น</v-btn>
   </v-row>
 </v-col>
 

@@ -9,7 +9,7 @@
 
       <v-row class="text-center">
         <v-col cols="12" class="my-5">
-          <div id="printnumber" class="display-1 bigger-text">{{ item.numbershow }}</div> 
+          <div id="printnumber" class="display-1 bigger-text">{{ item.ab }}{{ item.numbershow }}</div> 
         </v-col>
       </v-row>
 
@@ -53,15 +53,14 @@ export default defineComponent({
         onMounted(async () => {
             const res = await axios.get("https://koh-samui.com:50100/regisshow");
             users.value = res.data;
-            console.log(res);
-            console.log(route.params.idshow);
             increment();
-            setTimeout();
         });
 
+
         setTimeout(() => {
-          router.push({ name: 'about' })
-         }, 60000)
+        router.push({ name: 'about' })
+        }, 30000)
+
 
         function increment() {
             console.log(`labelshow id: ${route.params.idshow}`);

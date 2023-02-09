@@ -4,30 +4,30 @@
       <v-col cols="2"></v-col>
       <v-col cols="5">
         <v-row>
-          <v-btn  v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button">บ่อผุด หมู่ 1,3,5</v-btn>
+          <v-btn  v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button">มะเร็ต</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(2)" class="spaced-btn big-button">บ่อผุด หมู่ 2,4,6</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(2)" class="spaced-btn big-button">แม่น้ำ</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(3)" class="spaced-btn big-button">แม่น้ำ</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(3)" class="spaced-btn big-button">บ่อผุด หมู่ 2,4,6</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(4)" class="spaced-btn big-button">อ่างทอง</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(4)" class="spaced-btn big-button">บ่อผุด หมู่ 1,3,5</v-btn>
         </v-row>
       </v-col>
       <v-col cols="5">
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(5)" class="spaced-btn big-button">ลิปะน้อย</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(5)" class="spaced-btn big-button">หน้าเมือง</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(6)" class="spaced-btn big-button">หน้าเมือง</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(6)" class="spaced-btn big-button">ลิปะน้อย</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(7)" class="spaced-btn big-button">มะเร็ต</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(7)" class="spaced-btn big-button">ตลิ่งงาม</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(8)" class="spaced-btn big-button">ตลิ่งงาม</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(8)" class="spaced-btn big-button">อ่างทอง</v-btn>
         </v-row>
       </v-col>
     </v-row>

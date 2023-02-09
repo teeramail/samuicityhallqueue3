@@ -32,7 +32,7 @@ const collection1Data = ref([]);
 const collection2Data = ref([]);
 const finalData = ref([]);
 const latestfinalData = ref([]);
-const sounds = ref([]);
+const soundsx = ref([]);
 const audioRef = ref(null)
 const isPlaying = ref(false)
 
@@ -44,6 +44,14 @@ const fetchData = async () => {
   collection1Data.value = collection1Response.data;
   collection2Data.value = collection2Response.data;
 };
+
+
+const filenames = computed(() => {
+  return latestfinalData.value.flatMap(item => {
+    const digits = item.numbershow.toString().split('');
+    return digits.map(digit => `https://koh-samui.com/sound/${digit}.mp3`);
+  });
+});
 
 onMounted(async () => {
   await fetchData();
@@ -83,37 +91,28 @@ onMounted(async () => {
 
       console.log(finalData.value);
 
-
-
   latestfinalData.value = finalData.value.filter(doc => (Date.now() - new Date(doc.updatedAt).getTime()) < 15000);
    console.log(latestfinalData.value);
    });
 
-   const filenames = computed(() => {
-      return latestfinalData.value.map(item => {
-        const digits = item.numbershow.toString().split('');
-        return digits.map(digit => `https://koh-samui.com/sound/${digit}.mp3`);
-      });
-    });
+  // playSound(filenames.value);
+  console.log(filenames.value);
+    soundsx.value = filenames.value;
+    playSound(soundsx.value);
 
-    console.log(filenames.value);
-    sounds.value = filenames.value ;
-    playSound(filenames.value);
-
-  }, 5000);
+  }, 1000);
 
 });
 
-
-const playSound = () => {
+const playSound = (filenames) => {
   let currentSound = 0;
-  audioRef.value = new Audio(sounds.value[currentSound]);
+  audioRef.value = new Audio(filenames[currentSound]);
 
   audioRef.value.addEventListener("ended", () => {
     isPlaying.value = false;
     currentSound++;
-    if (currentSound < sounds.value.length) {
-      audioRef.value.src = sounds.value[currentSound];
+    if (currentSound < filenames.length) {
+      audioRef.value.src = filenames[currentSound];
       audioRef.value.play();
     }
   });
@@ -122,7 +121,14 @@ const playSound = () => {
     isPlaying.value = true;
     audioRef.value.play();
   }
+ 
+ 
+
 };
+
+playSound(soundsx.value);
+playSound(filenames.value);
+
 
 </script>
 
@@ -147,7 +153,7 @@ const playSound = () => {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  height: 18%;
+  height: 16%;
 }
 
 .column {
