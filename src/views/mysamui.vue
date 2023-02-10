@@ -1,6 +1,8 @@
 <template>
+    <p>ข้อมูลเป็นปัจจุบันเมื่อ</p>
+    <p>{{ currentDateTime }}</p>
+    <p>กรุณากด รีเฟรส เมื่อค้องการอับเดทข้อมูล</p>
     <table style="width: 100%;">
-
       <tr>
         <td style="width: 50%;">
           <table>
@@ -20,20 +22,22 @@
               <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
               <td >{{ item.ab}}{{ item.numbershow }}</td>
             </tr>
+
           </table>
         </td>
 
       </tr>
     </table>
 
-    <!-- <table>
+    <table>
             <tr>
               <h2>ภาษีที่ดินและสิ่งปลูกสร้าง</h2>
             </tr>
-            <tr v-for="item2 in collection2Data" :key="item2._id">
-            <td>{{ item2.ab }} {{ item2.numland }}</td>
+            <tr v-for="item in collection1Data.filter(item => item.idshow === 11)" :key="item._id">
+              <td style="text-align: center" >{{ item.ab}}{{ item.numbershow }}</td>
             </tr>
-            </table> -->
+
+            </table>
           <table>
         <tr>
           <th><h3>ค่าธรรมเนียม/อื่นๆ</h3></th>
@@ -72,10 +76,6 @@
           </td>
         </tr>
       </table>
-
-
-
-  
  
   </template>
     
@@ -83,7 +83,7 @@
     import { ref, onMounted } from 'vue';
     import axios from 'axios';
      
-  
+    const currentDateTime = ref('');
     const collection1Data = ref([]);
     const collection2Data = ref([]);
   
@@ -94,14 +94,16 @@
       ]);
       collection1Data.value = collection1Response.data;
       collection2Data.value = collection2Response.data;
-  
+      console.log(collection2Data.value)
 
 
     };
   
     onMounted(() => {
       fetchData();
-      setInterval(fetchData, 1000);
+      setInterval(fetchData, 50000);
+      const now = new Date();
+      currentDateTime.value = now.toString();
   
   
     });
