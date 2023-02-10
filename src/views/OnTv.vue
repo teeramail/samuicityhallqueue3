@@ -92,7 +92,7 @@ onMounted(async () => {
 
 
   latestfinalData.value = finalData.value.filter(doc => (Date.now() - new Date(doc.updatedAt).getTime()) < 15000);
-   console.log(latestfinalData.value);
+   // console.log(latestfinalData.value);
    });
 
   // playSound(filenames.value);
