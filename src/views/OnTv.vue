@@ -89,14 +89,14 @@ onMounted(async () => {
         }
       });
 
-      console.log(finalData.value);
+
 
   latestfinalData.value = finalData.value.filter(doc => (Date.now() - new Date(doc.updatedAt).getTime()) < 15000);
    console.log(latestfinalData.value);
    });
 
   // playSound(filenames.value);
-  console.log(filenames.value);
+ // console.log(filenames.value);
     soundsx.value = filenames.value;
     playSound(soundsx.value);
 
