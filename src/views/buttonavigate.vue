@@ -1,5 +1,6 @@
 <template>
     <v-container>
+      <v-row><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><td><h3 style="text-align: center;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ช่องบริการ</h3></td></v-row>
       <v-row>
         <v-col cols="1">
           <v-btn  x-large @click="navigator(1)">1</v-btn>
