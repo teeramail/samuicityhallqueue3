@@ -18,10 +18,10 @@ const routes = [
     
   },
 
-  {
-    path: '/regispress',
-    name: 'regispress',    component: () => import(/* webpackChunkName: "about" */ '../views/regispress.vue')
-  },
+  // {
+  //   path: '/regispress',
+  //   name: 'regispress',    component: () => import(/* webpackChunkName: "about" */ '../views/regispress.vue')
+  // },
   {
     path: '/regispress01/:idshow',  
     name: 'regispress01',    component: () => import(/* webpackChunkName: "about" */ '../views/regispress01.vue')
@@ -30,6 +30,11 @@ const routes = [
   {
     path: '/onboardshow',
     name: 'onboardshow',    component: () => import(/* webpackChunkName: "about" */ '../views/onboardshow.vue')
+  },
+
+  {
+    path: '/CommunicateVoice',
+    name: 'CommunicateVoice',    component: () => import(/* webpackChunkName: "CommunicateVoice" */ '../views/CommunicateVoice.vue')
   },
 
   {
