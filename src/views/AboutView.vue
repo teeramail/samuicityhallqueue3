@@ -1,28 +1,28 @@
 <template>
   <v-container>
-    <v-row>
-      <v-col cols="5">
+  <v-row>
+  <v-col cols="5">
   <v-row class="justify-center">
-    <h3>เลือกรายการ</h3> 
+    <h2>เลือกรายการ</h2> 
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToPayBoard()" class="spaced-btn">ภาษีป้าย</v-btn>
+    <v-btn v-on:click="navigateToPayBoard()" class="spaced-btn big-button">ภาษีป้าย</v-btn>
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn">ภาษีที่ดินและสิ่งปลูกสร้าง</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn big-button">ภาษีที่ดินและสิ่งปลูกสร้าง</v-btn>
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToRegisPress(10)" class="spaced-btn">แก้ไขข้อมูล</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(10)" class="spaced-btn big-button">แก้ไขข้อมูล</v-btn>
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn">ค่าธรรมเนียมอื่น</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn big-button">ค่าธรรมเนียมอื่น</v-btn>
   </v-row>
 </v-col>
 
-      <v-col cols="7">
-        <h3>เมืองน่าอยู่ น่าเที่ยว เป็นศูนย์กลางการท่องเที่ยวทางทะเลอ่าวไทย</h3>
-        <v-img :src="currentImage" aspect-ratio="aspectRatio" :width="width" cover></v-img>
-      </v-col>
+<v-col cols="7">
+  <h3>เมืองน่าอยู่ น่าเที่ยว เป็นศูนย์กลางการท่องเที่ยวทางทะเลอ่าวไทย</h3>
+  <v-img :src="currentImage" aspect-ratio="aspectRatio" :width="width" cover></v-img>
+  </v-col>
     </v-row>
   </v-container>
 </template>
@@ -72,8 +72,18 @@ export default {
 }
 </script>
 
-<style>
-.spaced-btn {
-  margin-top: 30px; /* or padding-top */
+<style scoped>
+
+.big-button {
+  font-size: 30px;
+  padding: 50px 80px;
+  line-height: 80px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
 }
+.spaced-btn {
+  margin-top: 20px;
+}
+
 </style>
