@@ -18,6 +18,12 @@
          <v-card-text >{{ item.nameservice }}</v-card-text>
         </v-col>
       </v-row>
+
+      <v-row class="text-center"  v-for="item in filtereCombines" :key="item._id">
+        <v-col cols="12" class="my-5">
+          {{ currentDateTimeA }} คิว {{ item.difference }}
+        </v-col>
+      </v-row>
      
     </div>
 
@@ -35,25 +41,48 @@
 </template>
  
 
-<script>
-import { defineComponent, onMounted, ref, computed } from "vue";
+<script setup>
+import { onMounted, ref, computed } from "vue";
 import axios from "axios";
 import { useRoute } from 'vue-router'
 import router from "@/router"
 
-export default defineComponent({
-    setup() {
+
         const route = useRoute()
         const users = ref([]);
-        const labelshow = ref({});
+        const combines = ref([]);
+        const currentDateTimeA = ref([]);
+       // const labelshow = ref({});
+       let timeoutId;
+
+
         const filteredUsers = computed(() => {
             return users.value.filter(item => item.idshow === parseInt(route.params.idshow));
         });
+        const filtereCombines = computed(() => {
+            return combines.value.filter(item => item.idshow === parseInt(route.params.idshow));
+        });
 
         onMounted(async () => {
+
+
+          timeoutId = setTimeout(() => {
+      router.push({ name: 'about' });
+    }, 30000);
+    
+          const date = new Date();
+      const day = date.getDate().toString().padStart(2, '0');
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      currentDateTimeA.value = `${day}/${month}/ ${hours}:${minutes}`;
+
             const res = await axios.get("https://koh-samui.com:50100/regisshow");
             users.value = res.data;
             increment();
+            const rescomb = await axios.get("https://koh-samui.com:50100/combine-record");
+            combines.value = rescomb.data
+
         });
 
 
@@ -75,26 +104,18 @@ export default defineComponent({
             }).catch(error => {
                 console.error(error);
             });
+
         }
 
         function printContent() {
             window.print();
         }
 
-        function navigateToAbout() {      
+        function navigateToAbout() { 
+        clearTimeout(timeoutId);     
         router.push({ name: 'about' })
         }
 
-        return {
-            users,
-            filteredUsers,
-            labelshow,
-            increment,
-            navigateToAbout,
-            printContent
-        }
-    }
-});
 
 </script>
 
@@ -104,14 +125,18 @@ export default defineComponent({
   template {
     border-bottom: none;
   }
-
+  
+  .my-5 {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
   .number-show-container {
     position: relative;
     top: 5%;
   }
 
   .bigger-text {
-  font-size: 10em;
+  font-size: 9em;
   }
 
   /* Styles for when the content is printed */
@@ -121,7 +146,11 @@ export default defineComponent({
       font-size: 30px;
       font-family: Arial;
     }
-
+    
+    .print-section {
+    font-size: 20px; /* smaller font size */
+  }
+  
     .center-elements {
     display: flex;
     justify-content: center;
@@ -135,9 +164,7 @@ export default defineComponent({
     #printmobile {
       display: none;
     }
-
-
-
+ 
     #aboutback {
       display: none;
     }
