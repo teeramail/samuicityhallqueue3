@@ -38,21 +38,33 @@ idFilter.value = props.idFilter;
       users.value = res.data;
     });
 
-    function increment(item) {
-      console.log(`labelshow id: ${item.idshow}`);
+    // function increment(item) {
+    //   console.log(`labelshow id: ${item.idshow}`);
 
-      axios.put("https://koh-samui.com:50100/onboardshows", {
-        idshow: item.idshow
-      }).then(() => {
-        axios.get("https://koh-samui.com:50100/onboardshows")
-        .then(res => {
-            users.value = res.data;
-        });
-      }).catch(error => {
-        console.error(error);
-      });
-    }
-
+    //   axios.put("https://koh-samui.com:50100/onboardshows", {
+    //     idshow: item.idshow
+    //   }).then(() => {
+    //     axios.get("https://koh-samui.com:50100/onboardshows")
+    //     .then(res => {
+    //         users.value = res.data;
+    //     });
+    //   }).catch(error => {
+    //     console.error(error);
+    //   });
+    // }
+   
+    async function increment(item) {
+  const rescomb = await axios.get("https://koh-samui.com:50100/combine-record");
+  const specificDifference = rescomb.data.find(combine => combine.idshow === item.idshow).difference;
+  // console.log("specificDifference:", specificDifference);
+  if (specificDifference >= 1) {
+    await axios.put("https://koh-samui.com:50100/onboardshows", {
+      idshow: item.idshow
+    });
+    const res = await axios.get("https://koh-samui.com:50100/onboardshows");
+    users.value = res.data;
+  }
+}
 
     // computed property
     const filteredUsers = computed(() => {

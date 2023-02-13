@@ -21,6 +21,7 @@ import axios from "axios";
 const users = ref([]);
 const idFilter = ref('');
 
+
 const props = defineProps({
   idFilter: {
     type: String,
@@ -33,14 +34,22 @@ idFilter.value = props.idFilter;
 onMounted(async () => {
   const res = await axios.get("https://koh-samui.com:50100/onboardlands");
   users.value = res.data;
+  
+
+
 });
 
 async function increment(item) {
-  await axios.put("https://koh-samui.com:50100/onboardlandnums", {
-    idshow: item.idshow
-  });
-  const res = await axios.get("https://koh-samui.com:50100/onboardlands");
-  users.value = res.data;
+  const rescomb = await axios.get("https://koh-samui.com:50100/combine-record");
+  const specificDifference = rescomb.data.find(combine => combine.idshow === 11).difference;
+  // console.log("specificDifference:", specificDifference);
+  if (specificDifference >= 1) {
+    await axios.put("https://koh-samui.com:50100/onboardlandnums", {
+      idshow: item.idshow
+    });
+    const res = await axios.get("https://koh-samui.com:50100/onboardlands");
+    users.value = res.data;
+  }
 }
 
 const filteredUsers = computed(() => {
