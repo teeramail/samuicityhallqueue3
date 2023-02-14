@@ -47,7 +47,7 @@ const getItemStyle = (item) => {
   const style = {};
   const updatedAt = new Date(item.updatedAt);
   const now = new Date();
-  if (now - updatedAt < 10000) {
+  if (now - updatedAt < 20000) {
     style.color = 'green';
     style.background = 'white';
   }
