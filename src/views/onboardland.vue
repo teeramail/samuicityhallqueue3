@@ -7,7 +7,7 @@
         <v-btn icon @click="increment(item)">
           <v-icon>mdi-arrow-up</v-icon>
         </v-btn>
-        <div>{{ item.numbershow }}  @{{ item.idshow }}  #{{ specificDifference }} </div> 
+        <div>{{ item.numbershow }}ช่อง{{ item.idshow }}  รอ{{ specificDifference }}</div> 
       </v-card-actions>
       <v-card-text>{{ item.nameservice }}</v-card-text>
     </v-card>
