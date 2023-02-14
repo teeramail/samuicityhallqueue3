@@ -8,7 +8,7 @@
           <v-btn icon @click="increment(item)">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
-          <div>{{ item.numbershow }}</div> 
+          <div>{{ item.numbershow }}@{{ item.idshow }}  #{{ specificDifference }}</div> 
         </v-card-actions>
         <v-card-text>{{ item.nameservice }}</v-card-text>
       </v-card>
@@ -22,6 +22,7 @@ import axios from "axios";
 
 const users = ref([]);
 const idFilter = ref('');
+const specificDifference = ref(null);
 
 const props = defineProps({
   idFilter: {
@@ -37,34 +38,22 @@ idFilter.value = props.idFilter;
       const res = await axios.get("https://koh-samui.com:50100/onboardshows");
       users.value = res.data;
     });
-
-    // function increment(item) {
-    //   console.log(`labelshow id: ${item.idshow}`);
-
-    //   axios.put("https://koh-samui.com:50100/onboardshows", {
-    //     idshow: item.idshow
-    //   }).then(() => {
-    //     axios.get("https://koh-samui.com:50100/onboardshows")
-    //     .then(res => {
-    //         users.value = res.data;
-    //     });
-    //   }).catch(error => {
-    //     console.error(error);
-    //   });
-    // }
    
-    async function increment(item) {
+  async function increment(item) {
   const rescomb = await axios.get("https://koh-samui.com:50100/combine-record");
-  const specificDifference = rescomb.data.find(combine => combine.idshow === item.idshow).difference;
+  specificDifference.value = rescomb.data.find(combine => combine.idshow === item.idshow).difference;
   // console.log("specificDifference:", specificDifference);
-  if (specificDifference >= 1) {
+  if (specificDifference.value >= 1) {
     await axios.put("https://koh-samui.com:50100/onboardshows", {
       idshow: item.idshow
     });
     const res = await axios.get("https://koh-samui.com:50100/onboardshows");
     users.value = res.data;
+    const rescomb = await axios.get("https://koh-samui.com:50100/combine-record");
+    specificDifference.value = rescomb.data.find(combine => combine.idshow === item.idshow).difference;
   }
 }
+
 
     // computed property
     const filteredUsers = computed(() => {

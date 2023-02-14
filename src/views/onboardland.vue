@@ -7,7 +7,7 @@
         <v-btn icon @click="increment(item)">
           <v-icon>mdi-arrow-up</v-icon>
         </v-btn>
-        <div>{{ item.numbershow }}  @{{ item.idshow }} </div> 
+        <div>{{ item.numbershow }}  @{{ item.idshow }}  #{{ specificDifference }} </div> 
       </v-card-actions>
       <v-card-text>{{ item.nameservice }}</v-card-text>
     </v-card>
@@ -20,6 +20,7 @@ import axios from "axios";
 
 const users = ref([]);
 const idFilter = ref('');
+const specificDifference = ref(null);
 
 
 const props = defineProps({
@@ -35,20 +36,21 @@ onMounted(async () => {
   const res = await axios.get("https://koh-samui.com:50100/onboardlands");
   users.value = res.data;
   
-
-
 });
 
 async function increment(item) {
   const rescomb = await axios.get("https://koh-samui.com:50100/combine-record");
-  const specificDifference = rescomb.data.find(combine => combine.idshow === 11).difference;
+  specificDifference.value = rescomb.data.find(combine => combine.idshow === 11).difference;
   // console.log("specificDifference:", specificDifference);
-  if (specificDifference >= 1) {
+  if (specificDifference.value >= 1) {
     await axios.put("https://koh-samui.com:50100/onboardlandnums", {
       idshow: item.idshow
     });
     const res = await axios.get("https://koh-samui.com:50100/onboardlands");
     users.value = res.data;
+    const rescomb = await axios.get("https://koh-samui.com:50100/combine-record");
+    specificDifference.value = rescomb.data.find(combine => combine.idshow === 11).difference;
+    console.log(specificDifference.value)
   }
 }
 
