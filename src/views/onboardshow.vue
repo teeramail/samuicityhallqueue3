@@ -22,7 +22,7 @@ import axios from "axios";
 
 const users = ref([]);
 const idFilter = ref('');
-const specificDifference = ref(null);
+const specificDifference = ref('x');
 
 const props = defineProps({
   idFilter: {
