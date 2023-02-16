@@ -21,11 +21,15 @@
         </div>
       </div>
     </div>
+    <div>
+    <qsound />
+  </div>
   </div>
 </template>
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
+import qsound from './qsound.vue'
 
 const items = ref([]);
 
