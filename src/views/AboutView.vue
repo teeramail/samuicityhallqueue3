@@ -6,16 +6,16 @@
     <h2>เลือกรายการ</h2> 
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToPayBoard()" class="spaced-btn big-button">ภาษีป้าย</v-btn>
+    <v-btn v-on:click="navigateToPayBoard()" class="spaced-btn big-button">ภาษีป้าย Signboard tax</v-btn>
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn big-button">ภาษีที่ดินและสิ่งปลูกสร้าง</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn big-button2">ภาษีที่ดินและสิ่งปลูกสร้าง<br>Land and Building tax</v-btn>
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToRegisPress(10)" class="spaced-btn big-button">แก้ไขข้อมูล</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(10)" class="spaced-btn big-button">แก้ไขข้อมูล Update</v-btn>
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn big-button">ค่าธรรมเนียมอื่น</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(9)" class="spaced-btn big-button">ค่าธรรมเนียมอื่น Fee</v-btn>
   </v-row>
 </v-col>
 
@@ -78,6 +78,14 @@ export default {
   font-size: 30px;
   padding: 50px 80px;
   line-height: 80px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.big-button2 {
+  font-size: 27px;
+  padding: 50px 80px;
+  line-height: 50px;
   display: flex;
   align-items: center;
   margin-bottom: 20px;
