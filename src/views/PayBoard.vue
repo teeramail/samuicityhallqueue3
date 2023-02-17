@@ -7,7 +7,7 @@
           <v-btn  v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button">มะเร็ต Maret</v-btn>
         </v-row>
         <v-row>
-          <v-btn v-on:click="navigateToRegisPress(2)" class="spaced-btn big-button">แม่น้ำ</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(2)" class="spaced-btn big-button">แม่น้ำ Mae Nam</v-btn>
         </v-row>
         <v-row>
           <v-btn v-on:click="navigateToRegisPress(3)" class="spaced-btn big-button">บ่อผุด Bo Phut หมู่ M 2,4,6</v-btn>
