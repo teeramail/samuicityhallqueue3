@@ -62,7 +62,7 @@ const filteredUsers = computed(() => {
   const idArr = idFilter.value.split(',')
     .map(id => {
       const numId = Number(id);
-      return isNaN(numId) ? id : 3;
+      return isNaN(numId) ? id : numId;
     });
   return users.value.filter(user => idArr.includes(user.idshow));
 });  
