@@ -6,13 +6,13 @@
     <h2>เลือกรายการ</h2> 
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToPayBoard()" class="spaced-btn big-button">ภาษีป้าย Signboard tax</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button">ตรวจสอบสิทธิ์กู้</v-btn>
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToRegisPress(11)" class="spaced-btn big-button2">ภาษีที่ดินและสิ่งปลูกสร้าง<br>Land and Building tax</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(2)" class="spaced-btn big-button">ลงนามสัญญา</v-btn>
   </v-row>
   <v-row class="justify-center">
-    <v-btn v-on:click="navigateToRegisPress(10)" class="spaced-btn big-button">แก้ไขข้อมูล Update</v-btn>
+    <v-btn v-on:click="navigateToRegisPress(3)" class="spaced-btn big-button">อื่นๆ</v-btn>
   </v-row>
 </v-col>
 
@@ -35,7 +35,6 @@ const images = [
   'https://www.kohsamuicity.go.th/files/com_gallery/2022-09_e200d3b3e6c3fac.jpg'
 ]
 
-const idshow = ref(20)
 const currentImage = ref(images[0])
 let i = 1
 let intervalId
@@ -52,16 +51,15 @@ export default {
     router.push({ name: 'regispress01', params: { idshow } })
     }
 
-    function navigateToPayBoard() {      
-    router.push({ name: 'payboard' })
-    }
+
 
     return {
         currentImage,
         navigateToRegisPress,
-        navigateToPayBoard
     }
+
   },
+  
   beforeRouteLeave(to, from, next) {
     clearInterval(intervalId)
     next()

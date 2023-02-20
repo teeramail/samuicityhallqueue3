@@ -1,16 +1,18 @@
 <template>
-  <div><h3>ตรวจสอบสิทธิ์กู้</h3></div>
-  <input type="text" v-model="idFilter" placeholder="Filter by id (separate by comma)">
-  <div v-for="item in filteredUsers.sort((a, b) => a.idshow - b.idshow)" :key="item._id">
-    <v-card>
-      <v-card-actions>
-        <v-btn icon @click="increment(item)">
-          <v-icon>mdi-arrow-up</v-icon>
-        </v-btn>
-        <div>{{ item.numbershow }} ช่อง {{ item.idshow }}  รอ {{ specificDifference }}</div> 
-      </v-card-actions>
-      <v-card-text>{{ item.nameservice }}</v-card-text>
-    </v-card>
+  <div><h3>อื่นๆ</h3></div>
+  <div>
+    <input type="text" v-model="idFilter" placeholder="Filter by id (separate by comma)">
+    <div v-for="item in filteredUsers" :key="item._id">
+      <v-card>
+        <v-card-actions>
+          <v-btn icon @click="increment(item)">
+            <v-icon>mdi-arrow-up</v-icon>
+          </v-btn>
+          <div>{{ item.numbershow }} ช่อง {{ item.idshow }}  รอ {{ specificDifference }}</div> 
+        </v-card-actions>
+        <v-card-text>{{ item.nameservice }}</v-card-text>
+      </v-card>
+    </div>
   </div>
 </template>
 
@@ -38,13 +40,13 @@ onMounted(async () => {
 
 async function increment(item) {
   const rescomb = await axios.get("https://koh-samui.com:50200/combine-record");
-  specificDifference.value = rescomb.data.find(combine => combine.idshow === 1).difference;
+  specificDifference.value = rescomb.data.find(combine => combine.idshow === 3).difference;
   // console.log("specificDifference:", specificDifference);
   if (specificDifference.value >= 1) {
     await axios.put("https://koh-samui.com:50200/onboardlandnums", {
       idshow: item.idshow,
-      idshowtype: 1,
-      idshowtext: 'A'
+      idshowtype: 3,
+      idshowtext: 'C'
     });
     const res = await axios.get("https://koh-samui.com:50200/onboardlands");
     users.value = res.data;

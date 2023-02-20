@@ -1,51 +1,71 @@
-<template>
-  <div class="heading">
-    <h1>Play Sound</h1>
-    <h4>Playing audio files with Vue 3</h4>
-  </div>
-  <div class="container">
-    <div class="form-group">
-      <label>
-        <button class="btn btn-primary btn-sm" @click.prevent="playSounds(['https://koh-samui.com/sound/invite.mp3',
-        'https://koh-samui.com/sound/A.mp3',
-        'https://koh-samui.com/sound/1.mp3', 'https://koh-samui.com/sound/2.mp3',
-        'https://koh-samui.com/sound/chanel.mp3',
-        'https://koh-samui.com/sound/7.mp3',
-        'https://koh-samui.com/sound/ka.mp3'
+<script setup>
+import { onMounted, ref  } from "vue";
+import axios from 'axios';
 
-        ])"><span class="fa fa-play-circle-o"></span></button>
-        Play Air Plane & Elevator Ding
-      </label>
-    </div>
-  </div>
-</template>
-<script>
-import { ref, onMounted } from 'vue'
+const audioEl = ref(null);
+const currentFileIndex = ref(0);
+const filenames = ref([ "https://koh-samui.com/sound/1.mp3" ]);
+const shouldCheckForNewFiles = ref(false);
+const lands = ref([]);
 
-export default {
-  setup() {
-    const audioRef = ref(null)
-
-    const playSounds = (sounds) => {
-      if (sounds && sounds.length) {
-        let currentSound = 0
-
-        audioRef.value = new Audio(sounds[currentSound])
-        audioRef.value.addEventListener("ended", () => {
-          currentSound++
-          if (currentSound < sounds.length) {
-            audioRef.value.src = sounds[currentSound]
-            audioRef.value.play()
-          }
-        })
-
-        audioRef.value.play()
-      }
-    }
-
-    return {
-      playSounds
-    }
-  }
+function playNextFile() {
+  audioEl.value.src = filenames.value[currentFileIndex.value];
+  audioEl.value.play();
 }
+
+function clearAudio() {
+  audioEl.value.src = "";
+  currentFileIndex.value = 0;
+}
+
+onMounted(() => {
+  audioEl.value = new Audio();
+  document.body.appendChild(audioEl.value);
+
+  audioEl.value.addEventListener("ended", () => {
+    currentFileIndex.value++;
+    if (currentFileIndex.value >= filenames.value.length) {
+      clearAudio();
+      shouldCheckForNewFiles.value = true;
+      const intervalId = setInterval(() => {
+        if (shouldCheckForNewFiles.value) {
+          clearInterval(intervalId);
+          checkForNewFiles();
+        }
+      }, 3500);
+    } else {
+      playNextFile();
+    }
+  });
+
+  playNextFile();
+});
+
+function checkForNewFiles() {
+  axios.get('https://koh-samui.com:50100/oldest-record')
+    .then(response => {
+      if (response.data && response.data.oldestRecord) {
+        const ab = [response.data.oldestRecord.ab];
+        const numbershow = response.data.oldestRecord.numbershow.toString().split('');
+        const idshow = response.data.oldestRecord.idshow.toString().split('');
+        lands.value = ['invite'].concat([ab]).concat(numbershow).concat(['chanel']).concat(idshow);
+
+        filenames.value = lands.value.map(digit => `https://koh-samui.com/sound/${digit}.mp3`);
+        console.log(filenames.value)
+
+        shouldCheckForNewFiles.value = false;
+        currentFileIndex.value = 0;
+        playNextFile();
+      } else {
+        shouldCheckForNewFiles.value = true;
+        setTimeout(() => checkForNewFiles(), 3500);
+      }
+    })
+    .catch(error => {
+      console.error('Error getting oldest record:', error);
+      shouldCheckForNewFiles.value = true;
+      setTimeout(() => checkForNewFiles(), 3500);
+    });
+}
+
 </script>

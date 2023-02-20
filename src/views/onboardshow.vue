@@ -1,12 +1,12 @@
 <template>
-  <div><h3>ภาษีป้าย/แก้ไขข้อมูล/ค่าธรรมเนียมอื่น</h3></div>
+  <div><h3>ลงนามสัญญา</h3></div>
   <div>
     <input type="text" v-model="idFilter" placeholder="Filter by id (separate by comma)">
     <div v-for="item in filteredUsers" :key="item._id">
       <v-card>
         <v-card-actions>
           <v-btn icon @click="increment(item)">
-            <v-icon>mdi-plus</v-icon>
+            <v-icon>mdi-arrow-up</v-icon>
           </v-btn>
           <div>{{ item.numbershow }} ช่อง {{ item.idshow }}  รอ {{ specificDifference }}</div> 
         </v-card-actions>
@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import { defineComponent, onMounted, ref, computed } from "vue";
+import { defineProps, onMounted, ref, computed } from "vue";
 import axios from "axios";
 
 const users = ref([]);
@@ -33,35 +33,46 @@ const props = defineProps({
 
 idFilter.value = props.idFilter;
 
-    
-    onMounted(async () => {
-      const res = await axios.get("https://koh-samui.com:50100/onboardshows");
-      users.value = res.data;
-    });
-   
-  async function increment(item) {
-  const rescomb = await axios.get("https://koh-samui.com:50100/combine-record");
-  specificDifference.value = rescomb.data.find(combine => combine.idshow === item.idshow).difference;
+onMounted(async () => {
+  const res = await axios.get("https://koh-samui.com:50200/onboardlands");
+  users.value = res.data;
+});
+
+async function increment(item) {
+  const rescomb = await axios.get("https://koh-samui.com:50200/combine-record");
+  specificDifference.value = rescomb.data.find(combine => combine.idshow === 2).difference;
   // console.log("specificDifference:", specificDifference);
   if (specificDifference.value >= 1) {
-    await axios.put("https://koh-samui.com:50100/onboardshows", {
-      idshow: item.idshow
+    await axios.put("https://koh-samui.com:50200/onboardlandnums", {
+      idshow: item.idshow,
+      idshowtype: 2,
+      idshowtext: 'B'
     });
-    const res = await axios.get("https://koh-samui.com:50100/onboardshows");
+    const res = await axios.get("https://koh-samui.com:50200/onboardlands");
     users.value = res.data;
-    const rescomb = await axios.get("https://koh-samui.com:50100/combine-record");
-    specificDifference.value = rescomb.data.find(combine => combine.idshow === item.idshow).difference;
+    const rescomb = await axios.get("https://koh-samui.com:50200/combine-record");
+    specificDifference.value = rescomb.data.find(combine => combine.idshow === 11).difference;
+    console.log(specificDifference.value)
   }
 }
 
-
-    // computed property
-    const filteredUsers = computed(() => {
-      if (!idFilter.value) return users.value;
-      
-      const idArr = idFilter.value.split(',').map(id => Number(id));
-      return users.value.filter(user => idArr.includes(user.idshow));
+const filteredUsers = computed(() => {
+  if (!idFilter.value) return users.value;
+  
+  const idArr = idFilter.value.split(',')
+    .map(id => {
+      const numId = Number(id);
+      return isNaN(numId) ? id : numId;
     });
+  return users.value.filter(user => idArr.includes(user.idshow));
+});  
+ 
 
-    
 </script>
+
+<script>
+const idFilter = 8 // <= sizes can be accessed in setup scope
+
+export default {}
+</script>
+
