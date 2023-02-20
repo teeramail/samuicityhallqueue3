@@ -16,10 +16,6 @@
   </v-row>
 </v-col>
 
-<v-col cols="7">
-  <h3>เมืองน่าอยู่ น่าเที่ยว เป็นศูนย์กลางการท่องเที่ยวทางทะเลอ่าวไทย</h3>
-  <v-img :src="currentImage" aspect-ratio="aspectRatio" :width="width" cover></v-img>
-  </v-col>
     </v-row>
   </v-container>
 </template>
@@ -29,23 +25,12 @@ import { ref } from 'vue'
 import router from "@/router"
 
 
-const images = [
-  'https://www.kohsamuicity.go.th/image/ratioalpha/?file=files/com_gallery/2022-09_78ccc1d5051fdb5.jpg&width=1020&height=433&defaultImage=images/nopic.jpg',
-  'https://www.kohsamuicity.go.th/tmp/ca3b23a0e53828b8d0068ff17c30e1ee.jpg',
-  'https://www.kohsamuicity.go.th/files/com_gallery/2022-09_e200d3b3e6c3fac.jpg'
-]
 
-const currentImage = ref(images[0])
-let i = 1
+
 let intervalId
 
 export default {
   setup() {
-    intervalId = setInterval(() => {
-        currentImage.value = images[i]
-        i = i === images.length - 1 ? 0 : i + 1
-    }, 6000)
-
     
     function navigateToRegisPress(idshow) {      
     router.push({ name: 'regispress01', params: { idshow } })
@@ -54,7 +39,6 @@ export default {
 
 
     return {
-        currentImage,
         navigateToRegisPress,
     }
 

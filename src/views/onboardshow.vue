@@ -31,10 +31,11 @@ const props = defineProps({
   }
 });
 
+// idFilter.value = props.idFilter;
 idFilter.value = props.idFilter;
 
 onMounted(async () => {
-  const res = await axios.get("https://koh-samui.com:50200/onboardlands");
+  const res = await axios.get("https://koh-samui.com:50200/onboardshows");
   users.value = res.data;
 });
 
@@ -51,7 +52,7 @@ async function increment(item) {
     const res = await axios.get("https://koh-samui.com:50200/onboardlands");
     users.value = res.data;
     const rescomb = await axios.get("https://koh-samui.com:50200/combine-record");
-    specificDifference.value = rescomb.data.find(combine => combine.idshow === 11).difference;
+    specificDifference.value = rescomb.data.find(combine => combine.idshow === 2).difference;
     console.log(specificDifference.value)
   }
 }
@@ -62,7 +63,7 @@ const filteredUsers = computed(() => {
   const idArr = idFilter.value.split(',')
     .map(id => {
       const numId = Number(id);
-      return isNaN(numId) ? id : numId;
+      return isNaN(numId) ? id : 2;
     });
   return users.value.filter(user => idArr.includes(user.idshow));
 });  
