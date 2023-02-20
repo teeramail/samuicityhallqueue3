@@ -1,9 +1,9 @@
 <template>
   <v-container>
   <v-row>
-  <v-col cols="5">
+  <v-col cols="12">
   <v-row class="justify-center">
-    <h2>เลือกรายการ</h2> 
+    <h1>เลือกรายการ</h1> 
   </v-row>
   <v-row class="justify-center">
     <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button">ตรวจสอบสิทธิ์กู้</v-btn>
