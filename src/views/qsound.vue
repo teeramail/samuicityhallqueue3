@@ -42,7 +42,7 @@ onMounted(() => {
 });
 
 function checkForNewFiles() {
-  axios.get('https://koh-samui.com:50100/oldest-record')
+  axios.get('https://koh-samui.com:50200/oldest-record')
     .then(response => {
       if (response.data && response.data.oldestRecord) {
         const ab = [response.data.oldestRecord.ab];
