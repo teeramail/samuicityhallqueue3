@@ -32,14 +32,20 @@ const routes = [
     name: 'onboardshow',    component: () => import(/* webpackChunkName: "about" */ '../views/onboardshow.vue')
   },
 
-  {
-    path: '/CommunicateVoice',
-    name: 'CommunicateVoice',    component: () => import(/* webpackChunkName: "CommunicateVoice" */ '../views/CommunicateVoice.vue')
-  },
 
   {
     path: '/onboardland',
     name: 'onboardland',    component: () => import(/* webpackChunkName: "about" */ '../views/onboardland.vue')
+  },
+
+  {
+    path: '/onboardother',
+    name: 'onboardother',    component: () => import(/* webpackChunkName: "about" */ '../views/onboardother.vue')
+  },
+
+  {
+    path: '/qshows',
+    name: 'qshows',    component: () => import(/* webpackChunkName: "about" */ '../views/qshows.vue')
   },
 
   {
@@ -54,11 +60,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "buttonavigate" */ '../views/buttonavigate.vue')
   },
 
-  {
-    path: '/playsound',
-    name: 'playsound',
-    component: () => import(/* webpackChunkName: "playsound" */ '../views/playsound.vue')
-  },
+
 
   {
     path: '/mixlandshow/:idshow',
@@ -79,9 +81,9 @@ const routes = [
   },
 
   {
-    path: '/mysamui',
-    name: 'mysamui',
-    component: () => import(/* webpackChunkName: "mysamui" */ '../views/mysamui.vue')
+    path: '/smartq',
+    name: 'smartq',
+    component: () => import(/* webpackChunkName: "smartq" */ '../views/smartq.vue')
   },
 
   {
@@ -100,11 +102,6 @@ const routes = [
     component: () => import(/* webpackChunkName: "test3" */ '../views/test3.vue')
   },
 
-  {
-    path: '/payboard',
-    name: 'payboard',
-    component: () => import(/* webpackChunkName: "payboard" */ '../views/PayBoard.vue')
-  },
 
 
 ]
