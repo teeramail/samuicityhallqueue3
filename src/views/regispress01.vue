@@ -1,6 +1,12 @@
 <template>
   <div class="center-elements">
     <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 5%;">
+      
+      <v-col cols="12" class="d-flex justify-center">
+    <v-img src="@/assets/logosurat.png" width="200" max-width="10%" max-height="10%"></v-img>
+  </v-col>
+      
+      
       <v-row class="text-center">
         <v-col cols="12" >
           <div id="printmobile" ><h2>ใช้มือถือถ่ายคิว</h2></div> 
