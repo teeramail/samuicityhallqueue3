@@ -1,6 +1,6 @@
 <template>
   <v-container style="padding-top: 0.5em; padding-bottom: 0.5em;">
-
+     
     <v-row>
       <v-col cols="12">
         <h1>&nbsp;</h1>
@@ -8,7 +8,22 @@
     </v-row>
     <v-row>
       <v-col cols="12">
-        <v-img src="@/assets/logosurat.png" max-width="300px" max-height="300px" class="d-block mx-auto"></v-img>
+        <h1>&nbsp;</h1>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <h1>&nbsp;</h1>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <h1>&nbsp;</h1>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="12">
+        <v-img src="@/assets/logosurat.png" max-width="350px" max-height="350px" class="d-block mx-auto"></v-img>
       </v-col>
     </v-row>
     <v-row>
