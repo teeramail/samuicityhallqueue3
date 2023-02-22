@@ -3,27 +3,22 @@
     <div class="row" style="height: 10%; font-size: smaller">
       <div class="column" style="width: 25%; display: flex; align-items: center; justify-content: center;">ช่อง</div>
       <div class="column" style="width: 25%; display: flex; align-items: center; justify-content: center;">คิว</div>
-      <div class="column" style="width: 25%; display: flex; align-items: center; justify-content: center;">ช่อง</div>
-      <div class="column" style="width: 50%; display: flex; align-items: center; justify-content: center;">คิว</div>
+      <!-- <div class="column" style="width: 25%; display: flex; align-items: center; justify-content: center;">ช่อง</div> -->
+      <!-- <div class="column" style="width: 50%; display: flex; align-items: center; justify-content: center;">คิว</div> -->
     </div>
     <!-- use v-for to iterate the items -->
     <div class="row" style="height: 100%;">
       <div class="column" style="width: 50%;">
-        <div class="row" v-for="(item, index) in sortedItems.slice(0, 5)" :key="item.idshow" :style="getItemStyle(item)">
+        <div class="row" v-for="(item, index) in sortedItems" :key="item.idshow" :style="getItemStyle(item)">
           <div class="column" style="display: flex; align-items: center; justify-content: center;">{{item.idshow}}</div>
           <div class="column" style="display: flex; align-items: center; justify-content: center;">{{item.ab}}{{item.numbershow}}</div>
         </div>
       </div>
-      <div class="column" style="width: 50%;">
-        <div class="row" v-for="(item, index) in sortedItems.slice(5, 10)" :key="item.idshow" :style="getItemStyle(item)">
-          <div class="column" style="display: flex; align-items: center; justify-content: center;">{{item.idshow}}</div>
-          <div class="column" style="display: flex; align-items: center; justify-content: center;">{{item.ab}}{{item.numbershow}}</div>
-        </div>
+    
       </div>
     </div>
     <div>
     <qsound />
-  </div>
   </div>
 </template>
 <script setup>
@@ -34,7 +29,7 @@ import qsound from './qsound.vue'
 const items = ref([]);
 
 const fetchItems = async () => {
-  const response = await axios.get('https://koh-samui.com:50100/newest-record');
+  const response = await axios.get('https://koh-samui.com:50200/onboardlands');
   items.value = response.data;
 };
 
