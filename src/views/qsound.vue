@@ -45,10 +45,9 @@ function checkForNewFiles() {
   axios.get('https://koh-samui.com:50200/oldest-record')
     .then(response => {
       if (response.data && response.data.oldestRecord) {
-        const ab = [response.data.oldestRecord.ab];
         const numbershow = response.data.oldestRecord.numbershow.toString().split('');
         const idshow = response.data.oldestRecord.idshow.toString().split('');
-        lands.value = ['invite'].concat([ab]).concat(numbershow).concat(['chanel']).concat(idshow);
+        lands.value = ['invite'].concat(numbershow).concat(['chanel']).concat(idshow);
 
         filenames.value = lands.value.map(digit => `https://koh-samui.com/sound/${digit}.mp3`);
         console.log(filenames.value)
@@ -58,13 +57,13 @@ function checkForNewFiles() {
         playNextFile();
       } else {
         shouldCheckForNewFiles.value = true;
-        setTimeout(() => checkForNewFiles(), 3500);
+        setTimeout(() => checkForNewFiles(), 2000);
       }
     })
     .catch(error => {
       console.error('Error getting oldest record:', error);
       shouldCheckForNewFiles.value = true;
-      setTimeout(() => checkForNewFiles(), 3500);
+      setTimeout(() => checkForNewFiles(), 2000);
     });
 }
 

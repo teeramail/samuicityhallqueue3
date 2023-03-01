@@ -1,5 +1,5 @@
 <template>
-  <div><h3>ตรวจสอบสิทธิ์กู้</h3></div>
+  <div><h3>กดเรียกคิว</h3></div>
   <input type="text" v-model="idFilter" placeholder="Filter by id (separate by comma)">
   <div v-for="item in filteredUsers.sort((a, b) => a.idshow - b.idshow)" :key="item._id">
     <v-card>

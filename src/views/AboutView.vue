@@ -42,24 +42,12 @@
       </v-col>
     </v-row>  
         <v-row class="justify-center">
-          <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button">ตรวจสอบสิทธิ์กู้</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button">กดเรียกคิว ที่นี่</v-btn>
         </v-row>
-        <v-row>
-      <v-col cols="12">
-        <h1>&nbsp;</h1>
-      </v-col>
-    </v-row>  
-        <v-row class="justify-center">
-          <v-btn v-on:click="navigateToRegisPress(2)" class="spaced-btn big-button">ลงนามสัญญา</v-btn>
-        </v-row>    
-        <v-row>
-      <v-col cols="12">
-        <h1>&nbsp;</h1>
-      </v-col>
-    </v-row>  
-        <v-row class="justify-center">
-          <v-btn v-on:click="navigateToRegisPress(3)" class="spaced-btn big-button">อื่นๆ</v-btn>
-        </v-row>
+       
+        
+        
+       
       </v-col>
     </v-row>
   </v-container>

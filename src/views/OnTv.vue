@@ -11,7 +11,7 @@
       <div class="column" style="width: 50%;">
         <div class="row" v-for="(item, index) in sortedItems" :key="item.idshow" :style="getItemStyle(item)">
           <div class="column" style="display: flex; align-items: center; justify-content: center;">{{item.idshow}}</div>
-          <div class="column" style="display: flex; align-items: center; justify-content: center;">{{item.ab}}{{item.numbershow}}</div>
+          <div class="column" style="display: flex; align-items: center; justify-content: center;"> {{item.numbershow}}</div>
         </div>
       </div>
     
