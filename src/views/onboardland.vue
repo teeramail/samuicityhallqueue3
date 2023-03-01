@@ -1,16 +1,21 @@
 <template>
-  <div><h3>กดเรียกคิว</h3></div>
-  <input type="text" v-model="idFilter" placeholder="Filter by id (separate by comma)">
-  <div v-for="item in filteredUsers.sort((a, b) => a.idshow - b.idshow)" :key="item._id">
-    <v-card>
-      <v-card-actions>
-        <v-btn icon @click="increment(item)">
-          <v-icon>mdi-arrow-up</v-icon>
-        </v-btn>
-        <div>{{ item.numbershow }} ช่อง {{ item.idshow }}  รอ {{ specificDifference }}</div> 
-      </v-card-actions>
-      <v-card-text>{{ item.nameservice }}</v-card-text>
-    </v-card>
+  <div>
+    <h3>กดเรียกคิว</h3>
+    <input type="text" v-model="idFilter" placeholder="Filter by id (separate by comma)">
+    <div v-for="item in filteredUsers.sort((a, b) => a.idshow - b.idshow)" :key="item._id">
+      <v-card>
+        <v-card-actions>
+          <v-btn icon @click="increment(item)">
+            <v-icon>mdi-arrow-up</v-icon>
+          </v-btn>
+          <div>{{ item.numbershow }} ช่อง {{ item.idshow }}  รอ {{ specificDifference }}</div> 
+          <v-btn icon @click="updateTimestamp(item)">
+            <v-icon>mdi-volume-high</v-icon>
+          </v-btn>
+        </v-card-actions>
+        <v-card-text>{{ item.nameservice }}</v-card-text>
+      </v-card>
+    </div>
   </div>
 </template>
 
@@ -68,7 +73,6 @@ async function increment(item) {
     users.value = res.data;
     const rescomb = await axios.get("https://koh-samui.com:50200/combine-record");
     specificDifference.value = rescomb.data.find(combine => combine.idshow === 1).difference;
-    console.log(specificDifference.value)
   }
 }
 
@@ -82,7 +86,14 @@ const filteredUsers = computed(() => {
     });
   return users.value.filter(user => idArr.includes(user.idshow));
 });  
- 
+
+async function updateTimestamp(item) {
+  await axios.put("https://koh-samui.com:50200/updateatt", {
+    idshow: item.idshow,
+   
+  });
+}
+
 
 </script>
 
