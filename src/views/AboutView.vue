@@ -33,14 +33,36 @@
     </v-row>  
     <v-row>
       <v-col cols="12">
-        <v-row class="justify-center">
-          <h1>เลือกรายการ</h1> 
-        </v-row>
+
         <v-row>
       <v-col cols="12">
         <h1>&nbsp;</h1>
       </v-col>
     </v-row>  
+    <v-row justify="center" align="center">
+      <h1>&nbsp;&nbsp;โปรดเตรียมมือถือไว้ถ่ายรูปคิว</h1>
+  </v-row>
+  <v-row justify="center" align="center">
+      <h2>&nbsp;&nbsp;เพื่อลดขยะ ในกรณีที่ไม่ได้นำมือถือมา กดพิมพ์ </h2>
+  </v-row>
+  <v-row justify="center" align="center">
+      <h1>&nbsp;&nbsp;</h1>
+  </v-row>
+  <v-row justify="center" align="center">
+      <h1>&nbsp;&nbsp;</h1>
+  </v-row>
+  <v-row justify="center" align="center">
+      <h1>&nbsp;&nbsp;</h1>
+  </v-row>
+  <v-row justify="center" align="center">
+      <h1>&nbsp;&nbsp;</h1>
+  </v-row>
+  <v-row justify="center" align="center">
+      <h1>&nbsp;&nbsp;</h1>
+  </v-row>
+  <v-row justify="center" align="center">
+      <h1>&nbsp;&nbsp;</h1>
+  </v-row>
         <v-row class="justify-center">
           <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button">กดเรียกคิว ที่นี่</v-btn>
         </v-row>
@@ -80,9 +102,9 @@ export default {
 
 <style scoped>
 .big-button {
-  font-size: 35px;
-  padding: 50px 80px;
-  line-height: 80px;
+  font-size: 90px;
+  padding: 90px 100px;
+  line-height: 120px;
   display: flex;
   align-items: center;
 }
