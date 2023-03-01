@@ -33,11 +33,7 @@
           </v-col>
         </v-row>
 
-        <v-row class="text-center">
-          <v-col cols="12" class="my-5">
-            <v-card-text>{{ item.nameservice }}</v-card-text>
-          </v-col>
-        </v-row>
+
 
         <v-row class="text-center" v-for="item in filtereCombines" :key="item._id">
           <v-col cols="12" class="my-5">
