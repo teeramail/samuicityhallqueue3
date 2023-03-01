@@ -16,7 +16,7 @@
       </div>
     </div>
     <div style="text-align: center;"><h3>สแกนคิวอาร์โค้ดดูคิวได้ที่นี่</h3></div>
-    <div><img id="qrcode" src="@/assets/images/samuiqr450.png"> </div>
+    <div><img id="qrcode" src="@/assets/images/teacherscoqr.png"> </div>
 
 
     <div class="print-section-container">
