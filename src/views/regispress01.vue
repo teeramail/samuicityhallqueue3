@@ -37,20 +37,40 @@
 
         <v-row class="text-center" v-for="item in filtereCombines" :key="item._id">
           <v-col cols="12" class="my-5">
-            {{ currentDateTimeA }} คิว {{ item.difference }}
+            {{ currentDateTimeA }}คิว{{ item.difference }}
           </v-col>
         </v-row>
 
       </div>
 
-      <v-row class="text-center">
+      <v-row justify="center" align="center">
+      <h1>&nbsp;&nbsp;</h1>
+  </v-row>
+
+  <v-row justify="center" align="center">
+      <h1>&nbsp;&nbsp;</h1>
+  </v-row>
+
+      <v-row class="justify-center">
         <v-col cols="12">
-          <v-btn @click="printContent" id="printpagebutton" class="btn btn-primary">หรือกดที่นี่เพื่อพิมพ์</v-btn>
+          <v-btn @click="printContent" id="printpagebutton" class="big-button1">หรือกดที่นี่เพื่อพิมพ์</v-btn>
         </v-col>
       </v-row>
 
+      <v-row justify="center" align="center">
+      <h1>&nbsp;&nbsp;</h1>
+  </v-row>
+
+  <v-row justify="center" align="center">
+      <h1>&nbsp;&nbsp;</h1>
+  </v-row>
+
+  <v-row justify="center" align="center">
+      <h1>&nbsp;&nbsp;</h1>
+  </v-row>
+
       <v-row class="justify-center">
-        <v-btn v-on:click="navigateToAbout()" id="aboutback" class="spaced-btn">กลับเมนูหลัก</v-btn>
+        <v-btn v-on:click="navigateToAbout()" id="aboutback" class="big-button2">กลับเมนูหลัก</v-btn>
       </v-row>
 
     </div>
@@ -136,7 +156,9 @@ import router from "@/router"
 </script>
 
 
-<style>
+<style scoped>
+
+
   /* General styles for the template */
   template {
     border-bottom: none;
@@ -172,6 +194,22 @@ import router from "@/router"
   .bigger-text {
     font-size: 9em;
   }
+
+
+  .big-button1 {
+  font-size: 70px;
+  padding: 70px 80px;
+  line-height: 95px;
+  display: flex;
+  align-items: center;
+}
+  .big-button2 {
+  font-size: 60px;
+  padding: 60px 70px;
+  line-height: 75px;
+  display: flex;
+  align-items: center;
+}
 
   /* Styles for when the content is printed */
   @media print {
