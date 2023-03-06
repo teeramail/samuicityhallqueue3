@@ -52,9 +52,7 @@
   </v-row>
 
       <v-row class="justify-center">
-        <v-col cols="12">
           <v-btn @click="printContent" id="printpagebutton" class="big-button1">หรือกดที่นี่เพื่อพิมพ์</v-btn>
-        </v-col>
       </v-row>
 
       <v-row justify="center" align="center">
