@@ -82,7 +82,12 @@ async function increment(item) {
     specificDifference.value = rescomb.data.find(combine => combine.idshow === 1).difference;
     volumeIconEnabled.value = true;
   }
-}
+
+  // await axios.post("https://koh-samui.com:50200/onboardtwos", {
+  // idshow: item.idshow,
+  // });
+
+  }
 
 const filteredUsers = computed(() => {
   if (!idFilter.value) return users.value;
@@ -109,4 +114,3 @@ const idFilter = 8 // <= sizes can be accessed in setup scope
 
 export default {}
 </script>
-

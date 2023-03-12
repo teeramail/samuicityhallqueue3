@@ -64,7 +64,7 @@
       <h1>&nbsp;&nbsp;</h1>
   </v-row>
         <v-row class="justify-center">
-          <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button">กดเรียกคิว ที่นี่</v-btn>
+          <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button" style="background-color: #d8bfd8">กดเรียกคิว ที่นี่</v-btn>
         </v-row>
        
         

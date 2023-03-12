@@ -1,26 +1,20 @@
 <template>
   <div class="container">
-    <div class="row" style="height: 10%; font-size: smaller">
-      <div class="column" style="width: 25%; display: flex; align-items: center; justify-content: center;">ช่อง</div>
-      <div class="column" style="width: 25%; display: flex; align-items: center; justify-content: center;">คิว</div>
-      <!-- <div class="column" style="width: 25%; display: flex; align-items: center; justify-content: center;">ช่อง</div> -->
-      <!-- <div class="column" style="width: 50%; display: flex; align-items: center; justify-content: center;">คิว</div> -->
+    <div class="row head">
+      <div class="column queue" style="background-color: #d8bfd8">คิว</div>
+      <div class="column channel" style="background-color: #d8bfd8">ช่อง</div>
     </div>
     <!-- use v-for to iterate the items -->
-    <div class="row" style="height: 100%;">
-      <div class="column" style="width: 50%;">
-        <div class="row" v-for="(item, index) in sortedItems" :key="item.idshow" :style="getItemStyle(item)">
-          <div class="column" style="display: flex; align-items: center; justify-content: center;">{{item.idshow}}</div>
-          <div class="column" style="display: flex; align-items: center; justify-content: center;"> {{item.numbershow}}</div>
-        </div>
-      </div>
-    
-      </div>
+    <div class="row" v-for="(item, index) in  items" :key="item._id" :style="getItemStyle(item)">
+      <div class="column queue">{{item.numbershow}}</div>
+      <div class="column channel">{{item.idshow}}</div>
     </div>
     <div>
-    <qsound />
+      <qsound />
+    </div>
   </div>
 </template>
+
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
@@ -29,7 +23,7 @@ import qsound from './qsound.vue'
 const items = ref([]);
 
 const fetchItems = async () => {
-  const response = await axios.get('https://koh-samui.com:50200/onboardlands');
+  const response = await axios.get('https://koh-samui.com:50200/onboardtwos');
   items.value = response.data;
 };
 
@@ -38,9 +32,9 @@ onMounted(() => {
   setInterval(fetchItems, 1000);
 });
 
-const sortedItems = computed(() => {
-  return items.value.sort((a, b) => a.idshow - b.idshow);
-});
+// const sortedItems = computed(() => {
+//   return items.value.sort((a, b) => a.idshow - b.idshow);
+// });
 
 const getItemStyle = (item) => {
   const style = {};
@@ -55,40 +49,48 @@ const getItemStyle = (item) => {
 
 </script>
 
-
-<style scope>
-
- .container {
+<style scoped>
+.container {
   display: flex;
   flex-direction: column;
   height: 100vh;
-}
-
-.rowone {
-  display: flex;
-  flex-direction: row;
-  height: 10%;
-  font-size: 3vw
+  font-size: 8vw; /* Set font size to 8% of the viewport width */
+  padding: 0;
+  margin: 0;
 }
 
 .row {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  height: 16%;
+  height: 20%; /* Set row height to 20% of the screen height */
+  padding: 0;
+  margin: 0;
 }
+
+.row.head {
+  height: 20%; /* Set head row height to 10% of the screen height */
+}
+
+
 
 .column {
   flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
   background-color: lightgray;
   border: 1px solid black;
-} 
-
-body {
-  font-size: 7vw; /* adjust as needed */
+  padding: 0;
+  margin: 0;
 }
+
+.column.queue {
+  font-size: 10vw; /* Set queue column font size to 10% of the viewport width */
+}
+
+.column.channel {
+  font-size: 8vw; /* Set channel column font size to 8% of the viewport width */
+}
+
 
 </style>
