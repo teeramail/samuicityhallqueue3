@@ -98,25 +98,23 @@ import router from "@/router"
         });
 
         onMounted(async () => {
-
-
           timeoutId = setTimeout(() => {
-      router.push({ name: 'about' });
-    }, 30000);
-    
+            router.push({ name: 'about' });
+          }, 30000);
+
           const date = new Date();
-      const day = date.getDate().toString().padStart(2, '0');
-      const month = (date.getMonth() + 1).toString().padStart(2, '0');
-      const hours = date.getHours().toString().padStart(2, '0');
-      const minutes = date.getMinutes().toString().padStart(2, '0');
-      currentDateTimeA.value = `${day}/${month}/ ${hours}:${minutes}`;
+          const day = date.getDate().toString().padStart(2, '0');
+          const month = (date.getMonth() + 1).toString().padStart(2, '0');
+          const hours = date.getHours().toString().padStart(2, '0');
+          const minutes = date.getMinutes().toString().padStart(2, '0');
+          currentDateTimeA.value = `${day}/${month}/ ${hours}:${minutes}`;
 
-            const res = await axios.get("https://koh-samui.com:50200/regisshow");
-            users.value = res.data;
-            increment();
-            const rescomb = await axios.get("https://koh-samui.com:50200/combine-record");
-            combines.value = rescomb.data
-
+          const res = await axios.get("https://koh-samui.com:50200/regisshow");
+          users.value = res.data;
+          await increment();
+          const rescomb = await axios.get("https://koh-samui.com:50200/combine-record");
+          combines.value = rescomb.data;
+          // window.print();
         });
 
 
@@ -124,21 +122,21 @@ import router from "@/router"
         router.push({ name: 'about' })
         }, 30000)
 
-
         function increment() {
-            console.log(`labelshow id: ${route.params.idshow}`);
+          axios.put("https://koh-samui.com:50200/regisshow", {
+              idshow: route.params.idshow
+          }).then(() => {
+              axios.get("https://koh-samui.com:50200/regisshow")
+                  .then(res => {
+                      users.value = res.data;
+                      setTimeout(() => {
+                      window.print();
+                      }, 1200); // Delay the print by 1 second (1000ms)
+                      });
 
-            axios.put("https://koh-samui.com:50200/regisshow", {
-                idshow: route.params.idshow
-            }).then(() => {
-                axios.get("https://koh-samui.com:50200/regisshow")
-                    .then(res => {
-                        users.value = res.data;
-                    });
-            }).catch(error => {
-                console.error(error);
-            });
-
+          }).catch(error => {
+              console.error(error);
+          });
         }
 
         function printContent() {
@@ -149,7 +147,6 @@ import router from "@/router"
         clearTimeout(timeoutId);     
         router.push({ name: 'about' })
         }
-
 
 </script>
 
