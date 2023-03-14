@@ -40,10 +40,10 @@
       </v-col>
     </v-row>  
     <v-row justify="center" align="center">
-      <h1>&nbsp;&nbsp;โปรดเตรียมมือถือไว้ถ่ายรูปคิว</h1>
+      <!-- <h1>&nbsp;&nbsp;โปรดเตรียมมือถือไว้ถ่ายรูปคิว</h1> -->
   </v-row>
   <v-row justify="center" align="center">
-      <h2>&nbsp;&nbsp;เพื่อลดขยะ ในกรณีที่ไม่ได้นำมือถือมา กดพิมพ์ </h2>
+      <!-- <h2>&nbsp;&nbsp;เพื่อลดขยะ ในกรณีที่ไม่ได้นำมือถือมา กดพิมพ์ </h2> -->
   </v-row>
   <v-row justify="center" align="center">
       <h1>&nbsp;&nbsp;</h1>

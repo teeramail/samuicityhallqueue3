@@ -51,9 +51,9 @@
       <h1>&nbsp;&nbsp;</h1>
   </v-row>
 
-      <v-row class="justify-center">
+      <!-- <v-row class="justify-center">
           <v-btn @click="printContent" id="printpagebutton" class="big-button1">หรือกดที่นี่เพื่อพิมพ์</v-btn>
-      </v-row>
+      </v-row> -->
 
       <v-row justify="center" align="center">
       <h1>&nbsp;&nbsp;</h1>
@@ -120,7 +120,7 @@ import router from "@/router"
 
         setTimeout(() => {
         router.push({ name: 'about' })
-        }, 30000)
+        }, 3000)
 
         function increment() {
           axios.put("https://koh-samui.com:50200/regisshow", {
@@ -139,9 +139,9 @@ import router from "@/router"
           });
         }
 
-        function printContent() {
-            window.print();
-        }
+        // function printContent() {
+        //     window.print();
+        // }
 
         function navigateToAbout() { 
         clearTimeout(timeoutId);     
