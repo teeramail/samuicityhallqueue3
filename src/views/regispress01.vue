@@ -15,7 +15,7 @@
         </v-col>
       </div>
     </div>
-    <div style="text-align: center;"><h3>สแกนคิวอาร์โค้ดดูคิวได้ที่นี่</h3></div>
+    <div id="scan1" style="text-align: center;"><h3>สแกนคิวอาร์โค้ดดูคิวได้ที่นี่</h3></div>
     <div><img id="qrcode" src="@/assets/images/teacherscoqr.png"> </div>
 
 
@@ -23,7 +23,7 @@
       <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 5%;">
         <v-row class="text-center">
           <v-col cols="12">
-            <div id="printmobile"><h2>ใช้มือถือถ่ายคิว</h2></div>
+            <div id="printmobile"><h2>ฝ่ายสินเชื่อ</h2></div>
           </v-col>
         </v-row>
 
@@ -88,7 +88,6 @@ import router from "@/router"
         const currentDateTimeA = ref([]);
        // const labelshow = ref({});
        let timeoutId;
-
 
         const filteredUsers = computed(() => {
             return users.value.filter(item => item.idshow === parseInt(route.params.idshow));
@@ -225,9 +224,10 @@ import router from "@/router"
     }
 
     #qrcode {
-    display: block;
+    display: none;
+    /* display: block;
     width: 4cm; /* adjust the width as needed */
-    height: auto;
+    /* height: auto;  */
   }
 
     /* Hide the print button */
@@ -236,11 +236,12 @@ import router from "@/router"
     }
 
     #printimagel2 {
-      display: block;
+      display: none;
+      /* display: block;
       margin: 0 auto;
       float: left;
       width: 4cm;
-      height: auto;
+      height: auto; */
     }
 
     #printimagel1
@@ -248,8 +249,13 @@ import router from "@/router"
       display: none;
     }
 
-    #printmobile {
+    #scan1
+    {
       display: none;
+    }
+
+    #printmobile {
+      display: block ;
     }
  
     #aboutback {
