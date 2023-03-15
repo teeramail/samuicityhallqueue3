@@ -37,7 +37,7 @@
 
         <v-row class="text-center" v-for="item in filtereCombines" :key="item._id">
           <v-col cols="12" class="my-5">
-            {{ currentDateTimeA }}คิว{{ item.difference }}
+          {{currentDateTimeA}} รอ{{item.difference}}คิว
           </v-col>
         </v-row>
 
