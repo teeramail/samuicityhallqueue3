@@ -64,7 +64,10 @@
       <h1>&nbsp;&nbsp;</h1>
   </v-row>
         <v-row class="justify-center">
-          <v-btn v-on:click="navigateToRegisPress(1)" class="spaced-btn big-button" style="background-color: #d8bfd8">กดเรียกคิว ที่นี่</v-btn>
+          <v-btn class="print-visible spaced-btn big-button" v-on:click="navigateToRegisPress(1)" style="background-color: #d8bfd8">กดเรียกคิว ที่นี่</v-btn>
+
+
+
         </v-row>
        
         
@@ -120,5 +123,11 @@ export default {
 }
 .spaced-btn2 {
   margin-top: 40px;
+}
+
+@media print {
+  *:not(.print-visible) {
+    display: none;
+  }
 }
 </style>
