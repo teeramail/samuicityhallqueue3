@@ -207,6 +207,10 @@ import router from "@/router"
 
   /* Styles for when the content is printed */
   @media print {
+    .print-container {
+    margin-top: 0;
+    }
+
     /* Style the content to be printed */
     .print-section {
       font-size: 30px;
