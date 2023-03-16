@@ -179,11 +179,18 @@ import router from "@/router"
   #printimagel1 {
     order: 2;
   }
-
+/* 
   .print-section-container {
     position: relative;
     top: 1%;
-  }
+  } */
+
+
+  .print-section-container {
+  position: relative;
+  top: 0;
+  margin-top: 1%;
+}
 
   .bigger-text {
     font-size: 9em;
@@ -210,6 +217,8 @@ import router from "@/router"
     .print-container {
     margin-top: 0;
     }
+
+
 
     /* Style the content to be printed */
     .print-section {
