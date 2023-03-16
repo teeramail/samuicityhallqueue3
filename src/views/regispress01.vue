@@ -20,7 +20,7 @@
 
 
     <div class="print-section-container">
-      <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 5%;">
+      <div class="print-section" v-for="item in filteredUsers" :key="item._id" style="margin-top: 1%;">
         <v-row class="text-center">
           <v-col cols="12">
             <div id="printmobile"><h2>ฝ่ายสินเชื่อ</h2></div>
@@ -182,7 +182,7 @@ import router from "@/router"
 
   .print-section-container {
     position: relative;
-    top: 5%;
+    top: 1%;
   }
 
   .bigger-text {
