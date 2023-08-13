@@ -30,6 +30,11 @@
         <v-btn @click="navigator(5)">5</v-btn>
       </v-col>
     </v-row>
+    <v-row>
+      <v-col cols="12" class="d-flex justify-center">
+        <v-btn @click="navigator(6)">6</v-btn>
+      </v-col>
+    </v-row>
   </v-container>
 </template>
 
