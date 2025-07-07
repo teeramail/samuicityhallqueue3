@@ -3,10 +3,6 @@
     <!-- Clean header with counter info -->
     <div class="header-section">
       <h2 class="counter-title">🖥️ ช่องบริการ {{ counterId }}</h2>
-      <div class="queue-status">
-        <div class="current-queue">คิวปัจจุบัน: <span class="queue-number">{{ currentQueueNumber }}</span></div>
-        <div class="total-waiting">รอคิว: <span class="waiting-number">{{ waitingCount }}</span> คน</div>
-      </div>
     </div>
     
     <!-- Main action button -->
@@ -451,25 +447,7 @@ async function refreshData() {
   font-weight: 600;
 }
 
-.queue-status {
-  display: flex;
-  justify-content: space-between;
-  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-  padding: 15px;
-  border-radius: 12px;
-  margin-bottom: 20px;
-}
 
-.current-queue, .total-waiting {
-  font-size: 1.1rem;
-  font-weight: 500;
-}
-
-.queue-number, .waiting-number {
-  font-size: 1.4rem;
-  font-weight: bold;
-  color: #1976d2;
-}
 
 .action-section {
   margin-bottom: 30px;
@@ -679,10 +657,7 @@ async function refreshData() {
     padding: 15px;
   }
   
-  .queue-status {
-    flex-direction: column;
-    gap: 10px;
-  }
+
   
   .next-number {
     font-size: 3rem;
