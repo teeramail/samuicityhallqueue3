@@ -8,7 +8,7 @@
           <v-btn icon @click="increment(item)">
             <v-icon>mdi-arrow-up</v-icon>
           </v-btn>
-          <div>{{ currentQueueNumber }} ช่อง {{ item.idshow }}  รอ {{ specificDifference }}</div> 
+          <div>{{ nextQueueNumber }} ช่อง {{ item.idshow }}  รอ {{ waitingCount }}</div> 
           <v-btn icon @click="updateTimestamp(item)" :disabled="!volumeIconEnabled">
             <v-icon>mdi-volume-high</v-icon>
           </v-btn>
@@ -26,8 +26,8 @@ import { getApiUrl, API_CONFIG } from '@/config/api.js';
 
 const users = ref([]);
 const idFilter = ref('');
-const specificDifference = ref('x');
 const currentQueueNumber = ref(0);
+const totalRegistered = ref(0);
 const volumeIconEnabled = ref(false);
 
 const props = defineProps({
@@ -41,6 +41,16 @@ const props = defineProps({
 const counterId = parseInt(props.idFilter);
 idFilter.value = props.idFilter;
 
+// Calculate next queue number (current + 1)
+const nextQueueNumber = computed(() => {
+  return currentQueueNumber.value + 1;
+});
+
+// Calculate waiting count (total registered - next queue number)
+const waitingCount = computed(() => {
+  return Math.max(0, totalRegistered.value - nextQueueNumber.value);
+});
+
 onMounted(async () => {
   await fetchData();
 });
@@ -51,23 +61,30 @@ async function fetchData() {
     const res1 = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS));
     const onboardlands = res1.data;
 
-    // Fetch data from onboardshows endpoint
+    // Fetch data from onboardshows endpoint (current serving numbers)
     const res2 = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDSHOWS));
     const onboardshows = res2.data;
 
-    // Find the current counter's show data
+    // Get registration data to count total people
+    const res3 = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.REGISSHOW));
+    const regisshows = res3.data;
+
+    // Find current counter's serving number
     const currentShow = onboardshows.find(show => show.idshow === counterId);
     if (currentShow) {
       currentQueueNumber.value = currentShow.numbershow || 0;
     }
 
+    // Find total registered people for this counter
+    const currentRegis = regisshows.find(regis => regis.idshow === counterId);
+    if (currentRegis) {
+      totalRegistered.value = currentRegis.numbershow || 0;
+    }
+
     // Set the users ref to the onboardlands array (filtered by counter)
     users.value = onboardlands;
 
-    // Get the difference (waiting count) for this specific counter
-    const rescomb = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.COMBINE_RECORD));
-    const counterData = rescomb.data.find(combine => combine.idshow === counterId);
-    specificDifference.value = counterData ? counterData.difference : 0;
+    console.log(`📊 Counter ${counterId}: Currently serving ${currentQueueNumber.value}, Total registered ${totalRegistered.value}, Next queue ${nextQueueNumber.value}, Waiting ${waitingCount.value}`);
     
     volumeIconEnabled.value = true;
   } catch (error) {
@@ -80,12 +97,10 @@ async function increment(item) {
   volumeIconEnabled.value = false;
 
   try {
-    // Check if there are people waiting
-    const rescomb = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.COMBINE_RECORD));
-    const counterData = rescomb.data.find(combine => combine.idshow === counterId);
-    const currentDifference = counterData ? counterData.difference : 0;
-
-    if (currentDifference >= 1) {
+    // Check if there are people waiting (if next queue number <= total registered)
+    if (nextQueueNumber.value <= totalRegistered.value) {
+      console.log(`🔢 Advancing queue from ${currentQueueNumber.value} to ${nextQueueNumber.value}`);
+      
       // Use the original Express logic: call onboardlandnums
       // This will increment onboardshows first, then update onboardlands
       await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDNUMS), {
@@ -97,7 +112,7 @@ async function increment(item) {
       // Refresh data to show updated numbers
       await fetchData();
     } else {
-      console.log('No people waiting in queue');
+      console.log('No more people waiting in queue');
       volumeIconEnabled.value = true;
     }
   } catch (error) {
@@ -120,7 +135,7 @@ const filteredUsers = computed(() => {
 async function updateTimestamp(item) {
   console.log('📢 Calling queue for display:', item);
   
-  // Set callonboard = 1 to show this queue on OnTV (using qcall field)
+  // Set qcall = false to show this queue on OnTV (using qcall field)
   await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS), {
     idshow: item.idshow,
     mode: 'setcall'
