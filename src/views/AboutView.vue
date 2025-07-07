@@ -1,83 +1,51 @@
 <template>
   <v-container style="padding-top: 0.5em; padding-bottom: 0.5em;">
-    <!-- Screen View -->
-    <div class="screen-only">
-      <v-row>
-        <v-col cols="12">
-          <h1>&nbsp;</h1>
+    <!-- Screen View - Landscape Layout -->
+    <div class="screen-only landscape-container">
+      <!-- Header Section -->
+      <v-row class="header-section" align="center" justify="center">
+        <v-col cols="12" class="text-center">
+          <h1 class="main-title">เทศบาลนครสมุย</h1>
+          <h2 class="subtitle">ระบบจัดคิวอัตโนมัติ</h2>
         </v-col>
       </v-row>
-      <v-row>
-        <v-col cols="12">
-          <h1>&nbsp;</h1>
+
+      <!-- Main Content Section - Horizontal Layout -->
+      <v-row class="main-content" align="center" justify="center" no-gutters>
+        <!-- Left Side - Logo -->
+        <v-col cols="4" class="logo-section">
+          <v-img 
+            src="@/assets/logosurat.png" 
+            max-width="300px" 
+            max-height="300px" 
+            class="d-block mx-auto"
+          ></v-img>
         </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <h1>&nbsp;</h1>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <h1>&nbsp;</h1>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-img src="@/assets/logosurat.png" max-width="350px" max-height="350px" class="d-block mx-auto"></v-img>
-        </v-col>
-      </v-row>
-      
-      <v-row>
-        <v-col cols="12">
-          <h1>&nbsp;</h1>
-        </v-col>
-      </v-row>  
-      <v-row>
-        <v-col cols="12">
-          <v-row>
-            <v-col cols="12">
-              <h1>&nbsp;</h1>
-            </v-col>
-          </v-row>  
-          <v-row justify="center" align="center">
-            <h1>&nbsp;&nbsp;</h1>
-          </v-row>
-          <v-row justify="center" align="center">
-            <h1>&nbsp;&nbsp;</h1>
-          </v-row>
-          <v-row justify="center" align="center">
-            <h1>&nbsp;&nbsp;</h1>
-          </v-row>
-          <v-row justify="center" align="center">
-            <h1>&nbsp;&nbsp;</h1>
-          </v-row>
-          <v-row justify="center" align="center">
-            <h1>&nbsp;&nbsp;</h1>
-          </v-row>
-          <v-row justify="center" align="center">
-            <h1>&nbsp;&nbsp;</h1>
-          </v-row>
-          
-          <!-- Single Main Button -->
-          <v-row class="justify-center">
+
+        <!-- Center - Main Button -->
+        <v-col cols="4" class="button-section">
+          <div class="button-container">
             <v-btn 
-              class="spaced-btn big-button" 
+              class="main-queue-button" 
               @click="getNewQueueTicket"
-              style="background-color: #d8bfd8"
               :disabled="isLoading"
+              elevation="8"
+              rounded="xl"
             >
               {{ isLoading ? 'กำลังออกบัตร...' : 'รับบัตรคิว' }}
             </v-btn>
-          </v-row>
+          </div>
+        </v-col>
 
-          <!-- Current Queue Status -->
-          <v-row v-if="currentQueueStatus" class="justify-center mt-4">
-            <v-col cols="12" class="text-center">
-              <h3>สถานะคิวปัจจุบัน: {{ currentQueueStatus.currentQueue || 'N/A' }}</h3>
-              <h4>คิวที่รอ: {{ currentQueueStatus.waiting || 0 }} คน</h4>
-            </v-col>
-          </v-row>
+        <!-- Right Side - Queue Status -->
+        <v-col cols="4" class="status-section">
+          <div v-if="currentQueueStatus" class="status-display">
+            <div class="status-card">
+              <h3 class="status-title">สถานะคิวปัจจุบัน</h3>
+              <div class="current-queue">{{ currentQueueStatus.currentQueue || 'N/A' }}</div>
+              <div class="waiting-count">รอคิว: {{ currentQueueStatus.waiting || 0 }} คน</div>
+            </div>
+          </div>
         </v-col>
       </v-row>
     </div>
@@ -178,22 +146,117 @@ export default {
 </script>
 
 <style scoped>
-.big-button {
-  font-size: 90px;
-  padding: 90px 100px;
-  line-height: 120px;
+/* Landscape Layout Styles */
+.landscape-container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+}
+
+.header-section {
+  height: 25vh;
+  margin-bottom: 2rem;
+}
+
+.main-title {
+  font-size: 3.5rem !important;
+  font-weight: bold;
+  color: #1976d2;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.subtitle {
+  font-size: 1.8rem !important;
+  color: #666;
+  font-weight: normal;
+}
+
+.main-content {
+  height: 60vh;
+  padding: 0 2rem;
+}
+
+.logo-section {
   display: flex;
   align-items: center;
+  justify-content: center;
+}
+
+.button-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-container {
+  text-align: center;
+}
+
+.main-queue-button {
+  font-size: 3rem !important;
+  padding: 2rem 3rem !important;
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%) !important;
+  color: white !important;
+  min-width: 350px;
+  min-height: 150px;
+  font-weight: bold;
+  text-transform: none !important;
+  letter-spacing: 1px;
   transition: all 0.3s ease;
 }
 
-.big-button:hover {
+.main-queue-button:hover {
   transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  box-shadow: 0 12px 35px rgba(76, 175, 80, 0.4);
 }
 
-.spaced-btn {
-  margin-top: 20px;
+.main-queue-button:disabled {
+  background: linear-gradient(135deg, #bdbdbd 0%, #e0e0e0 100%) !important;
+  color: #757575 !important;
+}
+
+.status-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-display {
+  width: 100%;
+  max-width: 300px;
+}
+
+.status-card {
+  background: white;
+  border-radius: 15px;
+  padding: 2rem;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+  border: 2px solid #e3f2fd;
+}
+
+.status-title {
+  font-size: 1.2rem !important;
+  color: #1976d2;
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.current-queue {
+  font-size: 4rem !important;
+  font-weight: bold;
+  color: #4caf50;
+  margin: 1rem 0;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+}
+
+.waiting-count {
+  font-size: 1.1rem;
+  color: #666;
+  font-weight: 500;
 }
 
 /* Screen only elements */
@@ -203,6 +266,34 @@ export default {
 
 .print-only {
   display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+  .main-title {
+    font-size: 2.5rem !important;
+  }
+  
+  .main-queue-button {
+    font-size: 2.2rem !important;
+    min-width: 280px;
+    min-height: 120px;
+  }
+  
+  .current-queue {
+    font-size: 3rem !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .logo-section, .button-section, .status-section {
+    margin-bottom: 2rem;
+  }
 }
 
 /* Print styles for 50mm thermal receipt */
