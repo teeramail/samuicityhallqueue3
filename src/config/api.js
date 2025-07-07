@@ -12,6 +12,7 @@ export const API_CONFIG = {
     ONBOARDLANDS: '/onboardlands',
     ONBOARDLANDNUMS: '/onboardlandnums',
     QUEUE_STATUS: '/queue-status',      // Fast queue status for counters
+    QUEUE_HISTORY: '/queue-history',    // Global queue history for OnTV
     COMBINE_RECORD: '/combine-record',
     OLDEST_RECORD: '/oldest-record',
     UPDATE_ATT: '/updateatt',
@@ -32,6 +33,7 @@ export const API_URLS = {
   ONBOARDLANDS: getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS), 
   ONBOARDLANDNUMS: getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDNUMS),
   QUEUE_STATUS: getApiUrl(API_CONFIG.ENDPOINTS.QUEUE_STATUS),
+  QUEUE_HISTORY: getApiUrl(API_CONFIG.ENDPOINTS.QUEUE_HISTORY),
   COMBINE_RECORD: getApiUrl(API_CONFIG.ENDPOINTS.COMBINE_RECORD),
   OLDEST_RECORD: getApiUrl(API_CONFIG.ENDPOINTS.OLDEST_RECORD),
   UPDATE_ATT: getApiUrl(API_CONFIG.ENDPOINTS.UPDATE_ATT),

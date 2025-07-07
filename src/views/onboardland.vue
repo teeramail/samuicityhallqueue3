@@ -361,8 +361,21 @@ async function callNextQueue() {
       idshowtext: 'A'
     });
 
-    // Add to queue history immediately for instant display
+    // Add to LOCAL queue history immediately for instant display
     addToQueueHistory(newQueueNumber, counterId);
+
+    // Add to GLOBAL queue history for OnTV display
+    try {
+      await axios.post(getApiUrl(API_CONFIG.ENDPOINTS.QUEUE_HISTORY), {
+        queueNumber: newQueueNumber,
+        counterNumber: counterId,
+        calledAt: Date.now()
+      });
+      console.log(`📺 Added queue ${newQueueNumber} from counter ${counterId} to global OnTV history`);
+    } catch (error) {
+      console.error('❌ Error adding to global queue history:', error);
+      // Don't fail the whole operation if global history fails
+    }
 
     // Clear cache to force fresh data
     dataCache = null;
@@ -370,7 +383,7 @@ async function callNextQueue() {
     // Quick refresh for immediate feedback
     setTimeout(() => fetchData(), 50);
     
-    console.log(`✅ Queue ${newQueueNumber} called successfully and added to history`);
+    console.log(`✅ Queue ${newQueueNumber} called successfully and added to both local and global history`);
     
   } catch (error) {
     console.error('❌ Error calling queue:', error);
