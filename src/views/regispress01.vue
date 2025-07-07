@@ -123,11 +123,18 @@ import { getApiUrl, API_CONFIG } from '@/config/api.js';
         }, 3000)
 
         function increment() {
+          console.log('🔄 Starting increment for idshow:', route.params.idshow);
+          console.log('🌐 API URL:', getApiUrl(API_CONFIG.ENDPOINTS.REGISSHOW));
+          
           axios.put(getApiUrl(API_CONFIG.ENDPOINTS.REGISSHOW), {
               idshow: route.params.idshow
-          }).then(() => {
+          }).then((response) => {
+              console.log('✅ PUT request successful:', response.data);
+              
+              // Refetch data after successful increment
               axios.get(getApiUrl(API_CONFIG.ENDPOINTS.REGISSHOW))
                   .then(res => {
+                      console.log('✅ GET request successful:', res.data);
                       users.value = res.data;
                       setTimeout(() => {
                       window.print();
@@ -135,7 +142,14 @@ import { getApiUrl, API_CONFIG } from '@/config/api.js';
                       });
 
           }).catch(error => {
-              console.error(error);
+              console.error('❌ Error in increment PUT request:', error);
+              console.error('❌ Error response:', error.response?.data);
+              console.error('❌ Error status:', error.response?.status);
+              
+              // Still print even if increment fails (current behavior)
+              setTimeout(() => {
+                window.print();
+              }, 1200);
           });
         }
 
