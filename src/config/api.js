@@ -13,6 +13,7 @@ export const API_CONFIG = {
     ONBOARDLANDNUMS: '/onboardlandnums',
     QUEUE_STATUS: '/queue-status',      // Fast queue status for counters
     QUEUE_HISTORY: '/queue-history',    // Global queue history for OnTV
+    RESET_DAILY: '/reset-daily',        // Daily queue reset at 7 PM
     COMBINE_RECORD: '/combine-record',
     OLDEST_RECORD: '/oldest-record',
     UPDATE_ATT: '/updateatt',
@@ -34,6 +35,7 @@ export const API_URLS = {
   ONBOARDLANDNUMS: getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDNUMS),
   QUEUE_STATUS: getApiUrl(API_CONFIG.ENDPOINTS.QUEUE_STATUS),
   QUEUE_HISTORY: getApiUrl(API_CONFIG.ENDPOINTS.QUEUE_HISTORY),
+  RESET_DAILY: getApiUrl(API_CONFIG.ENDPOINTS.RESET_DAILY),
   COMBINE_RECORD: getApiUrl(API_CONFIG.ENDPOINTS.COMBINE_RECORD),
   OLDEST_RECORD: getApiUrl(API_CONFIG.ENDPOINTS.OLDEST_RECORD),
   UPDATE_ATT: getApiUrl(API_CONFIG.ENDPOINTS.UPDATE_ATT),

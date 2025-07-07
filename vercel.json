@@ -1,3 +1,9 @@
 {
-  "rewrites": [{ "source": "/:path*", "destination": "/index.html" }]
+  "rewrites": [{ "source": "/:path*", "destination": "/index.html" }],
+  "crons": [
+    {
+      "path": "/api/reset-daily",
+      "schedule": "0 12 * * *"
+    }
+  ]
 }
