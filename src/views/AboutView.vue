@@ -6,14 +6,12 @@
       <v-row class="header-section" align="center" justify="center">
         <v-col cols="12" class="text-center">
           <h1 class="main-title">เทศบาลนครสมุย</h1>
-          <h2 class="subtitle">ระบบจัดคิวอัตโนมัติ</h2>
         </v-col>
       </v-row>
 
-      <!-- Main Content Section - Horizontal Layout -->
-      <v-row class="main-content" align="center" justify="center" no-gutters>
-        <!-- Left Side - Logo -->
-        <v-col cols="6" class="logo-section">
+      <!-- Logo Section -->
+      <v-row class="logo-row" align="center" justify="center">
+        <v-col cols="12" class="text-center">
           <v-img 
             src="@/assets/logosurat.png" 
             max-width="350px" 
@@ -21,20 +19,20 @@
             class="d-block mx-auto"
           ></v-img>
         </v-col>
+      </v-row>
 
-        <!-- Right Side - Main Button -->
-        <v-col cols="6" class="button-section">
-          <div class="button-container">
-            <v-btn 
-              class="main-queue-button" 
-              @click="getNewQueueTicket"
-              :disabled="isLoading"
-              elevation="8"
-              rounded="xl"
-            >
-              {{ isLoading ? 'กำลังออกบัตร...' : 'รับบัตรคิว' }}
-            </v-btn>
-          </div>
+      <!-- Button Section -->
+      <v-row class="button-row" align="center" justify="center">
+        <v-col cols="12" class="text-center">
+          <v-btn 
+            class="main-queue-button" 
+            @click="getNewQueueTicket"
+            :disabled="isLoading"
+            elevation="8"
+            rounded="xl"
+          >
+            {{ isLoading ? 'กำลังออกบัตร...' : 'รับบัตรคิว' }}
+          </v-btn>
         </v-col>
       </v-row>
     </div>
@@ -126,8 +124,8 @@ export default {
 }
 
 .header-section {
-  height: 25vh;
-  margin-bottom: 2rem;
+  height: 20vh;
+  margin-bottom: 1rem;
 }
 
 .main-title {
@@ -138,31 +136,13 @@ export default {
   text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
 }
 
-.subtitle {
-  font-size: 1.8rem !important;
-  color: #666;
-  font-weight: normal;
+.logo-row {
+  height: 40vh;
+  margin-bottom: 1rem;
 }
 
-.main-content {
-  height: 60vh;
-  padding: 0 2rem;
-}
-
-.logo-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.button-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.button-container {
-  text-align: center;
+.button-row {
+  height: 30vh;
 }
 
 .main-queue-button {
