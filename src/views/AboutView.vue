@@ -217,7 +217,7 @@ export default {
   display: none;
 }
 
-/* Print styles */
+/* Print styles for 50mm thermal receipt */
 @media print {
   /* Hide everything by default */
   * {
@@ -236,89 +236,96 @@ export default {
     display: block !important;
   }
   
-  /* Remove page margins and headers/footers */
+  /* Custom page size for 50mm thermal receipt */
   @page {
     margin: 0;
     padding: 0;
-    size: A4;
+    size: 50mm auto; /* 50mm width, auto height */
   }
   
   body {
     margin: 0;
     padding: 0;
     background: white;
+    font-family: 'Courier New', monospace; /* Thermal printer font */
   }
   
-  /* Queue ticket styling */
+  /* Thermal receipt ticket styling */
   .queue-ticket {
-    width: 100%;
-    max-width: 300px;
-    margin: 20px auto;
-    padding: 20px;
-    border: 2px solid #333;
-    border-radius: 10px;
+    width: 50mm;
+    max-width: 50mm;
+    margin: 0;
+    padding: 2mm;
+    border: none;
+    border-radius: 0;
     text-align: center;
     background: white;
     page-break-inside: avoid;
+    font-size: 8pt;
+    line-height: 1.2;
   }
   
   .ticket-header {
-    border-bottom: 1px solid #ddd;
-    padding-bottom: 15px;
-    margin-bottom: 15px;
+    border-bottom: 1px dashed #333;
+    padding-bottom: 2mm;
+    margin-bottom: 2mm;
   }
   
   .ticket-logo {
-    width: 60px;
-    height: 60px;
-    margin-bottom: 10px;
+    width: 15mm;
+    height: 15mm;
+    margin-bottom: 1mm;
   }
   
   .ticket-header h1 {
-    font-size: 18px;
-    margin: 5px 0;
+    font-size: 8pt;
+    margin: 1mm 0;
     color: #333;
+    font-weight: bold;
   }
   
   .ticket-header h2 {
-    font-size: 14px;
-    margin: 5px 0;
+    font-size: 7pt;
+    margin: 0.5mm 0;
     color: #666;
+    font-weight: normal;
   }
   
   .queue-number {
-    font-size: 72px;
+    font-size: 24pt;
     font-weight: bold;
-    color: #2196f3;
-    margin: 20px 0;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    color: #000;
+    margin: 3mm 0;
+    letter-spacing: 1pt;
   }
   
   .ticket-info {
-    margin: 15px 0;
-    font-size: 12px;
-    color: #555;
+    margin: 2mm 0;
+    font-size: 6pt;
+    color: #333;
+    line-height: 1.1;
   }
   
   .ticket-info p {
-    margin: 3px 0;
+    margin: 0.5mm 0;
   }
   
   .ticket-instructions {
-    border-top: 1px solid #ddd;
-    padding-top: 15px;
-    margin-top: 15px;
-    font-size: 11px;
+    border-top: 1px dashed #333;
+    padding-top: 2mm;
+    margin-top: 2mm;
+    font-size: 5pt;
     color: #666;
+    line-height: 1.1;
   }
   
   .ticket-instructions p {
-    margin: 3px 0;
+    margin: 0.5mm 0;
   }
   
   .ticket-footer {
-    margin-top: 15px;
-    font-size: 10px;
+    margin-top: 2mm;
+    font-size: 5pt;
     color: #888;
   }
 }
