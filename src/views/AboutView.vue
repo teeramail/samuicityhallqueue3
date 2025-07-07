@@ -13,7 +13,7 @@
       <v-row class="logo-row" align="center" justify="center">
         <v-col cols="12" class="text-center">
           <v-img 
-            src="@/assets/logosurat.png" 
+            src="@/assets/samuicity.webp" 
             max-width="350px" 
             max-height="350px" 
             class="d-block mx-auto"
