@@ -86,7 +86,6 @@
     <div class="print-only">
       <div v-if="newQueueTicket" class="queue-ticket">
         <div class="ticket-header">
-          <img src="@/assets/logosurat.png" alt="Logo" class="ticket-logo">
           <h1>เทศบาลนครสมุย</h1>
           <h2>บัตรคิว</h2>
         </div>
@@ -97,19 +96,8 @@
           </div>
           
           <div class="ticket-info">
-            <p>วันที่: {{ newQueueTicket.date }}</p>
-            <p>เวลา: {{ newQueueTicket.time }}</p>
-            <p>หมายเลขบัตร: {{ newQueueTicket.ticketId }}</p>
+            <p>วันที่ {{ newQueueTicket.date }}</p>
           </div>
-          
-          <div class="ticket-instructions">
-            <p>กรุณารอเรียกคิวตามลำดับ</p>
-            <p>Please wait for your number to be called</p>
-          </div>
-        </div>
-        
-        <div class="ticket-footer">
-          <p>ขอบคุณที่ใช้บริการ</p>
         </div>
       </div>
     </div>
@@ -271,12 +259,6 @@ export default {
     margin-bottom: 2mm;
   }
   
-  .ticket-logo {
-    width: 15mm;
-    height: 15mm;
-    margin-bottom: 1mm;
-  }
-  
   .ticket-header h1 {
     font-size: 8pt;
     margin: 1mm 0;
@@ -308,25 +290,6 @@ export default {
   
   .ticket-info p {
     margin: 0.5mm 0;
-  }
-  
-  .ticket-instructions {
-    border-top: 1px dashed #333;
-    padding-top: 2mm;
-    margin-top: 2mm;
-    font-size: 5pt;
-    color: #666;
-    line-height: 1.1;
-  }
-  
-  .ticket-instructions p {
-    margin: 0.5mm 0;
-  }
-  
-  .ticket-footer {
-    margin-top: 2mm;
-    font-size: 5pt;
-    color: #888;
   }
 }
 </style>
