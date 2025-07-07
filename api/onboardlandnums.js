@@ -19,73 +19,75 @@ export default async function handler(req, res) {
       return res.status(200).json(onboardlandnums);
 
     } else if (req.method === 'PUT') {
-      // GLOBAL QUEUE SYSTEM: Increment global counter and update ALL onboardshows
-      console.log('📝 Request body:', req.body);
+      // OPTIMIZED GLOBAL QUEUE SYSTEM: Fast increment with minimal operations
       const { idshow, idshowtype, idshowtext } = req.body;
 
-      if (!idshow || !idshowtype) {
-        return res.status(400).json({ error: 'idshow and idshowtype are required' });
+      if (!idshowtype) {
+        return res.status(400).json({ error: 'idshowtype is required' });
       }
 
       try {
-        // Step 1: Get and increment global counter (onboardlandnums)
-        console.log('🌐 Incrementing GLOBAL queue counter');
+        console.log(`🚀 Fast queue increment for counter ${idshowtype}`);
         
+        // Step 1: Increment global counter (optimized - single operation)
         const landnums = await kvDatabase.findAll('onboardlandnums');
-        let globalCounter;
+        let newGlobalQueueNumber;
         
         if (landnums.length === 0) {
           // Create initial global counter
-          globalCounter = await kvDatabase.upsert('onboardlandnums', '1', { numland: 1 });
+          const globalCounter = await kvDatabase.upsert('onboardlandnums', '1', { numland: 1 });
+          newGlobalQueueNumber = 1;
         } else {
-          // Increment existing global counter
-          globalCounter = await kvDatabase.increment('onboardlandnums', '1', 'numland', 1);
+          // Fast increment - single atomic operation
+          const globalCounter = await kvDatabase.increment('onboardlandnums', '1', 'numland', 1);
+          newGlobalQueueNumber = globalCounter.numland;
         }
 
-        const newGlobalQueueNumber = globalCounter.numland;
-        console.log(`📈 Global queue counter incremented to: ${newGlobalQueueNumber}`);
+        console.log(`⚡ Global queue: ${newGlobalQueueNumber}`);
 
-        // Step 2: Update ALL onboardshows with the same global queue number
-        console.log('🔄 Updating ALL onboardshows with global queue number');
+        // Step 2: Batch update ALL onboardshows (optimized with Promise.all)
         const allOnboardshows = await kvDatabase.findAll('onboardshows');
         
+        // Parallel updates for maximum speed
         const updatePromises = allOnboardshows.map(async (show) => {
           const showDocId = show._key.split(':')[1];
-          return await kvDatabase.setField('onboardshows', showDocId, 'numbershow', newGlobalQueueNumber);
+          return kvDatabase.setField('onboardshows', showDocId, 'numbershow', newGlobalQueueNumber);
         });
 
         await Promise.all(updatePromises);
-        console.log(`✅ Updated ${allOnboardshows.length} onboardshows with global queue number ${newGlobalQueueNumber}`);
 
-        // Step 3: Update the specific onboardland that called this (for display purposes)
-        console.log(`📝 Updating onboardland ${idshow} for display`);
-        const onboardland = await kvDatabase.findOneByField('onboardlands', 'idshow', parseInt(idshow));
-        
-        if (!onboardland) {
-          return res.status(404).json({ error: `Onboardland with idshow ${idshow} not found` });
+        // Step 3: Quick update onboardland (only if idshow provided)
+        if (idshow) {
+          const onboardland = await kvDatabase.findOneByField('onboardlands', 'idshow', parseInt(idshow));
+          
+          if (onboardland) {
+            const landDocId = onboardland._key.split(':')[1];
+            
+            // Batch update for efficiency
+            const landUpdates = [
+              kvDatabase.setField('onboardlands', landDocId, 'numbershow', newGlobalQueueNumber),
+              kvDatabase.setField('onboardlands', landDocId, 'qcall', false)
+            ];
+            
+            if (idshowtext) {
+              landUpdates.push(kvDatabase.setField('onboardlands', landDocId, 'ab', idshowtext));
+            }
+            
+            await Promise.all(landUpdates);
+          }
         }
 
-        // Update onboardlands with new global queue number, reset qcall, and set ab
-        const landDocId = onboardland._key.split(':')[1];
-        
-        await kvDatabase.setField('onboardlands', landDocId, 'numbershow', newGlobalQueueNumber);
-        await kvDatabase.setField('onboardlands', landDocId, 'qcall', false);
-        if (idshowtext) {
-          await kvDatabase.setField('onboardlands', landDocId, 'ab', idshowtext);
-        }
+        console.log(`✅ Fast update complete: Queue ${newGlobalQueueNumber}, Updated ${allOnboardshows.length} shows`);
 
-        console.log(`✅ Updated onboardland ${idshow} with global queue number: ${newGlobalQueueNumber}`);
-
+        // Minimal response for speed
         return res.status(200).json({ 
           success: true,
-          globalQueueNumber: newGlobalQueueNumber,
-          message: `Global queue advanced to ${newGlobalQueueNumber}`,
-          updatedOnboardshows: allOnboardshows.length,
-          updatedOnboardland: idshow
+          queue: newGlobalQueueNumber,
+          counter: idshowtype
         });
 
       } catch (error) {
-        console.error('❌ Error in global queue increment:', error);
+        console.error('❌ Fast increment error:', error);
         throw error;
       }
 
@@ -94,7 +96,7 @@ export default async function handler(req, res) {
     }
 
   } catch (error) {
-    console.error('❌ Error in onboardlandnums API:', error);
+    console.error('❌ API Error:', error);
     return res.status(500).json({ 
       error: 'Internal server error',
       message: error.message 

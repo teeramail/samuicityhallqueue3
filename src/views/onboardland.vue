@@ -1,78 +1,120 @@
 <template>
-  <div>
-    <h3>กดเรียกคิว</h3>
-    <input type="text" v-model="idFilter" placeholder="Filter by id (separate by comma)">
-    
-    <!-- Debug information -->
-    <div v-if="showDebugInfo" class="debug-info">
-      <small>
-        🐛 Debug: Total Reg: {{ totalRegistered }}, Current: {{ currentQueueNumber }}, 
-        Next: {{ nextQueueNumber }}, Waiting: {{ waitingCount }}
-        <br>Last update: {{ lastUpdateTime }}
-      </small>
+  <div class="counter-interface">
+    <!-- Clean header with counter info -->
+    <div class="header-section">
+      <h2 class="counter-title">🖥️ ช่องบริการ {{ counterId }}</h2>
+      <div class="queue-status">
+        <div class="current-queue">คิวปัจจุบัน: <span class="queue-number">{{ currentQueueNumber }}</span></div>
+        <div class="total-waiting">รอคิว: <span class="waiting-number">{{ waitingCount }}</span> คน</div>
+      </div>
     </div>
     
-    <div v-for="item in filteredUsers.sort((a, b) => a.idshow - b.idshow)" :key="item._id">
-      <v-card>
-        <v-card-actions>
-          <v-btn 
-            icon 
-            @click="increment(item)" 
-            :disabled="!canIncrement || isProcessing"
-            :color="isProcessing ? 'orange' : (canIncrement ? 'primary' : 'grey')"
-          >
-            <v-icon>{{ isProcessing ? 'mdi-loading mdi-spin' : 'mdi-arrow-up' }}</v-icon>
-          </v-btn>
-          <div>
-            <span :class="{ 'text-success': isProcessing }">{{ nextQueueNumber }}</span> 
-            ช่อง {{ item.idshow }} รอ {{ waitingCount }}
-            <div v-if="!canIncrement && totalRegistered > 0" class="text-caption text-error">
-              ไม่มีคิวรอ ({{ currentQueueNumber }}/{{ totalRegistered }})
-            </div>
-            <div v-if="totalRegistered === 0" class="text-caption text-warning">
-              ⚠️ ไม่มีคนลงทะเบียน
-            </div>
-            <div class="text-caption text-info">
-              🌐 Global: Serving {{ currentQueueNumber }}, Total {{ totalRegistered }}
+    <!-- Main action button -->
+    <div class="action-section">
+      <v-card class="queue-card" elevation="8">
+        <v-card-text class="text-center pa-6">
+          <div class="next-queue-display">
+            <div class="label">คิวถัดไป</div>
+            <div class="next-number" :class="{ 'processing': isProcessing }">
+              {{ nextQueueNumber }}
             </div>
           </div>
-          <v-btn 
-            icon 
-            @click="updateTimestamp(item)" 
-            :disabled="!volumeIconEnabled"
-            color="green"
+          
+          <v-btn
+            :color="buttonColor"
+            :size="'x-large'"
+            @click="callNextQueue"
+            :disabled="!canIncrement || isProcessing"
+            class="call-button"
+            :loading="isProcessing"
           >
-            <v-icon>mdi-volume-high</v-icon>
+            <v-icon :size="'large'" class="mr-2">
+              {{ isProcessing ? 'mdi-loading mdi-spin' : 'mdi-arrow-up-bold' }}
+            </v-icon>
+            {{ buttonText }}
           </v-btn>
-        </v-card-actions>
-        <v-card-text>{{ item.nameservice }}</v-card-text>
+          
+          <!-- Status messages -->
+          <div v-if="!canIncrement && totalRegistered > 0" class="status-message error">
+            ❌ ไม่มีคิวรอ ({{ currentQueueNumber }}/{{ totalRegistered }})
+          </div>
+          <div v-else-if="totalRegistered === 0" class="status-message warning">
+            ⚠️ ไม่มีคนลงทะเบียน
+          </div>
+          <div v-else class="status-message success">
+            ✅ พร้อมเรียกคิวถัดไป
+          </div>
+        </v-card-text>
       </v-card>
     </div>
     
-    <!-- Show connection status -->
-    <div v-if="!isConnected" class="connection-status">
-      🔄 กำลังเชื่อมต่อ... ({{ errorCount }} errors)
+    <!-- Quick actions -->
+    <div class="quick-actions">
+      <v-btn
+        color="orange"
+        variant="outlined"
+        @click="announceQueue"
+        :disabled="currentQueueNumber === 0"
+        class="action-btn"
+      >
+        <v-icon class="mr-1">mdi-volume-high</v-icon>
+        ประกาศคิว {{ currentQueueNumber }}
+      </v-btn>
+      
+      <v-btn
+        color="info"
+        variant="outlined"
+        @click="refreshData"
+        :loading="isRefreshing"
+        class="action-btn"
+      >
+        <v-icon class="mr-1">mdi-refresh</v-icon>
+        รีเฟรช
+      </v-btn>
+    </div>
+    
+    <!-- Global status bar -->
+    <div class="global-status">
+      <div class="status-item">
+        <span class="label">📊 ระบบทั้งหมด:</span>
+        <span class="value">กำลังให้บริการ {{ currentQueueNumber }} / ลงทะเบียนแล้ว {{ totalRegistered }}</span>
+      </div>
+      <div class="connection-indicator" :class="{ 'connected': isConnected, 'disconnected': !isConnected }">
+        {{ isConnected ? '🟢 เชื่อมต่อแล้ว' : '🔴 ขาดการเชื่อมต่อ' }}
+      </div>
+    </div>
+    
+    <!-- Debug info (only in development) -->
+    <div v-if="showDebugInfo" class="debug-panel">
+      <small>
+        🐛 Counter: {{ counterId }} | Current: {{ currentQueueNumber }} | Next: {{ nextQueueNumber }} | 
+        Total: {{ totalRegistered }} | Waiting: {{ waitingCount }} | 
+        Can increment: {{ canIncrement }} | Last update: {{ lastUpdateTime }}
+      </small>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, onMounted, ref, computed, onBeforeUnmount, watch } from "vue";
+import { defineProps, onMounted, ref, computed, onBeforeUnmount } from "vue";
 import axios from "axios";
 import { getApiUrl, API_CONFIG } from '@/config/api.js';
 
-const users = ref([]);
-const idFilter = ref('');
-const currentQueueNumber = ref(0); // Global queue number (same for all counters)
-const totalRegistered = ref(0); // Global total (sum of all registrations)
-const volumeIconEnabled = ref(false);
+// Reactive state
+const currentQueueNumber = ref(0);
+const totalRegistered = ref(0);
 const isProcessing = ref(false);
+const isRefreshing = ref(false);
 const isConnected = ref(true);
 const errorCount = ref(0);
 const lastUpdateTime = ref('');
-const showDebugInfo = ref(false); // Toggle for debugging
+const showDebugInfo = ref(false);
+
+// Cache for optimization
+let dataCache = null;
+let cacheTimestamp = 0;
+const CACHE_DURATION = 500; // 500ms cache
 let pollingInterval = null;
-let lastDataHash = '';
 
 const props = defineProps({
   idFilter: {
@@ -81,44 +123,45 @@ const props = defineProps({
   }
 });
 
-// Get the counter ID from props
 const counterId = parseInt(props.idFilter);
-idFilter.value = props.idFilter;
 
-// Calculate next queue number (current + 1)
-const nextQueueNumber = computed(() => {
-  return currentQueueNumber.value + 1;
-});
+// Computed properties
+const nextQueueNumber = computed(() => currentQueueNumber.value + 1);
 
-// Improved waiting count calculation with better validation
 const waitingCount = computed(() => {
   if (totalRegistered.value <= 0) return 0;
   if (currentQueueNumber.value <= 0) return totalRegistered.value;
-  
-  const waiting = totalRegistered.value - currentQueueNumber.value;
-  return Math.max(0, waiting);
+  return Math.max(0, totalRegistered.value - currentQueueNumber.value);
 });
 
-// Check if we can increment (next queue number should not exceed total registered)
 const canIncrement = computed(() => {
   return totalRegistered.value > 0 && 
          nextQueueNumber.value <= totalRegistered.value && 
          !isProcessing.value;
 });
 
-// Toggle debug info on component click
-const toggleDebug = () => {
-  showDebugInfo.value = !showDebugInfo.value;
-};
+const buttonColor = computed(() => {
+  if (isProcessing.value) return 'orange';
+  if (!canIncrement.value) return 'grey';
+  return 'success';
+});
 
+const buttonText = computed(() => {
+  if (isProcessing.value) return 'กำลังเรียกคิว...';
+  if (!canIncrement.value) return 'ไม่มีคิวรอ';
+  return 'เรียกคิวถัดไป';
+});
+
+// Lifecycle
 onMounted(async () => {
   await fetchData();
-  // Start adaptive polling - faster when active, slower when idle
-  startAdaptivePolling();
+  startOptimizedPolling();
   
-  // Add click listener for debug toggle (development helper)
+  // Debug toggle in development
   if (import.meta.env.DEV) {
-    document.addEventListener('dblclick', toggleDebug);
+    document.addEventListener('dblclick', () => {
+      showDebugInfo.value = !showDebugInfo.value;
+    });
   }
 });
 
@@ -126,198 +169,328 @@ onBeforeUnmount(() => {
   if (pollingInterval) {
     clearInterval(pollingInterval);
   }
-  if (import.meta.env.DEV) {
-    document.removeEventListener('dblclick', toggleDebug);
-  }
 });
 
-// Adaptive polling - adjusts speed based on activity
-function startAdaptivePolling() {
-  let pollInterval = 2000; // Start with 2 seconds
+// Optimized polling with smart intervals
+function startOptimizedPolling() {
+  let interval = 1000; // Start with 1 second
   
   const poll = async () => {
-    try {
-      await fetchData();
-      
-      // If there was recent activity, poll faster
-      if (isProcessing.value) {
-        pollInterval = 500; // Fast polling during processing
-      } else if (errorCount.value > 0) {
-        pollInterval = 5000; // Slower polling if there are errors
-      } else {
-        pollInterval = 1500; // Normal polling
-      }
-      
-    } catch (error) {
-      pollInterval = 3000; // Slower on errors
+    await fetchData();
+    
+    // Adaptive interval based on activity and errors
+    if (isProcessing.value) {
+      interval = 300; // Very fast when processing
+    } else if (errorCount.value > 0) {
+      interval = 3000; // Slower on errors
+    } else if (waitingCount.value > 0) {
+      interval = 800; // Fast when people are waiting
+    } else {
+      interval = 2000; // Normal when idle
     }
     
-    // Schedule next poll
-    setTimeout(poll, pollInterval);
+    pollingInterval = setTimeout(poll, interval);
   };
   
-  // Start polling
   poll();
 }
 
+// Ultra-fast data fetching using optimized queue status endpoint
 async function fetchData() {
   try {
-    // Fetch data from multiple endpoints in parallel for faster response
-    const [onboardlandsRes, onboardshowsRes, regisshowsRes] = await Promise.all([
-      axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS)),
-      axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDSHOWS)),
-      axios.get(getApiUrl(API_CONFIG.ENDPOINTS.REGISSHOW))
-    ]);
-
-    const onboardlands = onboardlandsRes.data;
-    const onboardshows = onboardshowsRes.data;
-    const regisshows = regisshowsRes.data;
-
-    // Create a hash of the data to check if anything changed
-    const dataHash = JSON.stringify({ onboardshows, regisshows });
-    
-    // Only update if data actually changed (performance optimization)
-    if (dataHash !== lastDataHash) {
-      lastDataHash = dataHash;
-      
-      // GLOBAL QUEUE LOGIC: Use highest serving number across all counters
-      const maxCurrentlyServing = Math.max(...onboardshows.map(show => show.numbershow || 0), 0);
-      currentQueueNumber.value = maxCurrentlyServing;
-
-      // GLOBAL TOTAL: Sum all registered people across all counters
-      const globalTotal = regisshows.reduce((sum, regis) => sum + (regis.numbershow || 0), 0);
-      totalRegistered.value = globalTotal;
-
-      // Set the users ref to the onboardlands array (filtered by counter)
-      users.value = onboardlands;
-
-      console.log(`📊 Global Queue System - Counter ${counterId}: Currently serving ${currentQueueNumber.value} (globally), Total registered ${totalRegistered.value} (globally), Next queue ${nextQueueNumber.value}, Waiting ${waitingCount.value}, Can increment: ${canIncrement.value}`);
-      
-      lastUpdateTime.value = new Date().toLocaleTimeString();
+    // Check cache first
+    const now = Date.now();
+    if (dataCache && (now - cacheTimestamp) < CACHE_DURATION) {
+      return; // Use cached data
     }
     
-    volumeIconEnabled.value = true;
+    // Use super-fast queue status endpoint for instant updates
+    const statusRes = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.QUEUE_STATUS));
+    const status = statusRes.data;
+
+    // Update cache
+    dataCache = status;
+    cacheTimestamp = now;
+
+    // Direct assignment from optimized API response
+    if (currentQueueNumber.value !== status.current) {
+      currentQueueNumber.value = status.current;
+    }
+    if (totalRegistered.value !== status.total) {
+      totalRegistered.value = status.total;
+    }
+
+    lastUpdateTime.value = new Date().toLocaleTimeString();
     isConnected.value = true;
     errorCount.value = 0;
     
+    console.log(`⚡ Fast status: Current ${status.current}, Total ${status.total}, Waiting ${status.waiting}, Can increment: ${status.canIncrement}`);
+    
   } catch (error) {
-    console.error('❌ Error fetching data:', error);
+    console.error('❌ Error fetching status:', error);
     isConnected.value = false;
     errorCount.value++;
   }
 }
 
-async function increment(item) {
-  // Check maximum limit before proceeding
+// Main action - call next queue
+async function callNextQueue() {
   if (!canIncrement.value) {
-    console.log(`❌ Cannot increment: Queue ${nextQueueNumber.value} exceeds total registered ${totalRegistered.value}`);
+    console.log(`❌ Cannot call next queue: ${nextQueueNumber.value} exceeds total ${totalRegistered.value}`);
     return;
   }
 
-  // Disable buttons and show processing state
   isProcessing.value = true;
-  volumeIconEnabled.value = false;
-
-  // Optimistic update - immediately update UI for better user experience
-  const previousQueueNumber = currentQueueNumber.value;
+  const previousQueue = currentQueueNumber.value;
+  
+  // Optimistic update for instant UI feedback
   currentQueueNumber.value = nextQueueNumber.value;
 
   try {
-    console.log(`🔢 Advancing GLOBAL queue from ${previousQueueNumber} to ${currentQueueNumber.value} (max: ${totalRegistered.value})`);
+    console.log(`🚀 Fast calling queue ${currentQueueNumber.value} from counter ${counterId}`);
     
-    // Use the original Express logic: call onboardlandnums
-    // This will increment onboardshows globally and update onboardlands
+    // Simplified API call - direct to the increment endpoint
     await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDNUMS), {
-      idshow: item.idshow,        // The land/counter to update
-      idshowtype: counterId,      // The show counter to increment (this will be global)
-      idshowtext: 'A'             // The text identifier
+      idshow: 1, // Use a default land ID since all counters are equal
+      idshowtype: counterId,
+      idshowtext: 'A'
     });
 
-    // Force immediate refresh after increment for instant feedback
-    setTimeout(async () => {
-      await fetchData();
-    }, 100); // Small delay to ensure server has processed
+    // Clear cache to force fresh data
+    dataCache = null;
     
-    console.log(`✅ Global queue successfully advanced to ${currentQueueNumber.value}`);
+    // Quick refresh for immediate feedback
+    setTimeout(() => fetchData(), 50);
+    
+    console.log(`✅ Queue ${currentQueueNumber.value} called successfully`);
+    
   } catch (error) {
-    console.error('❌ Error incrementing queue:', error);
+    console.error('❌ Error calling queue:', error);
     
-    // Rollback optimistic update on error
-    currentQueueNumber.value = previousQueueNumber;
+    // Rollback on error
+    currentQueueNumber.value = previousQueue;
     
-    // Show error feedback
-    alert('เกิดข้อผิดพลาดในการเพิ่มคิว กรุณาลองอีกครั้ง');
+    alert('เกิดข้อผิดพลาด กรุณาลองอีกครั้ง');
   } finally {
-    // Re-enable buttons
     isProcessing.value = false;
-    volumeIconEnabled.value = true;
   }
 }
 
-const filteredUsers = computed(() => {
-  if (!idFilter.value) return users.value;
-  
-  const idArr = idFilter.value.split(',')
-    .map(id => {
-      const numId = Number(id);
-      return isNaN(numId) ? id : numId;
-    });
-  return users.value.filter(user => idArr.includes(user.idshow));
-});  
-
-async function updateTimestamp(item) {
-  console.log('📢 Calling queue for display:', item);
+// Announce current queue
+async function announceQueue() {
+  if (currentQueueNumber.value === 0) return;
   
   try {
-    // Set qcall = false to show this queue on OnTV (using qcall field)
+    // Call the announcement API
     await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS), {
-      idshow: item.idshow,
+      idshow: 1, // Default land since all counters are equal
       mode: 'setcall'
     });
     
-    // Also update timestamp
     await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.UPDATE_ATT), {
-      idshow: item.idshow,
+      idshow: 1,
     });
     
-    console.log('✅ Queue called and will appear on OnTV');
+    console.log(`📢 Announced queue ${currentQueueNumber.value}`);
     
-    // Force immediate refresh for instant feedback
-    setTimeout(async () => {
-      await fetchData();
-    }, 100);
+    // Quick refresh
+    setTimeout(() => fetchData(), 50);
+    
   } catch (error) {
-    console.error('❌ Error calling queue:', error);
-    alert('เกิดข้อผิดพลาดในการเรียกคิว กรุณาลองอีกครั้ง');
+    console.error('❌ Error announcing queue:', error);
+    alert('เกิดข้อผิดพลาดในการประกาศ');
   }
+}
+
+// Manual refresh
+async function refreshData() {
+  isRefreshing.value = true;
+  dataCache = null; // Clear cache
+  await fetchData();
+  isRefreshing.value = false;
 }
 
 </script>
 
 <style scoped>
-.debug-info {
+.counter-interface {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.header-section {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.counter-title {
+  color: #1976d2;
+  margin-bottom: 15px;
+  font-weight: 600;
+}
+
+.queue-status {
+  display: flex;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
+  padding: 15px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.current-queue, .total-waiting {
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+.queue-number, .waiting-number {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #1976d2;
+}
+
+.action-section {
+  margin-bottom: 30px;
+}
+
+.queue-card {
+  border-radius: 16px;
+  background: linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%);
+}
+
+.next-queue-display {
+  margin-bottom: 25px;
+}
+
+.label {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.next-number {
+  font-size: 4rem;
+  font-weight: bold;
+  color: #4caf50;
+  transition: all 0.3s ease;
+}
+
+.next-number.processing {
+  color: #ff9800;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.call-button {
+  width: 250px;
+  height: 60px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  border-radius: 30px;
+  margin: 20px 0;
+  transition: all 0.3s ease;
+}
+
+.call-button:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+}
+
+.status-message {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+.status-message.success {
+  background: #e8f5e8;
+  color: #2e7d32;
+}
+
+.status-message.warning {
+  background: #fff3e0;
+  color: #f57c00;
+}
+
+.status-message.error {
+  background: #ffebee;
+  color: #c62828;
+}
+
+.quick-actions {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.action-btn {
+  min-width: 140px;
+  border-radius: 8px;
+}
+
+.global-status {
+  background: #f5f5f5;
+  padding: 15px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.connection-indicator.connected {
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.connection-indicator.disconnected {
+  color: #f44336;
+  font-weight: 600;
+}
+
+.debug-panel {
   background: #f0f0f0;
   padding: 10px;
-  margin: 10px 0;
+  margin-top: 15px;
   border-radius: 5px;
   font-family: monospace;
+  font-size: 0.8rem;
 }
 
-.connection-status {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  background: rgba(255, 165, 0, 0.9);
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 0.8rem;
-  z-index: 1000;
+/* Responsive design */
+@media (max-width: 600px) {
+  .counter-interface {
+    padding: 15px;
+  }
+  
+  .queue-status {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .next-number {
+    font-size: 3rem;
+  }
+  
+  .call-button {
+    width: 100%;
+    font-size: 1.1rem;
+  }
+  
+  .quick-actions {
+    flex-direction: column;
+  }
+  
+  .global-status {
+    flex-direction: column;
+    gap: 8px;
+  }
 }
 </style>
-
-<script>
-const idFilter = 8 // <= sizes can be accessed in setup scope
-
-export default {}
-</script>
