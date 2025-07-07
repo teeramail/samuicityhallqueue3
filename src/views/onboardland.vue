@@ -48,6 +48,61 @@
       </v-card>
     </div>
     
+    <!-- Latest 4 Queue Numbers Table -->
+    <div class="queue-history-section">
+      <h4 class="history-title">📋 คิวล่าสุด (Latest Queues)</h4>
+      <v-table class="queue-history-table" density="compact">
+        <thead>
+          <tr class="table-header">
+            <th class="text-center">คิว</th>
+            <th class="text-center">ช่องบริการ</th>
+            <th class="text-center">เวลา</th>
+            <th class="text-center">สถานะ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr 
+            v-for="(queue, index) in recentQueues" 
+            :key="queue.id"
+            class="queue-row"
+            :class="{ 'current-serving': queue.number === currentQueueNumber }"
+          >
+            <td class="text-center queue-number-cell">
+              <span class="queue-badge" :class="{ 'active': queue.number === currentQueueNumber }">
+                {{ queue.number }}
+              </span>
+            </td>
+            <td class="text-center">{{ queue.counter }}</td>
+            <td class="text-center time-cell">{{ queue.time }}</td>
+            <td class="text-center">
+              <v-chip 
+                :color="queue.number === currentQueueNumber ? 'success' : 'grey'"
+                size="small"
+                variant="elevated"
+              >
+                {{ queue.number === currentQueueNumber ? 'กำลังให้บริการ' : 'เสร็จแล้ว' }}
+              </v-chip>
+            </td>
+          </tr>
+          <!-- Show empty rows if less than 4 queues -->
+          <tr 
+            v-for="emptyRow in (4 - recentQueues.length)" 
+            :key="'empty-' + emptyRow"
+            class="empty-row"
+          >
+            <td class="text-center">-</td>
+            <td class="text-center">-</td>
+            <td class="text-center">-</td>
+            <td class="text-center">
+              <v-chip color="grey-lighten-2" size="small" variant="outlined">
+                รอคิว
+              </v-chip>
+            </td>
+          </tr>
+        </tbody>
+      </v-table>
+    </div>
+
     <!-- Quick actions -->
     <div class="quick-actions">
       <v-btn
@@ -109,6 +164,7 @@ const isConnected = ref(true);
 const errorCount = ref(0);
 const lastUpdateTime = ref('');
 const showDebugInfo = ref(false);
+const recentQueues = ref([]);  // Store latest 4 queue numbers
 
 // Cache for optimization
 let dataCache = null;
@@ -154,6 +210,9 @@ const buttonText = computed(() => {
 
 // Lifecycle
 onMounted(async () => {
+  // Load queue history first for instant display
+  loadQueueHistory();
+  
   await fetchData();
   startOptimizedPolling();
   
@@ -233,6 +292,51 @@ async function fetchData() {
   }
 }
 
+// Function to add queue to history (keeps latest 4)
+function addToQueueHistory(queueNumber, counterNumber) {
+  const newQueue = {
+    id: Date.now(),
+    number: queueNumber,
+    counter: counterNumber,
+    time: new Date().toLocaleTimeString('th-TH', { 
+      hour: '2-digit', 
+      minute: '2-digit',
+      second: '2-digit' 
+    }),
+    timestamp: Date.now()
+  };
+  
+  // Add to beginning of array and keep only 4 items
+  recentQueues.value.unshift(newQueue);
+  if (recentQueues.value.length > 4) {
+    recentQueues.value.pop();
+  }
+  
+  // Save to localStorage for persistence
+  localStorage.setItem(`queueHistory_counter${counterId}`, JSON.stringify(recentQueues.value));
+  
+  console.log(`📋 Added queue ${queueNumber} to history for counter ${counterNumber}`);
+}
+
+// Function to load queue history from localStorage
+function loadQueueHistory() {
+  try {
+    const saved = localStorage.getItem(`queueHistory_counter${counterId}`);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      // Only keep entries from today
+      const today = new Date().toDateString();
+      recentQueues.value = parsed.filter(queue => {
+        const queueDate = new Date(queue.timestamp).toDateString();
+        return queueDate === today;
+      }).slice(0, 4); // Keep only latest 4
+    }
+  } catch (error) {
+    console.log('📋 No previous queue history found');
+    recentQueues.value = [];
+  }
+}
+
 // Main action - call next queue
 async function callNextQueue() {
   if (!canIncrement.value) {
@@ -242,12 +346,13 @@ async function callNextQueue() {
 
   isProcessing.value = true;
   const previousQueue = currentQueueNumber.value;
+  const newQueueNumber = nextQueueNumber.value;
   
   // Optimistic update for instant UI feedback
-  currentQueueNumber.value = nextQueueNumber.value;
+  currentQueueNumber.value = newQueueNumber;
 
   try {
-    console.log(`🚀 Fast calling queue ${currentQueueNumber.value} from counter ${counterId}`);
+    console.log(`🚀 Fast calling queue ${newQueueNumber} from counter ${counterId}`);
     
     // Simplified API call - direct to the increment endpoint
     await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDNUMS), {
@@ -256,13 +361,16 @@ async function callNextQueue() {
       idshowtext: 'A'
     });
 
+    // Add to queue history immediately for instant display
+    addToQueueHistory(newQueueNumber, counterId);
+
     // Clear cache to force fresh data
     dataCache = null;
     
     // Quick refresh for immediate feedback
     setTimeout(() => fetchData(), 50);
     
-    console.log(`✅ Queue ${currentQueueNumber.value} called successfully`);
+    console.log(`✅ Queue ${newQueueNumber} called successfully and added to history`);
     
   } catch (error) {
     console.error('❌ Error calling queue:', error);
@@ -455,6 +563,94 @@ async function refreshData() {
   font-weight: 600;
 }
 
+.queue-history-section {
+  margin-bottom: 25px;
+}
+
+.history-title {
+  color: #1976d2;
+  font-weight: 600;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.queue-history-table {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.table-header {
+  background: linear-gradient(135deg, #1976d2 0%, #42a5f5 100%);
+}
+
+.table-header th {
+  color: white !important;
+  font-weight: 600;
+  padding: 12px 8px;
+  font-size: 0.9rem;
+}
+
+.queue-row {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.queue-row:hover {
+  background-color: #f5f5f5;
+}
+
+.queue-row.current-serving {
+  background: linear-gradient(135deg, #e8f5e8 0%, #f1f8e9 100%);
+  animation: pulse-row 2s infinite;
+}
+
+@keyframes pulse-row {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.9; }
+}
+
+.queue-number-cell {
+  padding: 8px;
+}
+
+.queue-badge {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  border-radius: 50%;
+  background: #e0e0e0;
+  color: #666;
+  font-weight: bold;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+}
+
+.queue-badge.active {
+  background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
+  color: white;
+  box-shadow: 0 4px 12px rgba(76, 175, 80, 0.3);
+  transform: scale(1.1);
+}
+
+.time-cell {
+  font-family: monospace;
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.empty-row {
+  opacity: 0.5;
+  background: #fafafa;
+}
+
+.empty-row td {
+  padding: 12px 8px;
+  color: #bbb;
+  font-style: italic;
+}
+
 .debug-panel {
   background: #f0f0f0;
   padding: 10px;
@@ -491,6 +687,31 @@ async function refreshData() {
   .global-status {
     flex-direction: column;
     gap: 8px;
+  }
+  
+  /* Queue history table responsive */
+  .table-header th {
+    padding: 8px 4px;
+    font-size: 0.8rem;
+  }
+  
+  .queue-badge {
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    font-size: 1rem;
+  }
+  
+  .time-cell {
+    font-size: 0.75rem;
+  }
+  
+  .queue-row td {
+    padding: 6px 4px;
+  }
+  
+  .empty-row td {
+    padding: 8px 4px;
   }
 }
 </style>
