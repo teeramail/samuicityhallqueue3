@@ -18,8 +18,58 @@ export default async function handler(req, res) {
       console.log('📊 Regisshows data:', regisshows);
       return res.status(200).json(regisshows);
 
+    } else if (req.method === 'POST') {
+      // Register for new queue (increment regisshow numbershow)
+      console.log('📝 POST Request body:', req.body);
+      const { idshow, mode } = req.body;
+
+      if (!idshow) {
+        console.log('❌ idshow is missing from request');
+        return res.status(400).json({ error: 'idshow is required' });
+      }
+
+      if (mode === 'register') {
+        console.log('🎫 Registering new queue ticket for idshow:', idshow);
+
+        // Convert idshow to number for consistent comparison
+        const idshowNum = parseInt(idshow);
+        
+        // Find the document by idshow
+        let doc = await kvDatabase.findOneByField('regisshows', 'idshow', idshowNum);
+        if (!doc) {
+          doc = await kvDatabase.findOneByField('regisshows', 'idshow', idshow);
+        }
+        if (!doc) {
+          doc = await kvDatabase.findOneByField('regisshows', 'idshow', idshowNum.toString());
+        }
+        
+        if (!doc) {
+          console.log('❌ Document not found for queue registration');
+          return res.status(404).json({ 
+            error: `Queue type ${idshow} not found`,
+            success: false
+          });
+        }
+
+        console.log('✅ Found queue type document:', doc);
+
+        // Extract document ID and increment numbershow
+        const documentId = doc._key.split(':')[1];
+        const updatedDoc = await kvDatabase.increment('regisshows', documentId, 'numbershow', 1);
+        
+        console.log('✅ New queue ticket registered:', updatedDoc);
+        return res.status(200).json({
+          success: true,
+          queueNumber: updatedDoc.numbershow,
+          idshow: updatedDoc.idshow,
+          message: 'Queue ticket registered successfully'
+        });
+      }
+
+      return res.status(400).json({ error: 'Invalid mode. Use mode: "register"' });
+
     } else if (req.method === 'PUT') {
-      // Increment regisshow numbershow
+      // Increment regisshow numbershow (legacy endpoint)
       console.log('📝 PUT Request body:', req.body);
       const { idshow } = req.body;
 
