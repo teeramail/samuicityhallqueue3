@@ -53,8 +53,8 @@ export default async function handler(req, res) {
       let updatedDoc;
 
       if (mode === 'setcall') {
-        // Set callonboard to 1 AND copy current queue number from onboardshows
-        console.log('📢 Setting callonboard = 1 and copying current queue number');
+        // Set qcall to false (following original Express logic) AND copy current queue number from onboardshows
+        console.log('📢 Setting qcall = false and copying current queue number');
         
         // First, get the current queue number from onboardshows
         const onboardshow = await kvDatabase.findOneByField('onboardshows', 'idshow', parseInt(idshow) || idshow);
@@ -65,11 +65,11 @@ export default async function handler(req, res) {
         console.log('📊 Current onboardshow:', onboardshow);
         const currentQueueNumber = onboardshow.numbershow || 0;
         
-        // Update both callonboard and numbershow
-        await kvDatabase.setField('onboardlands', documentId, 'callonboard', 1);
+        // Update both qcall and numbershow (following original Express updateatt logic)
+        await kvDatabase.setField('onboardlands', documentId, 'qcall', false);
         updatedDoc = await kvDatabase.setField('onboardlands', documentId, 'numbershow', currentQueueNumber);
         
-        console.log(`✅ Queue ${currentQueueNumber} for counter ${idshow} is now displayed on OnTV`);
+        console.log(`✅ Queue ${currentQueueNumber} for counter ${idshow} is now ready for display`);
       } else {
         // Default: increment numbershow
         updatedDoc = await kvDatabase.increment('onboardlands', documentId, 'numbershow', 1);

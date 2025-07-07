@@ -24,11 +24,11 @@ import { getApiUrl, API_CONFIG } from '@/config/api.js';
 const items = ref([]);
 
 const fetchItems = async () => {
-  // Get all onboardlands and filter for called queues (callonboard = 1)
+  // Get all onboardlands and filter for called queues (qcall = false means ready to display)
   const response = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS));
-  // Only show items that are currently being called (callonboard = 1)
-  items.value = response.data.filter(item => item.callonboard === 1);
-  console.log('📺 OnTV displaying called queues:', items.value);
+  // Only show items that are ready to be displayed (qcall = false, following original Express logic)
+  items.value = response.data.filter(item => item.qcall === false);
+  console.log('📺 OnTV displaying called queues (qcall=false):', items.value);
 };
 
 onMounted(() => {

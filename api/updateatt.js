@@ -8,7 +8,7 @@ export default async function handler(req, res) {
 
   try {
     if (req.method === 'PUT') {
-      // Update timestamp for a specific record
+      // Set qcall to false (following original Express updateatt logic)
       console.log('📝 Request body:', req.body);
       const { idshow } = req.body;
 
@@ -17,16 +17,19 @@ export default async function handler(req, res) {
       }
 
       // Find the document by idshow in onboardlands
-      const doc = await kvDatabase.findOneByField('onboardlands', 'idshow', idshow);
+      const doc = await kvDatabase.findOneByField('onboardlands', 'idshow', parseInt(idshow));
       
       if (!doc) {
         return res.status(404).json({ error: 'Document not found' });
       }
 
-      // Update the timestamp (updatedAt)
-      const updatedDoc = await kvDatabase.setField('onboardlands', doc.idland, 'updatedAt', new Date().toISOString());
+      // Extract document ID from key
+      const documentId = doc._key.split(':')[1];
+
+      // Set qcall to false (original Express logic: makes queue ready for display)
+      const updatedDoc = await kvDatabase.setField('onboardlands', documentId, 'qcall', false);
       
-      console.log('✅ Updated timestamp for document:', updatedDoc);
+      console.log('✅ Set qcall=false for queue display:', updatedDoc);
       return res.status(200).json(updatedDoc);
 
     } else {

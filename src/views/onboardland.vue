@@ -86,9 +86,12 @@ async function increment(item) {
     const currentDifference = counterData ? counterData.difference : 0;
 
     if (currentDifference >= 1) {
-      // Increment the queue number in onboardshows for this counter
-      await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDSHOWS), {
-        idshow: counterId
+      // Use the original Express logic: call onboardlandnums
+      // This will increment onboardshows first, then update onboardlands
+      await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDNUMS), {
+        idshow: item.idshow,        // The land/counter to update
+        idshowtype: counterId,      // The show counter to increment
+        idshowtext: 'A'             // The text identifier
       });
 
       // Refresh data to show updated numbers
@@ -117,7 +120,7 @@ const filteredUsers = computed(() => {
 async function updateTimestamp(item) {
   console.log('📢 Calling queue for display:', item);
   
-  // Set callonboard = 1 to show this queue on OnTV
+  // Set callonboard = 1 to show this queue on OnTV (using qcall field)
   await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS), {
     idshow: item.idshow,
     mode: 'setcall'
