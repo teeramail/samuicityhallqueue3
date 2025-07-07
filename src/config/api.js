@@ -14,6 +14,7 @@ export const API_CONFIG = {
     COMBINE_RECORD: '/combine-record',
     OLDEST_RECORD: '/oldest-record',
     UPDATE_ATT: '/updateatt',
+    INIT_DATA: '/init-data',
     VIEW_ALL_DATA: '/view-all-data'
   }
 };
