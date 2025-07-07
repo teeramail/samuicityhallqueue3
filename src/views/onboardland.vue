@@ -19,6 +19,9 @@
             <div v-if="!canIncrement" class="text-caption text-error">
               ไม่มีคิวรอ ({{ totalRegistered }}/{{ totalRegistered }})
             </div>
+            <div class="text-caption text-info">
+              🌐 Global: Currently serving {{ currentQueueNumber }}, Total {{ totalRegistered }}
+            </div>
           </div>
           <v-btn 
             icon 
@@ -36,16 +39,17 @@
 </template>
 
 <script setup>
-import { defineProps, onMounted, ref, computed } from "vue";
+import { defineProps, onMounted, ref, computed, onBeforeUnmount } from "vue";
 import axios from "axios";
 import { getApiUrl, API_CONFIG } from '@/config/api.js';
 
 const users = ref([]);
 const idFilter = ref('');
-const currentQueueNumber = ref(0);
-const totalRegistered = ref(0);
+const currentQueueNumber = ref(0); // Global queue number (same for all counters)
+const totalRegistered = ref(0); // Global total (sum of all registrations)
 const volumeIconEnabled = ref(false);
 const isProcessing = ref(false);
+let pollingInterval = null;
 
 const props = defineProps({
   idFilter: {
@@ -75,8 +79,14 @@ const canIncrement = computed(() => {
 
 onMounted(async () => {
   await fetchData();
-  // Start real-time polling for faster updates
-  setInterval(fetchData, 2000); // Poll every 2 seconds for real-time feel
+  // Start fast real-time polling for responsive updates
+  pollingInterval = setInterval(fetchData, 500); // Very fast polling (500ms)
+});
+
+onBeforeUnmount(() => {
+  if (pollingInterval) {
+    clearInterval(pollingInterval);
+  }
 });
 
 async function fetchData() {
@@ -92,22 +102,18 @@ async function fetchData() {
     const onboardshows = onboardshowsRes.data;
     const regisshows = regisshowsRes.data;
 
-    // Find current counter's serving number
-    const currentShow = onboardshows.find(show => show.idshow === counterId);
-    if (currentShow) {
-      currentQueueNumber.value = currentShow.numbershow || 0;
-    }
+    // GLOBAL QUEUE LOGIC: Use highest serving number across all counters
+    const maxCurrentlyServing = Math.max(...onboardshows.map(show => show.numbershow || 0), 0);
+    currentQueueNumber.value = maxCurrentlyServing;
 
-    // Find total registered people for this counter
-    const currentRegis = regisshows.find(regis => regis.idshow === counterId);
-    if (currentRegis) {
-      totalRegistered.value = currentRegis.numbershow || 0;
-    }
+    // GLOBAL TOTAL: Sum all registered people across all counters
+    const globalTotal = regisshows.reduce((sum, regis) => sum + (regis.numbershow || 0), 0);
+    totalRegistered.value = globalTotal;
 
     // Set the users ref to the onboardlands array (filtered by counter)
     users.value = onboardlands;
 
-    console.log(`📊 Counter ${counterId}: Currently serving ${currentQueueNumber.value}, Total registered ${totalRegistered.value}, Next queue ${nextQueueNumber.value}, Waiting ${waitingCount.value}, Can increment: ${canIncrement.value}`);
+    console.log(`📊 Global Queue System - Counter ${counterId}: Currently serving ${currentQueueNumber.value} (globally), Total registered ${totalRegistered.value} (globally), Next queue ${nextQueueNumber.value}, Waiting ${waitingCount.value}, Can increment: ${canIncrement.value}`);
     
     volumeIconEnabled.value = true;
   } catch (error) {
@@ -131,19 +137,20 @@ async function increment(item) {
   currentQueueNumber.value = nextQueueNumber.value;
 
   try {
-    console.log(`🔢 Advancing queue from ${previousQueueNumber} to ${currentQueueNumber.value} (max: ${totalRegistered.value})`);
+    console.log(`🔢 Advancing GLOBAL queue from ${previousQueueNumber} to ${currentQueueNumber.value} (max: ${totalRegistered.value})`);
     
     // Use the original Express logic: call onboardlandnums
+    // This will increment onboardshows globally and update onboardlands
     await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDNUMS), {
       idshow: item.idshow,        // The land/counter to update
-      idshowtype: counterId,      // The show counter to increment
+      idshowtype: counterId,      // The show counter to increment (this will be global)
       idshowtext: 'A'             // The text identifier
     });
 
-    // Fetch fresh data to confirm the update
+    // Immediate refresh after increment for instant feedback
     await fetchData();
     
-    console.log(`✅ Queue successfully advanced to ${currentQueueNumber.value}`);
+    console.log(`✅ Global queue successfully advanced to ${currentQueueNumber.value}`);
   } catch (error) {
     console.error('❌ Error incrementing queue:', error);
     
@@ -186,6 +193,9 @@ async function updateTimestamp(item) {
     });
     
     console.log('✅ Queue called and will appear on OnTV');
+    
+    // Immediate refresh for instant feedback
+    await fetchData();
   } catch (error) {
     console.error('❌ Error calling queue:', error);
     alert('เกิดข้อผิดพลาดในการเรียกคิว กรุณาลองอีกครั้ง');
