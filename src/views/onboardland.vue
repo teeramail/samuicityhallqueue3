@@ -5,11 +5,27 @@
     <div v-for="item in filteredUsers.sort((a, b) => a.idshow - b.idshow)" :key="item._id">
       <v-card>
         <v-card-actions>
-          <v-btn icon @click="increment(item)">
-            <v-icon>mdi-arrow-up</v-icon>
+          <v-btn 
+            icon 
+            @click="increment(item)" 
+            :disabled="!canIncrement || isProcessing"
+            :color="isProcessing ? 'orange' : (canIncrement ? 'primary' : 'grey')"
+          >
+            <v-icon>{{ isProcessing ? 'mdi-loading mdi-spin' : 'mdi-arrow-up' }}</v-icon>
           </v-btn>
-          <div>{{ nextQueueNumber }} ช่อง {{ item.idshow }}  รอ {{ waitingCount }}</div> 
-          <v-btn icon @click="updateTimestamp(item)" :disabled="!volumeIconEnabled">
+          <div>
+            <span :class="{ 'text-success': isProcessing }">{{ nextQueueNumber }}</span> 
+            ช่อง {{ item.idshow }} รอ {{ waitingCount }}
+            <div v-if="!canIncrement" class="text-caption text-error">
+              ไม่มีคิวรอ ({{ totalRegistered }}/{{ totalRegistered }})
+            </div>
+          </div>
+          <v-btn 
+            icon 
+            @click="updateTimestamp(item)" 
+            :disabled="!volumeIconEnabled"
+            color="green"
+          >
             <v-icon>mdi-volume-high</v-icon>
           </v-btn>
         </v-card-actions>
@@ -29,6 +45,7 @@ const idFilter = ref('');
 const currentQueueNumber = ref(0);
 const totalRegistered = ref(0);
 const volumeIconEnabled = ref(false);
+const isProcessing = ref(false);
 
 const props = defineProps({
   idFilter: {
@@ -51,23 +68,29 @@ const waitingCount = computed(() => {
   return Math.max(0, totalRegistered.value - nextQueueNumber.value);
 });
 
+// Check if we can increment (next queue number should not exceed total registered)
+const canIncrement = computed(() => {
+  return nextQueueNumber.value <= totalRegistered.value && !isProcessing.value;
+});
+
 onMounted(async () => {
   await fetchData();
+  // Start real-time polling for faster updates
+  setInterval(fetchData, 2000); // Poll every 2 seconds for real-time feel
 });
 
 async function fetchData() {
   try {
-    // Fetch data from onboardlands endpoint
-    const res1 = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS));
-    const onboardlands = res1.data;
+    // Fetch data from multiple endpoints in parallel for faster response
+    const [onboardlandsRes, onboardshowsRes, regisshowsRes] = await Promise.all([
+      axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS)),
+      axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDSHOWS)),
+      axios.get(getApiUrl(API_CONFIG.ENDPOINTS.REGISSHOW))
+    ]);
 
-    // Fetch data from onboardshows endpoint (current serving numbers)
-    const res2 = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDSHOWS));
-    const onboardshows = res2.data;
-
-    // Get registration data to count total people
-    const res3 = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.REGISSHOW));
-    const regisshows = res3.data;
+    const onboardlands = onboardlandsRes.data;
+    const onboardshows = onboardshowsRes.data;
+    const regisshows = regisshowsRes.data;
 
     // Find current counter's serving number
     const currentShow = onboardshows.find(show => show.idshow === counterId);
@@ -84,7 +107,7 @@ async function fetchData() {
     // Set the users ref to the onboardlands array (filtered by counter)
     users.value = onboardlands;
 
-    console.log(`📊 Counter ${counterId}: Currently serving ${currentQueueNumber.value}, Total registered ${totalRegistered.value}, Next queue ${nextQueueNumber.value}, Waiting ${waitingCount.value}`);
+    console.log(`📊 Counter ${counterId}: Currently serving ${currentQueueNumber.value}, Total registered ${totalRegistered.value}, Next queue ${nextQueueNumber.value}, Waiting ${waitingCount.value}, Can increment: ${canIncrement.value}`);
     
     volumeIconEnabled.value = true;
   } catch (error) {
@@ -93,30 +116,45 @@ async function fetchData() {
 }
 
 async function increment(item) {
-  // Disable volume button during increment
+  // Check maximum limit before proceeding
+  if (!canIncrement.value) {
+    console.log(`❌ Cannot increment: Queue ${nextQueueNumber.value} exceeds total registered ${totalRegistered.value}`);
+    return;
+  }
+
+  // Disable buttons and show processing state
+  isProcessing.value = true;
   volumeIconEnabled.value = false;
 
-  try {
-    // Check if there are people waiting (if next queue number <= total registered)
-    if (nextQueueNumber.value <= totalRegistered.value) {
-      console.log(`🔢 Advancing queue from ${currentQueueNumber.value} to ${nextQueueNumber.value}`);
-      
-      // Use the original Express logic: call onboardlandnums
-      // This will increment onboardshows first, then update onboardlands
-      await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDNUMS), {
-        idshow: item.idshow,        // The land/counter to update
-        idshowtype: counterId,      // The show counter to increment
-        idshowtext: 'A'             // The text identifier
-      });
+  // Optimistic update - immediately update UI for better user experience
+  const previousQueueNumber = currentQueueNumber.value;
+  currentQueueNumber.value = nextQueueNumber.value;
 
-      // Refresh data to show updated numbers
-      await fetchData();
-    } else {
-      console.log('No more people waiting in queue');
-      volumeIconEnabled.value = true;
-    }
+  try {
+    console.log(`🔢 Advancing queue from ${previousQueueNumber} to ${currentQueueNumber.value} (max: ${totalRegistered.value})`);
+    
+    // Use the original Express logic: call onboardlandnums
+    await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDNUMS), {
+      idshow: item.idshow,        // The land/counter to update
+      idshowtype: counterId,      // The show counter to increment
+      idshowtext: 'A'             // The text identifier
+    });
+
+    // Fetch fresh data to confirm the update
+    await fetchData();
+    
+    console.log(`✅ Queue successfully advanced to ${currentQueueNumber.value}`);
   } catch (error) {
-    console.error('Error incrementing queue:', error);
+    console.error('❌ Error incrementing queue:', error);
+    
+    // Rollback optimistic update on error
+    currentQueueNumber.value = previousQueueNumber;
+    
+    // Show error feedback
+    alert('เกิดข้อผิดพลาดในการเพิ่มคิว กรุณาลองอีกครั้ง');
+  } finally {
+    // Re-enable buttons
+    isProcessing.value = false;
     volumeIconEnabled.value = true;
   }
 }
@@ -135,18 +173,23 @@ const filteredUsers = computed(() => {
 async function updateTimestamp(item) {
   console.log('📢 Calling queue for display:', item);
   
-  // Set qcall = false to show this queue on OnTV (using qcall field)
-  await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS), {
-    idshow: item.idshow,
-    mode: 'setcall'
-  });
-  
-  // Also update timestamp
-  await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.UPDATE_ATT), {
-    idshow: item.idshow,
-  });
-  
-  console.log('✅ Queue called and will appear on OnTV');
+  try {
+    // Set qcall = false to show this queue on OnTV (using qcall field)
+    await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS), {
+      idshow: item.idshow,
+      mode: 'setcall'
+    });
+    
+    // Also update timestamp
+    await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.UPDATE_ATT), {
+      idshow: item.idshow,
+    });
+    
+    console.log('✅ Queue called and will appear on OnTV');
+  } catch (error) {
+    console.error('❌ Error calling queue:', error);
+    alert('เกิดข้อผิดพลาดในการเรียกคิว กรุณาลองอีกครั้ง');
+  }
 }
 
 </script>
