@@ -22,6 +22,7 @@
 <script setup>
 import { defineProps, onMounted, ref, computed } from "vue";
 import axios from "axios";
+import { getApiUrl, API_CONFIG } from '@/config/api.js';
 
 const users = ref([]);
 const idFilter = ref('');
@@ -40,11 +41,11 @@ idFilter.value = props.idFilter;
 
 onMounted(async () => {
   // Fetch data from onboardlands endpoint
-  const res1 = await axios.get("https://koh-samui.com:50200/onboardlands");
+  const res1 = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS));
   const onboardlands = res1.data;
 
   // Fetch data from onboardshows endpoint
-  const res2 = await axios.get("https://koh-samui.com:50200/onboardshows");
+  const res2 = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDSHOWS));
   const onboardshows = res2.data;
 
   // Find the object in the onboardshows array where idshow is equal to 2
@@ -67,18 +68,18 @@ async function increment(item) {
   // set the volumeIconEnabled value to false when increment button is clicked
   volumeIconEnabled.value = false;
 
-  const rescomb = await axios.get("https://koh-samui.com:50200/combine-record");
+  const rescomb = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.COMBINE_RECORD));
   specificDifference.value = rescomb.data.find(combine => combine.idshow === 1).difference;
 
   if (specificDifference.value >= 1) {
-    await axios.put("https://koh-samui.com:50200/onboardlandnums", {
+    await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDNUMS), {
       idshow: item.idshow,
       idshowtype: 1,
       idshowtext: 'A'
     });
-    const res = await axios.get("https://koh-samui.com:50200/onboardlands");
+    const res = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS));
     users.value = res.data;
-    const rescomb = await axios.get("https://koh-samui.com:50200/combine-record");
+    const rescomb = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.COMBINE_RECORD));
     specificDifference.value = rescomb.data.find(combine => combine.idshow === 1).difference;
     volumeIconEnabled.value = true;
   }
@@ -101,7 +102,7 @@ const filteredUsers = computed(() => {
 });  
 
 async function updateTimestamp(item) {
-  await axios.put("https://koh-samui.com:50200/updateatt", {
+  await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.UPDATE_ATT), {
     idshow: item.idshow,
    
   });

@@ -1,6 +1,7 @@
 <script setup>
 import { onMounted, ref  } from "vue";
 import axios from 'axios';
+import { getApiUrl, API_CONFIG } from '@/config/api.js';
 
 const audioEl = ref(null);
 const currentFileIndex = ref(0);
@@ -42,7 +43,7 @@ onMounted(() => {
 });
 
 function checkForNewFiles() {
-  axios.get('https://koh-samui.com:50200/oldest-record')
+  axios.get(getApiUrl(API_CONFIG.ENDPOINTS.OLDEST_RECORD))
     .then(response => {
       if (response.data && response.data.oldestRecord) {
         const numbershow = response.data.oldestRecord.numbershow.toString().split('');
