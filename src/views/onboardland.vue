@@ -2,6 +2,16 @@
   <div>
     <h3>กดเรียกคิว</h3>
     <input type="text" v-model="idFilter" placeholder="Filter by id (separate by comma)">
+    
+    <!-- Debug information -->
+    <div v-if="showDebugInfo" class="debug-info">
+      <small>
+        🐛 Debug: Total Reg: {{ totalRegistered }}, Current: {{ currentQueueNumber }}, 
+        Next: {{ nextQueueNumber }}, Waiting: {{ waitingCount }}
+        <br>Last update: {{ lastUpdateTime }}
+      </small>
+    </div>
+    
     <div v-for="item in filteredUsers.sort((a, b) => a.idshow - b.idshow)" :key="item._id">
       <v-card>
         <v-card-actions>
@@ -16,11 +26,14 @@
           <div>
             <span :class="{ 'text-success': isProcessing }">{{ nextQueueNumber }}</span> 
             ช่อง {{ item.idshow }} รอ {{ waitingCount }}
-            <div v-if="!canIncrement" class="text-caption text-error">
-              ไม่มีคิวรอ ({{ totalRegistered }}/{{ totalRegistered }})
+            <div v-if="!canIncrement && totalRegistered > 0" class="text-caption text-error">
+              ไม่มีคิวรอ ({{ currentQueueNumber }}/{{ totalRegistered }})
+            </div>
+            <div v-if="totalRegistered === 0" class="text-caption text-warning">
+              ⚠️ ไม่มีคนลงทะเบียน
             </div>
             <div class="text-caption text-info">
-              🌐 Global: Currently serving {{ currentQueueNumber }}, Total {{ totalRegistered }}
+              🌐 Global: Serving {{ currentQueueNumber }}, Total {{ totalRegistered }}
             </div>
           </div>
           <v-btn 
@@ -35,11 +48,16 @@
         <v-card-text>{{ item.nameservice }}</v-card-text>
       </v-card>
     </div>
+    
+    <!-- Show connection status -->
+    <div v-if="!isConnected" class="connection-status">
+      🔄 กำลังเชื่อมต่อ... ({{ errorCount }} errors)
+    </div>
   </div>
 </template>
 
 <script setup>
-import { defineProps, onMounted, ref, computed, onBeforeUnmount } from "vue";
+import { defineProps, onMounted, ref, computed, onBeforeUnmount, watch } from "vue";
 import axios from "axios";
 import { getApiUrl, API_CONFIG } from '@/config/api.js';
 
@@ -49,7 +67,12 @@ const currentQueueNumber = ref(0); // Global queue number (same for all counters
 const totalRegistered = ref(0); // Global total (sum of all registrations)
 const volumeIconEnabled = ref(false);
 const isProcessing = ref(false);
+const isConnected = ref(true);
+const errorCount = ref(0);
+const lastUpdateTime = ref('');
+const showDebugInfo = ref(false); // Toggle for debugging
 let pollingInterval = null;
+let lastDataHash = '';
 
 const props = defineProps({
   idFilter: {
@@ -67,27 +90,75 @@ const nextQueueNumber = computed(() => {
   return currentQueueNumber.value + 1;
 });
 
-// Calculate waiting count (total registered - next queue number)
+// Improved waiting count calculation with better validation
 const waitingCount = computed(() => {
-  return Math.max(0, totalRegistered.value - nextQueueNumber.value);
+  if (totalRegistered.value <= 0) return 0;
+  if (currentQueueNumber.value <= 0) return totalRegistered.value;
+  
+  const waiting = totalRegistered.value - currentQueueNumber.value;
+  return Math.max(0, waiting);
 });
 
 // Check if we can increment (next queue number should not exceed total registered)
 const canIncrement = computed(() => {
-  return nextQueueNumber.value <= totalRegistered.value && !isProcessing.value;
+  return totalRegistered.value > 0 && 
+         nextQueueNumber.value <= totalRegistered.value && 
+         !isProcessing.value;
 });
+
+// Toggle debug info on component click
+const toggleDebug = () => {
+  showDebugInfo.value = !showDebugInfo.value;
+};
 
 onMounted(async () => {
   await fetchData();
-  // Start fast real-time polling for responsive updates
-  pollingInterval = setInterval(fetchData, 500); // Very fast polling (500ms)
+  // Start adaptive polling - faster when active, slower when idle
+  startAdaptivePolling();
+  
+  // Add click listener for debug toggle (development helper)
+  if (import.meta.env.DEV) {
+    document.addEventListener('dblclick', toggleDebug);
+  }
 });
 
 onBeforeUnmount(() => {
   if (pollingInterval) {
     clearInterval(pollingInterval);
   }
+  if (import.meta.env.DEV) {
+    document.removeEventListener('dblclick', toggleDebug);
+  }
 });
+
+// Adaptive polling - adjusts speed based on activity
+function startAdaptivePolling() {
+  let pollInterval = 2000; // Start with 2 seconds
+  
+  const poll = async () => {
+    try {
+      await fetchData();
+      
+      // If there was recent activity, poll faster
+      if (isProcessing.value) {
+        pollInterval = 500; // Fast polling during processing
+      } else if (errorCount.value > 0) {
+        pollInterval = 5000; // Slower polling if there are errors
+      } else {
+        pollInterval = 1500; // Normal polling
+      }
+      
+    } catch (error) {
+      pollInterval = 3000; // Slower on errors
+    }
+    
+    // Schedule next poll
+    setTimeout(poll, pollInterval);
+  };
+  
+  // Start polling
+  poll();
+}
 
 async function fetchData() {
   try {
@@ -102,22 +173,37 @@ async function fetchData() {
     const onboardshows = onboardshowsRes.data;
     const regisshows = regisshowsRes.data;
 
-    // GLOBAL QUEUE LOGIC: Use highest serving number across all counters
-    const maxCurrentlyServing = Math.max(...onboardshows.map(show => show.numbershow || 0), 0);
-    currentQueueNumber.value = maxCurrentlyServing;
+    // Create a hash of the data to check if anything changed
+    const dataHash = JSON.stringify({ onboardshows, regisshows });
+    
+    // Only update if data actually changed (performance optimization)
+    if (dataHash !== lastDataHash) {
+      lastDataHash = dataHash;
+      
+      // GLOBAL QUEUE LOGIC: Use highest serving number across all counters
+      const maxCurrentlyServing = Math.max(...onboardshows.map(show => show.numbershow || 0), 0);
+      currentQueueNumber.value = maxCurrentlyServing;
 
-    // GLOBAL TOTAL: Sum all registered people across all counters
-    const globalTotal = regisshows.reduce((sum, regis) => sum + (regis.numbershow || 0), 0);
-    totalRegistered.value = globalTotal;
+      // GLOBAL TOTAL: Sum all registered people across all counters
+      const globalTotal = regisshows.reduce((sum, regis) => sum + (regis.numbershow || 0), 0);
+      totalRegistered.value = globalTotal;
 
-    // Set the users ref to the onboardlands array (filtered by counter)
-    users.value = onboardlands;
+      // Set the users ref to the onboardlands array (filtered by counter)
+      users.value = onboardlands;
 
-    console.log(`📊 Global Queue System - Counter ${counterId}: Currently serving ${currentQueueNumber.value} (globally), Total registered ${totalRegistered.value} (globally), Next queue ${nextQueueNumber.value}, Waiting ${waitingCount.value}, Can increment: ${canIncrement.value}`);
+      console.log(`📊 Global Queue System - Counter ${counterId}: Currently serving ${currentQueueNumber.value} (globally), Total registered ${totalRegistered.value} (globally), Next queue ${nextQueueNumber.value}, Waiting ${waitingCount.value}, Can increment: ${canIncrement.value}`);
+      
+      lastUpdateTime.value = new Date().toLocaleTimeString();
+    }
     
     volumeIconEnabled.value = true;
+    isConnected.value = true;
+    errorCount.value = 0;
+    
   } catch (error) {
-    console.error('Error fetching data:', error);
+    console.error('❌ Error fetching data:', error);
+    isConnected.value = false;
+    errorCount.value++;
   }
 }
 
@@ -147,8 +233,10 @@ async function increment(item) {
       idshowtext: 'A'             // The text identifier
     });
 
-    // Immediate refresh after increment for instant feedback
-    await fetchData();
+    // Force immediate refresh after increment for instant feedback
+    setTimeout(async () => {
+      await fetchData();
+    }, 100); // Small delay to ensure server has processed
     
     console.log(`✅ Global queue successfully advanced to ${currentQueueNumber.value}`);
   } catch (error) {
@@ -194,8 +282,10 @@ async function updateTimestamp(item) {
     
     console.log('✅ Queue called and will appear on OnTV');
     
-    // Immediate refresh for instant feedback
-    await fetchData();
+    // Force immediate refresh for instant feedback
+    setTimeout(async () => {
+      await fetchData();
+    }, 100);
   } catch (error) {
     console.error('❌ Error calling queue:', error);
     alert('เกิดข้อผิดพลาดในการเรียกคิว กรุณาลองอีกครั้ง');
@@ -203,6 +293,28 @@ async function updateTimestamp(item) {
 }
 
 </script>
+
+<style scoped>
+.debug-info {
+  background: #f0f0f0;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  font-family: monospace;
+}
+
+.connection-status {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(255, 165, 0, 0.9);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  z-index: 1000;
+}
+</style>
 
 <script>
 const idFilter = 8 // <= sizes can be accessed in setup scope
