@@ -24,8 +24,11 @@ import { getApiUrl, API_CONFIG } from '@/config/api.js';
 const items = ref([]);
 
 const fetchItems = async () => {
-  const response = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDSHOWS));
-  items.value = response.data;
+  // Get all onboardlands and filter for called queues (callonboard = 1)
+  const response = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS));
+  // Only show items that are currently being called (callonboard = 1)
+  items.value = response.data.filter(item => item.callonboard === 1);
+  console.log('📺 OnTV displaying called queues:', items.value);
 };
 
 onMounted(() => {

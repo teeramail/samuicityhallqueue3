@@ -21,27 +21,44 @@ export default async function handler(req, res) {
     } else if (req.method === 'PUT') {
       // Update onboardland or increment/set fields
       console.log('📝 Request body:', req.body);
-      const { idland, mode } = req.body;
+      const { idland, idshow, mode } = req.body;
 
-      if (!idland) {
-        return res.status(400).json({ error: 'idland is required' });
+      let doc;
+      let documentId;
+
+      // Handle both idland and idshow parameters
+      if (idland) {
+        // Find by idland (direct lookup)
+        doc = await kvDatabase.findOneByField('onboardlands', 'idland', idland);
+        documentId = idland;
+      } else if (idshow) {
+        // Find by idshow (lookup by field)
+        doc = await kvDatabase.findOneByField('onboardlands', 'idshow', parseInt(idshow));
+        if (!doc) {
+          doc = await kvDatabase.findOneByField('onboardlands', 'idshow', idshow);
+        }
+        if (doc) {
+          documentId = doc._key.split(':')[1]; // Extract ID from key
+        }
+      } else {
+        return res.status(400).json({ error: 'Either idland or idshow is required' });
       }
-
-      // Find the document by idland
-      const doc = await kvDatabase.findOneByField('onboardlands', 'idland', idland);
       
       if (!doc) {
         return res.status(404).json({ error: 'Document not found' });
       }
 
+      console.log('🔍 Found document:', doc, 'using documentId:', documentId);
+
       let updatedDoc;
 
       if (mode === 'setcall') {
         // Set callonboard to 1
-        updatedDoc = await kvDatabase.setField('onboardlands', idland, 'callonboard', 1);
+        console.log('📢 Setting callonboard = 1 for queue display');
+        updatedDoc = await kvDatabase.setField('onboardlands', documentId, 'callonboard', 1);
       } else {
         // Default: increment numbershow
-        updatedDoc = await kvDatabase.increment('onboardlands', idland, 'numbershow', 1);
+        updatedDoc = await kvDatabase.increment('onboardlands', documentId, 'numbershow', 1);
       }
       
       console.log('✅ Updated onboardland:', updatedDoc);

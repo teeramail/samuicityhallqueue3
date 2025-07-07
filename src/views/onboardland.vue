@@ -102,10 +102,20 @@ const filteredUsers = computed(() => {
 });  
 
 async function updateTimestamp(item) {
+  console.log('📢 Calling queue for display:', item);
+  
+  // Set callonboard = 1 to show this queue on OnTV
+  await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS), {
+    idshow: item.idshow,
+    mode: 'setcall'
+  });
+  
+  // Also update timestamp
   await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.UPDATE_ATT), {
     idshow: item.idshow,
-   
   });
+  
+  console.log('✅ Queue called and will appear on OnTV');
 }
 
 </script>
