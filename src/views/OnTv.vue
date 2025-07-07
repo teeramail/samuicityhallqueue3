@@ -169,18 +169,24 @@ onBeforeUnmount(() => {
   transition: all 0.3s ease;
 }
 
-/* First row (most recent) - green highlight */
-.data-row:nth-child(2):not(.empty-row) {
+/* Recent calls (within 15 seconds) - blue blinking */
+.data-row.recent-call:not(.empty-row) {
+  background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%);
+  color: white;
+  animation: pulse-blue 1.5s infinite;
+}
+
+/* Most recent queue (first row) - green highlight ONLY if not recent call */
+.data-row:nth-child(2):not(.empty-row):not(.recent-call) {
   background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
   color: white;
   animation: pulse-green 2s infinite;
 }
 
-/* Recent calls - special highlighting */
-.data-row.recent-call:not(.empty-row) {
-  background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%);
-  color: white;
-  animation: pulse-blue 1.5s infinite;
+/* Normal rows (after 15 seconds) - no special styling */
+.data-row:not(.recent-call):not(.empty-row):not(:nth-child(2)) {
+  background: #ffffff;
+  color: #333;
 }
 
 /* Empty rows */
