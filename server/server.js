@@ -32,6 +32,85 @@ app.get('/', function (req, res) {
   res.send('Hello, World! - Now using Vercel KV');
 });
 
+// Data viewer endpoint for web browser
+app.get('/view-all-data', async function(req, res) {
+  try {
+    const collections = ['regisshows', 'onboardshows', 'onboardlands', 'onboardlandnums'];
+    const allData = {};
+    
+    // Get all data from each collection
+    for (const collection of collections) {
+      allData[collection] = await kvDatabase.findAll(collection);
+    }
+    
+    // Get all keys
+    const { kv } = require('@vercel/kv');
+    const allKeys = await kv.keys('*');
+    
+    const htmlResponse = `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Vercel KV Database Viewer</title>
+        <style>
+            body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+            .container { max-width: 1200px; margin: 0 auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            h1 { color: #333; text-align: center; }
+            h2 { color: #0070f3; border-bottom: 2px solid #0070f3; padding-bottom: 5px; }
+            .collection { margin: 20px 0; }
+            .item { background: #f9f9f9; padding: 15px; margin: 10px 0; border-radius: 5px; border-left: 4px solid #0070f3; }
+            .key { font-weight: bold; color: #333; }
+            .data { margin-top: 10px; }
+            pre { background: #f4f4f4; padding: 10px; border-radius: 4px; overflow-x: auto; }
+            .summary { background: #e3f2fd; padding: 15px; border-radius: 5px; margin: 20px 0; }
+            .keys-list { columns: 3; column-gap: 20px; }
+            .keys-list li { break-inside: avoid; margin: 5px 0; }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>🗄️ Vercel KV Database Viewer</h1>
+            
+            <div class="summary">
+                <h3>📊 Database Summary</h3>
+                <p><strong>Total Keys:</strong> ${allKeys.length}</p>
+                <p><strong>Collections:</strong> ${collections.join(', ')}</p>
+                <p><strong>Last Updated:</strong> ${new Date().toLocaleString()}</p>
+            </div>
+
+            ${Object.entries(allData).map(([collection, data]) => `
+                <div class="collection">
+                    <h2>📋 ${collection.toUpperCase()} (${data.length} items)</h2>
+                    ${data.length === 0 ? '<p><em>No data found</em></p>' : 
+                      data.map((item, index) => `
+                        <div class="item">
+                            <div class="key">🔑 Key: ${item._key}</div>
+                            <div class="data">
+                                <pre>${JSON.stringify(Object.fromEntries(Object.entries(item).filter(([k]) => k !== '_key')), null, 2)}</pre>
+                            </div>
+                        </div>
+                      `).join('')
+                    }
+                </div>
+            `).join('')}
+            
+            <div class="collection">
+                <h2>🔑 All Keys in Database</h2>
+                <ul class="keys-list">
+                    ${allKeys.map(key => `<li>${key}</li>`).join('')}
+                </ul>
+            </div>
+        </div>
+    </body>
+    </html>`;
+    
+    res.send(htmlResponse);
+  } catch (err) {
+    console.error('Error viewing all data:', err);
+    res.status(500).send(`Error: ${err.message}`);
+  }
+});
+
 app.get('/regisshow', async function(req, res) {
   try {
     const regisshows = await Regisshow.find({});

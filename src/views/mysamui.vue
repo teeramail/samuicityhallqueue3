@@ -82,20 +82,28 @@
     <script setup>
     import { ref, onMounted } from 'vue';
     import axios from 'axios';
+    import { API_URLS } from '../config/api.js';
      
     const currentDateTime = ref('');
     const collection1Data = ref([]);
     const collection2Data = ref([]);
   
     const fetchData = async () => {
+      console.log('🔗 Fetching data from:', {
+        onboardshows: API_URLS.ONBOARDSHOWS,
+        onboardlandnums: API_URLS.ONBOARDLANDNUMS
+      });
+      
       const [collection1Response, collection2Response] = await Promise.all([
-        axios.get('https://koh-samui.com:50100/onboardshows'),
-        axios.get('https://koh-samui.com:50100/onboardlandnums'),
+        axios.get(API_URLS.ONBOARDSHOWS),
+        axios.get(API_URLS.ONBOARDLANDNUMS),
       ]);
       collection1Data.value = collection1Response.data;
       collection2Data.value = collection2Response.data;
-      console.log(collection2Data.value)
-
+      console.log('📊 Data received:', {
+        onboardshows: collection1Data.value,
+        onboardlandnums: collection2Data.value
+      });
 
     };
   

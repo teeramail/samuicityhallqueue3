@@ -19,13 +19,14 @@
 <script>
   import { defineComponent, onMounted, ref } from "vue";
   import axios from "axios";
+  import { API_URLS } from '../config/api.js';
 
   export default defineComponent({
     setup() {
       const users = ref([]);
       const labelshow = ref({});
       onMounted(async () => {
-        const res = await axios.get("https://koh-samui.com:50100/regisshow");
+        const res = await axios.get(API_URLS.REGISSHOW);
         users.value = res.data;
         console.log(res);
       });
@@ -33,10 +34,10 @@
       function increment(item) {
   console.log(`labelshow id: ${item.idshow}`);
 
-  axios.put("https://koh-samui.com:50100/regisshow", {
+  axios.put(API_URLS.REGISSHOW, {
     idshow: item.idshow
   }).then(() => {
-    axios.get("https://koh-samui.com:50100/regisshow")
+    axios.get(API_URLS.REGISSHOW)
     .then(res => {
         users.value = res.data;
     });
@@ -50,7 +51,7 @@
         console.log(`labelshow id: ${item.idshow}`);
 
         try {
-          axios.put("https://koh-samui.com:50100/regisshow", {
+          axios.put(API_URLS.REGISSHOW, {
             idshow: item.idshow
           });
         } catch (error) {

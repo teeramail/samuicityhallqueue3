@@ -95,6 +95,7 @@
 <script>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
+import { API_URLS } from '../config/api.js';
 
 export default {
   setup() {
@@ -103,8 +104,8 @@ export default {
 
     const fetchData = async () => {
       const [collection1Response, collection2Response] = await Promise.all([
-        axios.get('https://koh-samui.com:50100/onboardshows'),
-        axios.get('https://koh-samui.com:50100/onboardlands'),
+        axios.get(API_URLS.ONBOARDSHOWS),
+        axios.get(API_URLS.ONBOARDLANDS),
       ]);
       collection1Data.value = collection1Response.data;
       collection2Data.value = collection2Response.data;

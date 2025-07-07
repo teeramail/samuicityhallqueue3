@@ -9,6 +9,7 @@
     "lint": "eslint . --fix --ignore-path .gitignore",
     "server": "node server/server.js",
     "init-data": "node server/initialize-data.js",
+    "view-data": "node server/data-viewer.js",
     "start": "node server/server.js"
   },
   "dependencies": {
