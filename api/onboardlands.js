@@ -1,0 +1,61 @@
+import { kvDatabase, handleCors } from './_utils/kv.js';
+
+export default async function handler(req, res) {
+  // Handle CORS
+  if (handleCors(req, res)) {
+    return; // Early return for OPTIONS request
+  }
+
+  try {
+    if (req.method === 'GET') {
+      // Get all onboardlands
+      const onboardlands = await kvDatabase.findAll('onboardlands');
+      
+      if (onboardlands.length === 0) {
+        return res.status(404).json({ error: 'No documents found in the collection' });
+      }
+
+      console.log('📊 Onboardlands data:', onboardlands);
+      return res.status(200).json(onboardlands);
+
+    } else if (req.method === 'PUT') {
+      // Update onboardland or increment/set fields
+      console.log('📝 Request body:', req.body);
+      const { idland, mode } = req.body;
+
+      if (!idland) {
+        return res.status(400).json({ error: 'idland is required' });
+      }
+
+      // Find the document by idland
+      const doc = await kvDatabase.findOneByField('onboardlands', 'idland', idland);
+      
+      if (!doc) {
+        return res.status(404).json({ error: 'Document not found' });
+      }
+
+      let updatedDoc;
+
+      if (mode === 'setcall') {
+        // Set callonboard to 1
+        updatedDoc = await kvDatabase.setField('onboardlands', idland, 'callonboard', 1);
+      } else {
+        // Default: increment numbershow
+        updatedDoc = await kvDatabase.increment('onboardlands', idland, 'numbershow', 1);
+      }
+      
+      console.log('✅ Updated onboardland:', updatedDoc);
+      return res.status(200).json(updatedDoc);
+
+    } else {
+      return res.status(405).json({ error: `Method ${req.method} not allowed` });
+    }
+
+  } catch (error) {
+    console.error('❌ Error in onboardlands API:', error);
+    return res.status(500).json({ 
+      error: 'Internal server error',
+      message: error.message 
+    });
+  }
+} 

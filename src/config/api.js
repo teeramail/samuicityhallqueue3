@@ -2,8 +2,8 @@
 const isDevelopment = import.meta.env.DEV || process.env.NODE_ENV === 'development';
 
 export const API_CONFIG = {
-  // Use local server for development, production server for production
-  BASE_URL: isDevelopment ? 'http://localhost:50100' : 'https://koh-samui.com:50100',
+  // Use local server for development, Vercel API routes for production
+  BASE_URL: isDevelopment ? 'http://localhost:50100' : '/api',
   
   // Available endpoints
   ENDPOINTS: {
