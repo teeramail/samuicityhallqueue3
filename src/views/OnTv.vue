@@ -14,6 +14,7 @@
       :class="{ 
         'recent-call': queue.isRecent, 
         'empty-row': queue.isEmpty,
+        'first-row-recent': queue.isFirstRowRecent,
         'current-serving': index === 0 && !queue.isEmpty
       }"
     >
@@ -61,13 +62,15 @@ const displayQueues = computed(() => {
       const queue = queueHistory.value[i];
       const now = Date.now();
       const callTime = queue.timestamp || 0;
+      const timeSinceCall = now - callTime;
       
       rows.push({
         id: queue.id,
         queueNumber: queue.queueNumber,
         counterNumber: queue.counterNumber,
         timestamp: queue.timestamp,
-        isRecent: (now - callTime) < 15000, // Recent if called within 15 seconds
+        isRecent: timeSinceCall < 15000, // Recent if called within 15 seconds
+        isFirstRowRecent: i === 0 && timeSinceCall < 15000, // First row recent flag
         isEmpty: false
       });
     } else {
@@ -78,6 +81,7 @@ const displayQueues = computed(() => {
         counterNumber: null,
         timestamp: null,
         isRecent: false,
+        isFirstRowRecent: false,
         isEmpty: true
       });
     }
@@ -169,22 +173,22 @@ onBeforeUnmount(() => {
   transition: all 0.3s ease;
 }
 
-/* Recent calls (within 15 seconds) - blue blinking */
+/* Recent calls (within 15 seconds) - blue blinking - HIGHEST PRIORITY */
 .data-row.recent-call:not(.empty-row) {
   background: linear-gradient(135deg, #2196f3 0%, #42a5f5 100%);
   color: white;
   animation: pulse-blue 1.5s infinite;
 }
 
-/* Most recent queue (first row) - green highlight ONLY if not recent call */
-.data-row:nth-child(2):not(.empty-row):not(.recent-call) {
+/* First row recent (within 15 seconds) - green highlight - MEDIUM PRIORITY */
+.data-row.first-row-recent:not(.empty-row):not(.recent-call) {
   background: linear-gradient(135deg, #4caf50 0%, #66bb6a 100%);
   color: white;
   animation: pulse-green 2s infinite;
 }
 
-/* Normal rows (after 15 seconds) - no special styling */
-.data-row:not(.recent-call):not(.empty-row):not(:nth-child(2)) {
+/* Normal rows (after 15 seconds or not first row) - white background - LOW PRIORITY */
+.data-row:not(.recent-call):not(.first-row-recent):not(.empty-row) {
   background: #ffffff;
   color: #333;
 }
