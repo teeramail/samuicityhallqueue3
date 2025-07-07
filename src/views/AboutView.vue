@@ -27,35 +27,13 @@
       </v-col>
     </v-row>
     
-    <!-- Queue Status Display -->
+    <!-- Simple Current Queue Number Display -->
     <v-row>
       <v-col cols="12">
-        <v-card class="mx-auto" max-width="600" style="margin-top: 20px;">
-          <v-card-title class="text-center">
-            📊 สถานะคิวปัจจุบัน
-          </v-card-title>
-          <v-card-text v-if="queueData.length > 0">
-            <v-row>
-              <v-col v-for="queue in queueData" :key="queue.idshow" cols="12" md="4">
-                <div class="text-center queue-status">
-                  <h3>{{ queue.nameservice }}</h3>
-                  <div class="queue-number">{{ queue.numbershow }}</div>
-                  <div class="queue-label">คิวที่ลงทะเบียน</div>
-                </div>
-              </v-col>
-            </v-row>
-            <v-divider class="my-4"></v-divider>
-            <div class="text-center">
-              <p class="text-subtitle-1">📅 อัปเดตล่าสุด: {{ lastUpdate }}</p>
-            </div>
-          </v-card-text>
-          <v-card-text v-else>
-            <div class="text-center">
-              <v-progress-circular indeterminate color="primary"></v-progress-circular>
-              <p class="mt-2">กำลังโหลดข้อมูล...</p>
-            </div>
-          </v-card-text>
-        </v-card>
+        <div class="text-center" style="margin-top: 30px;">
+          <h2 class="queue-info">คิวปัจจุบัน: {{ currentQueueNumber }}</h2>
+          <p class="text-subtitle-1">{{ lastUpdate }}</p>
+        </div>
       </v-col>
     </v-row>
     
@@ -66,51 +44,42 @@
     </v-row>  
     <v-row>
       <v-col cols="12">
-
         <v-row>
-      <v-col cols="12">
-        <h1>&nbsp;</h1>
-      </v-col>
-    </v-row>  
-    <v-row justify="center" align="center">
-      <!-- <h1>&nbsp;&nbsp;โปรดเตรียมมือถือไว้ถ่ายรูปคิว</h1> -->
-  </v-row>
-  <v-row justify="center" align="center">
-      <!-- <h2>&nbsp;&nbsp;เพื่อลดขยะ ในกรณีที่ไม่ได้นำมือถือมา กดพิมพ์ </h2> -->
-  </v-row>
-  <v-row justify="center" align="center">
-      <h1>&nbsp;&nbsp;</h1>
-  </v-row>
-  <v-row justify="center" align="center">
-      <h1>&nbsp;&nbsp;</h1>
-  </v-row>
-  <v-row justify="center" align="center">
-      <h1>&nbsp;&nbsp;</h1>
-  </v-row>
-  <v-row justify="center" align="center">
-      <h1>&nbsp;&nbsp;</h1>
-  </v-row>
-  <v-row justify="center" align="center">
-      <h1>&nbsp;&nbsp;</h1>
-  </v-row>
-  <v-row justify="center" align="center">
-      <h1>&nbsp;&nbsp;</h1>
-  </v-row>
+          <v-col cols="12">
+            <h1>&nbsp;</h1>
+          </v-col>
+        </v-row>  
+        <v-row justify="center" align="center">
+          <h1>&nbsp;&nbsp;</h1>
+        </v-row>
+        <v-row justify="center" align="center">
+          <h1>&nbsp;&nbsp;</h1>
+        </v-row>
+        <v-row justify="center" align="center">
+          <h1>&nbsp;&nbsp;</h1>
+        </v-row>
+        <v-row justify="center" align="center">
+          <h1>&nbsp;&nbsp;</h1>
+        </v-row>
+        <v-row justify="center" align="center">
+          <h1>&nbsp;&nbsp;</h1>
+        </v-row>
+        <v-row justify="center" align="center">
+          <h1>&nbsp;&nbsp;</h1>
+        </v-row>
+        
+        <!-- Single Main Button -->
         <v-row class="justify-center">
           <v-btn 
             class="print-visible spaced-btn big-button" 
-            v-on:click="navigateToRegisPress(1)" 
+            @click="navigateToRegisPress(1)" 
             style="background-color: #d8bfd8"
             :disabled="isLoading"
           >
-            <span v-if="!isLoading">กดเรียกคิว ที่นี่</span>
+            <span v-if="!isLoading">รับบัตรคิว</span>
             <span v-else>กำลังโหลด...</span>
           </v-btn>
         </v-row>
-       
-        
-        
-       
       </v-col>
     </v-row>
   </v-container>
@@ -126,21 +95,25 @@ let intervalId
 
 export default {
   setup() {
-    const queueData = ref([])
+    const currentQueueNumber = ref(0)
     const lastUpdate = ref('')
-    const isLoading = ref(true)
+    const isLoading = ref(false)
     
-    async function fetchQueueStatus() {
+    async function fetchCurrentQueue() {
       try {
-        const response = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.REGISSHOW))
-        queueData.value = response.data || []
-        lastUpdate.value = new Date().toLocaleTimeString('th-TH')
-        isLoading.value = false
-        console.log('📊 Queue status updated:', queueData.value)
+        // Get the current serving queue number (global)
+        const response = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDSHOWS))
+        const onboardshows = response.data || []
+        
+        // Get the highest serving number across all counters
+        const maxServing = Math.max(...onboardshows.map(show => show.numbershow || 0), 0)
+        currentQueueNumber.value = maxServing
+        
+        lastUpdate.value = `อัปเดต: ${new Date().toLocaleTimeString('th-TH')}`
+        
+        console.log('📊 Current queue updated:', currentQueueNumber.value)
       } catch (error) {
-        console.error('❌ Error fetching queue status:', error)
-        // Keep trying even if there's an error
-        isLoading.value = false
+        console.error('❌ Error fetching current queue:', error)
       }
     }
     
@@ -150,10 +123,10 @@ export default {
     
     onMounted(() => {
       // Initial fetch
-      fetchQueueStatus()
+      fetchCurrentQueue()
       
-      // Set up automatic refresh every 3 seconds
-      intervalId = setInterval(fetchQueueStatus, 3000)
+      // Set up automatic refresh every 5 seconds
+      intervalId = setInterval(fetchCurrentQueue, 5000)
     })
     
     onBeforeUnmount(() => {
@@ -163,12 +136,11 @@ export default {
     })
 
     return {
-      queueData,
+      currentQueueNumber,
       lastUpdate,
       isLoading,
       navigateToRegisPress,
     }
-
   },
   
   beforeRouteLeave(to, from, next) {
@@ -185,40 +157,22 @@ export default {
   line-height: 120px;
   display: flex;
   align-items: center;
+  transition: all 0.3s ease;
 }
-.big-button2 {
-  font-size: 27px;
-  padding: 50px 80px;
-  line-height: 50px;
-  display: flex;
-  align-items: center;
+
+.big-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
 }
+
 .spaced-btn {
   margin-top: 20px;
 }
-.spaced-btn2 {
-  margin-top: 40px;
-}
 
-.queue-status {
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 16px;
-  margin: 8px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-}
-
-.queue-number {
-  font-size: 3rem;
-  font-weight: bold;
+.queue-info {
   color: #1976d2;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-}
-
-.queue-label {
-  font-size: 0.9rem;
-  color: #666;
-  margin-top: 8px;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
 }
 
 @media print {
