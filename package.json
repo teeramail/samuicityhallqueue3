@@ -6,15 +6,19 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --fix --ignore-path .gitignore"
+    "lint": "eslint . --fix --ignore-path .gitignore",
+    "server": "node server/server.js",
+    "init-data": "node server/initialize-data.js",
+    "start": "node server/server.js"
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
+    "@vercel/kv": "^0.2.4",
     "axios": "^1.2.2",
     "core-js": "^3.8.3",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "mongoose": "^6.8.3",
     "pinia": "^2.0.23",
     "roboto-fontface": "*",
     "socket.io-client": "^4.5.4",
