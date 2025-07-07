@@ -19,11 +19,12 @@
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import qsound from './qsound.vue'
+import { getApiUrl, API_CONFIG } from '@/config/api.js';
 
 const items = ref([]);
 
 const fetchItems = async () => {
-  const response = await axios.get('https://koh-samui.com:50200/onboardtwos');
+  const response = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDSHOWS));
   items.value = response.data;
 };
 
