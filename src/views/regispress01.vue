@@ -80,6 +80,7 @@ import { onMounted, ref, computed } from "vue";
 import axios from "axios";
 import { useRoute } from 'vue-router'
 import router from "@/router"
+import { getApiUrl, API_CONFIG } from '@/config/api.js';
 
 
         const route = useRoute()
@@ -108,10 +109,10 @@ import router from "@/router"
           const minutes = date.getMinutes().toString().padStart(2, '0');
           currentDateTimeA.value = `${day}/${month}/ ${hours}:${minutes}`;
 
-          const res = await axios.get("https://koh-samui.com:50200/regisshow");
+          const res = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.REGISSHOW));
           users.value = res.data;
           await increment();
-          const rescomb = await axios.get("https://koh-samui.com:50200/combine-record");
+          const rescomb = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.COMBINE_RECORD));
           combines.value = rescomb.data;
           // window.print();
         });
@@ -122,10 +123,10 @@ import router from "@/router"
         }, 3000)
 
         function increment() {
-          axios.put("https://koh-samui.com:50200/regisshow", {
+          axios.put(getApiUrl(API_CONFIG.ENDPOINTS.REGISSHOW), {
               idshow: route.params.idshow
           }).then(() => {
-              axios.get("https://koh-samui.com:50200/regisshow")
+              axios.get(getApiUrl(API_CONFIG.ENDPOINTS.REGISSHOW))
                   .then(res => {
                       users.value = res.data;
                       setTimeout(() => {
