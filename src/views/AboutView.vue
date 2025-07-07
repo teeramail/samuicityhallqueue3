@@ -13,17 +13,17 @@
       <!-- Main Content Section - Horizontal Layout -->
       <v-row class="main-content" align="center" justify="center" no-gutters>
         <!-- Left Side - Logo -->
-        <v-col cols="4" class="logo-section">
+        <v-col cols="6" class="logo-section">
           <v-img 
             src="@/assets/logosurat.png" 
-            max-width="300px" 
-            max-height="300px" 
+            max-width="350px" 
+            max-height="350px" 
             class="d-block mx-auto"
           ></v-img>
         </v-col>
 
-        <!-- Center - Main Button -->
-        <v-col cols="4" class="button-section">
+        <!-- Right Side - Main Button -->
+        <v-col cols="6" class="button-section">
           <div class="button-container">
             <v-btn 
               class="main-queue-button" 
@@ -34,17 +34,6 @@
             >
               {{ isLoading ? 'กำลังออกบัตร...' : 'รับบัตรคิว' }}
             </v-btn>
-          </div>
-        </v-col>
-
-        <!-- Right Side - Queue Status -->
-        <v-col cols="4" class="status-section">
-          <div v-if="currentQueueStatus" class="status-display">
-            <div class="status-card">
-              <h3 class="status-title">สถานะคิวปัจจุบัน</h3>
-              <div class="current-queue">{{ currentQueueStatus.currentQueue || 'N/A' }}</div>
-              <div class="waiting-count">รอคิว: {{ currentQueueStatus.waiting || 0 }} คน</div>
-            </div>
           </div>
         </v-col>
       </v-row>
@@ -73,7 +62,7 @@
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import axios from 'axios'
 import { getApiUrl, API_CONFIG } from '@/config/api.js'
 
@@ -81,17 +70,6 @@ export default {
   setup() {
     const isLoading = ref(false)
     const newQueueTicket = ref(null)
-    const currentQueueStatus = ref(null)
-
-    // Get current queue status
-    const fetchQueueStatus = async () => {
-      try {
-        const response = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.QUEUE_STATUS))
-        currentQueueStatus.value = response.data
-      } catch (error) {
-        console.error('Error fetching queue status:', error)
-      }
-    }
 
     // Get new queue ticket
     const getNewQueueTicket = async () => {
@@ -120,9 +98,6 @@ export default {
           setTimeout(() => {
             window.print()
           }, 500)
-          
-          // Refresh queue status
-          await fetchQueueStatus()
         }
       } catch (error) {
         console.error('Error getting queue ticket:', error)
@@ -131,14 +106,9 @@ export default {
       isLoading.value = false
     }
 
-    onMounted(() => {
-      fetchQueueStatus()
-    })
-
     return {
       isLoading,
       newQueueTicket,
-      currentQueueStatus,
       getNewQueueTicket
     }
   }
@@ -218,47 +188,6 @@ export default {
   color: #757575 !important;
 }
 
-.status-section {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.status-display {
-  width: 100%;
-  max-width: 300px;
-}
-
-.status-card {
-  background: white;
-  border-radius: 15px;
-  padding: 2rem;
-  text-align: center;
-  box-shadow: 0 8px 25px rgba(0,0,0,0.1);
-  border: 2px solid #e3f2fd;
-}
-
-.status-title {
-  font-size: 1.2rem !important;
-  color: #1976d2;
-  margin-bottom: 1rem;
-  font-weight: bold;
-}
-
-.current-queue {
-  font-size: 4rem !important;
-  font-weight: bold;
-  color: #4caf50;
-  margin: 1rem 0;
-  text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-}
-
-.waiting-count {
-  font-size: 1.1rem;
-  color: #666;
-  font-weight: 500;
-}
-
 /* Screen only elements */
 .screen-only {
   display: block;
@@ -280,9 +209,6 @@ export default {
     min-height: 120px;
   }
   
-  .current-queue {
-    font-size: 3rem !important;
-  }
 }
 
 @media (max-width: 768px) {
@@ -291,7 +217,7 @@ export default {
     height: auto;
   }
   
-  .logo-section, .button-section, .status-section {
+  .logo-section, .button-section {
     margin-bottom: 2rem;
   }
 }
