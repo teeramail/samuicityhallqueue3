@@ -8,7 +8,7 @@
           <v-btn icon @click="increment(item)">
             <v-icon>mdi-arrow-up</v-icon>
           </v-btn>
-          <div>{{ item.numbershow }} ช่อง {{ item.idshow }}  รอ {{ specificDifference }}</div> 
+          <div>{{ currentQueueNumber }} ช่อง {{ item.idshow }}  รอ {{ specificDifference }}</div> 
           <v-btn icon @click="updateTimestamp(item)" :disabled="!volumeIconEnabled">
             <v-icon>mdi-volume-high</v-icon>
           </v-btn>
@@ -27,7 +27,8 @@ import { getApiUrl, API_CONFIG } from '@/config/api.js';
 const users = ref([]);
 const idFilter = ref('');
 const specificDifference = ref('x');
-const volumeIconEnabled = ref(false); // set the initial value to false
+const currentQueueNumber = ref(0);
+const volumeIconEnabled = ref(false);
 
 const props = defineProps({
   idFilter: {
@@ -36,59 +37,71 @@ const props = defineProps({
   }
 });
 
-// idFilter.value = props.idFilter;
+// Get the counter ID from props
+const counterId = parseInt(props.idFilter);
 idFilter.value = props.idFilter;
 
 onMounted(async () => {
-  // Fetch data from onboardlands endpoint
-  const res1 = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS));
-  const onboardlands = res1.data;
-
-  // Fetch data from onboardshows endpoint
-  const res2 = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDSHOWS));
-  const onboardshows = res2.data;
-
-  // Find the object in the onboardshows array where idshow is equal to 2
-  const updatedShow = onboardshows.find(show => show.idshow === 1);
-
-  // Update the numbershow value for all objects in the onboardlands array
-  onboardlands.forEach(user => {
-    user.numbershow = updatedShow.numbershow;
-  });
-
-  // Set the users ref to the updated onboardlands array
-  users.value = onboardlands;
-
-  // Set the volumeIconEnabled value to true after specificDifference is set
-  specificDifference.value = rescomb.data.find(combine => combine.idshow === 1).difference;
-  volumeIconEnabled.value = true;
+  await fetchData();
 });
 
+async function fetchData() {
+  try {
+    // Fetch data from onboardlands endpoint
+    const res1 = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS));
+    const onboardlands = res1.data;
+
+    // Fetch data from onboardshows endpoint
+    const res2 = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDSHOWS));
+    const onboardshows = res2.data;
+
+    // Find the current counter's show data
+    const currentShow = onboardshows.find(show => show.idshow === counterId);
+    if (currentShow) {
+      currentQueueNumber.value = currentShow.numbershow || 0;
+    }
+
+    // Set the users ref to the onboardlands array (filtered by counter)
+    users.value = onboardlands;
+
+    // Get the difference (waiting count) for this specific counter
+    const rescomb = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.COMBINE_RECORD));
+    const counterData = rescomb.data.find(combine => combine.idshow === counterId);
+    specificDifference.value = counterData ? counterData.difference : 0;
+    
+    volumeIconEnabled.value = true;
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
 async function increment(item) {
-  // set the volumeIconEnabled value to false when increment button is clicked
+  // Disable volume button during increment
   volumeIconEnabled.value = false;
 
-  const rescomb = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.COMBINE_RECORD));
-  specificDifference.value = rescomb.data.find(combine => combine.idshow === 1).difference;
-
-  if (specificDifference.value >= 1) {
-    await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDNUMS), {
-      idshow: item.idshow,
-      idshowtype: 1,
-      idshowtext: 'A'
-    });
-    const res = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDLANDS));
-    users.value = res.data;
+  try {
+    // Check if there are people waiting
     const rescomb = await axios.get(getApiUrl(API_CONFIG.ENDPOINTS.COMBINE_RECORD));
-    specificDifference.value = rescomb.data.find(combine => combine.idshow === 1).difference;
+    const counterData = rescomb.data.find(combine => combine.idshow === counterId);
+    const currentDifference = counterData ? counterData.difference : 0;
+
+    if (currentDifference >= 1) {
+      // Increment the queue number in onboardshows for this counter
+      await axios.put(getApiUrl(API_CONFIG.ENDPOINTS.ONBOARDSHOWS), {
+        idshow: counterId
+      });
+
+      // Refresh data to show updated numbers
+      await fetchData();
+    } else {
+      console.log('No people waiting in queue');
+      volumeIconEnabled.value = true;
+    }
+  } catch (error) {
+    console.error('Error incrementing queue:', error);
     volumeIconEnabled.value = true;
   }
-
-  // await axios.post("https://koh-samui.com:50200/onboardtwos", {
-  // idshow: item.idshow,
-  // });
-
-  }
+}
 
 const filteredUsers = computed(() => {
   if (!idFilter.value) return users.value;
